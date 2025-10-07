@@ -1,0 +1,29 @@
+{
+  "food_waste": {
+    "display_name": "Food Waste",
+    "category": "Wet Waste",
+    "disposal_location": "Green Dustbin (Wet/Organic Waste)",
+    "bin_color": "Green",
+    "is_recyclable": false,
+    "is_compostable": true,
+    "management_method": "Place all cooked or uncooked food scraps, peels, and leftovers into the Green Dustbin. \ud83c\udf4e Do not put plastic bags in this bin."
+  },
+  "tissues": {
+    "display_name": "Tissues (Used)",
+    "category": "Wet Waste",
+    "disposal_location": "Green Dustbin (Wet/Organic Waste)",
+    "bin_color": "Green",
+    "is_recyclable": false,
+    "is_compostable": true,
+    "management_method": "Used tissues and paper towels are compostable. Place them in the Green Dustbin."
+  },
+  "paper_straw": {
+    "display_name": "Paper Straw",
+    "category": "Wet Waste",
+    "disposal_location": "Green Dustbin (Wet/Organic Waste)",
+    "bin_color": "Green",
+    "is_recyclable": false,
+    "is_compostable": true,
+    "management_method": "Paper straws can be composted. Place them in the Green Dustbin after use."
+  }
+}
