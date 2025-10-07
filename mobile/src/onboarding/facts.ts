@@ -107,6 +107,5 @@ export const FACTS: Fact[] = [
   { body: 'The term "wishcycling" describes putting non-recyclable items in the recycling bin, hoping they get recycled.', source: 'NPR' },
   { body: 'Buying products made from recycled materials closes the recycling loop.', source: 'EPA' },
 ];
-```
 
 
