@@ -1,182 +1,116 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Button, Image, StyleSheet, Text, View, Alert, ScrollView, Modal, TextInput, TouchableOpacity } from 'react-native';
-import { CameraView, useCameraPermissions } from 'expo-camera';
-import * as ImageManipulator from 'expo-image-manipulator';
-import * as FileSystem from 'expo-file-system';
-import { API_BASE_URL, getGuidance, infer, type Detection } from './src/api';
-import { getStoredApiBaseUrl, setStoredApiBaseUrl } from './src/storage';
+import { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Onboarding from './src/onboarding/Onboarding';
+import HomeScreen from './src/screens/HomeScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
+import ScanScreen from './src/screens/ScanScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { BlurView } from 'expo-blur';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Pressable, Text, Platform } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
-  const cameraRef = useRef<CameraView>(null);
-  const [permission, requestPermission] = useCameraPermissions();
-  const [isCapturing, setIsCapturing] = useState(false);
-  const [previewUri, setPreviewUri] = useState<string | null>(null);
-  const [detections, setDetections] = useState<Detection[] | null>(null);
-  const [guidance, setGuidance] = useState<any | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [settingsVisible, setSettingsVisible] = useState(false);
-  const [apiBaseUrl, setApiBaseUrl] = useState<string>(API_BASE_URL);
+  const [firstOpen, setFirstOpen] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!permission) {
-      requestPermission();
-    }
     (async () => {
-      const stored = await getStoredApiBaseUrl();
-      if (stored) setApiBaseUrl(stored);
+      const v = await AsyncStorage.getItem('onboardingDone');
+      setFirstOpen(v ? false : true);
     })();
-  }, [permission, requestPermission]);
+  }, []);
 
-  const reset = () => {
-    setPreviewUri(null);
-    setDetections(null);
-    setGuidance(null);
-    setError(null);
-  };
+  if (firstOpen === null) {
+    return <View style={{ flex: 1 }} />;
+  }
 
-  const captureAndInfer = async () => {
-    if (!permission?.granted) {
-      const granted = await requestPermission();
-      if (!granted.granted) {
-        Alert.alert('Permission required', 'Camera permission is needed to take a photo.');
-        return;
-      }
-    }
-    try {
-      setIsCapturing(true);
-      setError(null);
-      // Capture photo
-      const cam = cameraRef.current;
-      if (!cam) throw new Error('Camera not ready');
-      const photo = await cam.takePictureAsync({ skipProcessing: true, quality: 0.9, base64: true });
+  const Tab = createBottomTabNavigator();
+  const Stack = createNativeStackNavigator();
 
-      // Resize/compress for faster upload
-      const resized = await ImageManipulator.manipulateAsync(
-        photo.uri,
-        [{ resize: { width: 768 } }],
-        { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG }
-      );
-      setPreviewUri(resized.uri);
+  function HomeStack() {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="HomeMain" component={HomeScreen} />
+      </Stack.Navigator>
+    );
+  }
 
-      // Prefer camera base64; fallback to reading file
-      let base64 = (photo as any).base64 as string | undefined;
-      if (!base64) {
-        base64 = await FileSystem.readAsStringAsync(resized.uri, { encoding: FileSystem.EncodingType.Base64 });
-      }
+  function ProfileStack() {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ProfileMain" component={ProfileScreen} />
+      </Stack.Navigator>
+    );
+  }
 
-      // Call backend
-      const inferRes = await infer(base64);
-      setDetections(inferRes.detections);
+  function FloatingTabBar({ state, descriptors, navigation }: any) {
+    const { bottom } = useSafeAreaInsets();
+    const goScan = () => navigation.navigate('ScanModal');
+    return (
+      <View pointerEvents="box-none" style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
+        <View
+          style={{
+            position: 'absolute', left: 16, right: 16, bottom: (bottom || 16) + 12, height: 64, borderRadius: 32,
+            overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.15, shadowRadius: 16, shadowOffset: { width: 0, height: 8 }, elevation: 12,
+          }}
+        >
+          <BlurView intensity={30} tint={Platform.OS === 'ios' ? 'systemThinMaterial' : 'light'} style={{ flex: 1 }} />
+          <View style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 24 }}>
+            {['Home', 'Profile'].map((routeName) => {
+              const routeIndex = state.routes.findIndex((r: any) => r.name === routeName);
+              const isFocused = state.index === routeIndex;
+              const onPress = () => {
+                const event = navigation.emit({ type: 'tabPress', target: state.routes[routeIndex].key, canPreventDefault: true });
+                if (!isFocused && !event.defaultPrevented) navigation.navigate(routeName);
+                else navigation.emit({ type: 'tabLongPress', target: state.routes[routeIndex].key });
+              };
+              const iconName = routeName === 'Home' ? 'home' : 'person';
+              return (
+                <Pressable key={routeName} onPress={onPress} style={{ alignItems: 'center', justifyContent: 'center', minWidth: 80 }}>
+                  <Ionicons name={iconName as any} size={22} color={isFocused ? '#10b981' : '#7a7a7a'} />
+                  {isFocused ? <Text style={{ fontSize: 12, color: '#10b981', marginTop: 4 }}>{routeName}</Text> : null}
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
 
-      // Fetch guidance for the top detection
-      if (inferRes.detections.length > 0) {
-        const top = inferRes.detections[0];
-        try {
-          const g = await getGuidance(top.label);
-          setGuidance(g.guidance);
-        } catch (e: any) {
-          setGuidance(null);
-        }
-      } else {
-        setGuidance(null);
-      }
-    } catch (e: any) {
-      setError(e?.message || 'Capture failed');
-    } finally {
-      setIsCapturing(false);
-    }
-  };
+        <Pressable
+          onPress={goScan}
+          style={{ position: 'absolute', alignSelf: 'center', bottom: (bottom || 16) + 32, width: 64, height: 64, borderRadius: 32, backgroundColor: '#10b981', alignItems: 'center', justifyContent: 'center', shadowColor: '#10b981', shadowOpacity: 0.35, shadowRadius: 12, shadowOffset: { width: 0, height: 6 }, elevation: 14 }}
+        >
+          <Ionicons name="scan" size={26} color="#fff" />
+        </Pressable>
+      </View>
+    );
+  }
+
+  function Tabs() {
+    return (
+      <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' }, tabBarHideOnKeyboard: true }} tabBar={(props) => <FloatingTabBar {...props} />}>
+        <Tab.Screen name="Home" component={HomeStack} options={{ lazy: true }} />
+        <Tab.Screen name="Profile" component={ProfileStack} options={{ lazy: true }} />
+      </Tab.Navigator>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Waste Wizard</Text>
-        <TouchableOpacity onPress={() => setSettingsVisible(true)} style={styles.settingsBtn}>
-          <Text style={styles.settingsText}>Settings</Text>
-        </TouchableOpacity>
-      </View>
-      {!previewUri ? (
-        <>
-          {permission?.granted ? (
-            <CameraView ref={cameraRef} style={styles.camera} />
-          ) : (
-            <View style={styles.center}>
-              <Text>Camera permission required</Text>
-              <Button title="Grant permission" onPress={() => requestPermission()} />
-            </View>
-          )}
-          <View style={styles.actions}>
-            <Button title={isCapturing ? 'Capturing…' : 'Capture'} onPress={captureAndInfer} disabled={isCapturing} />
-          </View>
-        </>
+      {firstOpen ? (
+        <Onboarding onDone={async () => { await AsyncStorage.setItem('onboardingDone', '1'); setFirstOpen(false); }} />
       ) : (
-        <ScrollView contentContainerStyle={styles.resultContainer}>
-          <Image source={{ uri: previewUri }} style={styles.preview} />
-          {isCapturing && <ActivityIndicator style={{ marginTop: 12 }} />}
-          {error && <Text style={styles.error}>{error}</Text>}
-          {detections && (
-            <View style={styles.card}>
-              <Text style={styles.heading}>Detections</Text>
-              {detections.length === 0 ? (
-                <Text>None above threshold.</Text>
-              ) : (
-                detections.map((d, idx) => (
-                  <Text key={idx}>{`${d.label} (${(d.confidence * 100).toFixed(1)}%)`}</Text>
-                ))
-              )}
-            </View>
-          )}
-          {guidance && (
-            <View style={styles.card}>
-              <Text style={styles.heading}>Guidance</Text>
-              {typeof guidance === 'string' ? (
-                <Text>{guidance}</Text>
-              ) : (
-                <>
-                  {guidance.instructions && <Text>{guidance.instructions}</Text>}
-                  {Array.isArray(guidance.preparation) && guidance.preparation.length > 0 && (
-                    <Text>{`Preparation: ${guidance.preparation.join(', ')}`}</Text>
-                  )}
-                  {guidance.notes && <Text>{`Notes: ${guidance.notes}`}</Text>}
-                </>
-              )}
-            </View>
-          )}
-          <View style={styles.actions}>
-            <Button title="Retake" onPress={reset} />
-          </View>
-        </ScrollView>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'card' }}>
+            <Stack.Screen name="Tabs" component={Tabs} />
+            <Stack.Screen name="ScanModal" component={ScanScreen} options={{ presentation: 'modal' }} />
+          </Stack.Navigator>
+        </NavigationContainer>
       )}
       <StatusBar style="auto" />
-
-      <Modal visible={settingsVisible} animationType="slide" transparent>
-        <View style={styles.modalBackdrop}>
-          <View style={styles.modalCard}>
-            <Text style={styles.heading}>Settings</Text>
-            <Text style={{ marginBottom: 4 }}>API Base URL</Text>
-            <TextInput
-              value={apiBaseUrl}
-              onChangeText={setApiBaseUrl}
-              placeholder="http://<IP>:8000"
-              autoCapitalize="none"
-              style={styles.input}
-            />
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 12 }}>
-              <Button title="Cancel" onPress={() => setSettingsVisible(false)} />
-              <View style={{ width: 8 }} />
-              <Button
-                title="Save"
-                onPress={async () => {
-                  await setStoredApiBaseUrl(apiBaseUrl);
-                  setSettingsVisible(false);
-                  Alert.alert('Saved', 'API base URL updated.');
-                }}
-              />
-            </View>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }
@@ -186,19 +120,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  camera: { flex: 1 },
-  actions: { padding: 12 },
-  resultContainer: { padding: 12 },
-  preview: { width: '100%', height: 300, borderRadius: 8, backgroundColor: '#eee' },
-  card: { marginTop: 12, padding: 12, borderRadius: 8, backgroundColor: '#f6f6f6' },
-  heading: { fontWeight: '600', marginBottom: 8 },
-  error: { color: 'red', marginTop: 8 },
-  header: { paddingTop: 12, paddingHorizontal: 12, paddingBottom: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  title: { fontSize: 18, fontWeight: '700' },
-  settingsBtn: { paddingHorizontal: 10, paddingVertical: 6, backgroundColor: '#efefef', borderRadius: 6 },
-  settingsText: { fontWeight: '600' },
-  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.35)', alignItems: 'center', justifyContent: 'center', padding: 16 },
-  modalCard: { width: '100%', maxWidth: 420, backgroundColor: 'white', borderRadius: 12, padding: 16 },
-  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 8 },
+  // styles below moved to screen components
 });
