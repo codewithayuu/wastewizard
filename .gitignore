@@ -1,0 +1,32 @@
+# Keep only the React Native app under mobile/ in Git
+
+# ML and backend
+ml/
+server/
+
+# Node/Expo (frontend)
+mobile/node_modules/
+mobile/.expo/
+mobile/.expo-shared/
+mobile/dist/
+mobile/npm-debug.log*
+mobile/yarn-debug.log*
+mobile/yarn-error.log*
+
+# Python caches (if any local tooling)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Env and logs
+.env
+*.env
+*.log
+

@@ -1,0 +1,24 @@
+name: Validate Mapping
+on:
+  pull_request:
+  push:
+    paths:
+      - "ml/labelmap/**"
+      - "ml/scripts/validate_mapping.py"
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r ml/requirements.txt
+      - run: |
+          python ml/scripts/validate_mapping.py \
+            --taco-categories ml/labelmap/taco_categories.json \
+            --mapping ml/labelmap/mapping_rules.yaml \
+            --source taco \
+            --out-unmapped ml/labelmap/unmapped_taco.txt \
+            --out-report ml/labelmap/mapping_report.json \
+            --min-coverage 40
