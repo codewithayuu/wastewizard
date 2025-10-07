@@ -29,6 +29,10 @@ export const getLeague = (points: number): League => {
   return leagues.reduce((acc, l) => (points >= l.min ? l : acc), leagues[0]);
 };
 
+export const getNextLeague = (points: number): League | undefined => {
+  return leagues.find((l) => l.min > points);
+};
+
 export type User = {
   id?: string;
   name?: string;
@@ -46,6 +50,7 @@ export type Settings = {
   units: 'metric' | 'imperial';
   notifications: { reminders: boolean; tips: boolean; achievements: boolean };
   accessibility: { largerText: boolean; reducedMotion: boolean; haptics: boolean };
+  weeklyGoal: number;
 };
 
 export type AppState = {
@@ -55,6 +60,7 @@ export type AppState = {
   addActivity: (e: ActivityEntry) => void;
   addPoints: (n: number, material?: Material) => void;
   updateSettings: (s: Partial<Settings>) => void;
+  setWeeklyGoal: (goal: number) => void;
   signInGoogle: (profile: Partial<User>) => void;
   signOut: () => void;
 };
@@ -75,6 +81,7 @@ export const useAppStore = create<AppState>()(
         units: 'metric',
         notifications: { reminders: true, tips: true, achievements: true },
         accessibility: { largerText: false, reducedMotion: false, haptics: true },
+        weeklyGoal: 20,
       },
       addActivity: (e) => set((s) => ({ activity: [e, ...s.activity] })),
       addPoints: (n, material) =>
@@ -84,6 +91,7 @@ export const useAppStore = create<AppState>()(
           return { user: u };
         }),
       updateSettings: (partial) => set((s) => ({ settings: { ...s.settings, ...partial } })),
+      setWeeklyGoal: (goal) => set((s) => ({ settings: { ...s.settings, weeklyGoal: goal } })),
       signInGoogle: (profile) => set((s) => ({ user: { ...s.user, ...profile, isGuest: false } })),
       signOut: () =>
         set({
@@ -101,6 +109,9 @@ export const useAppStore = create<AppState>()(
 
 export const useLeague = () => {
   const points = useAppStore((s) => s.user.points);
-  return getLeague(points);
+  const league = getLeague(points);
+  const next = getNextLeague(points);
+  const toNext = next ? next.min - points : 0;
+  return { league, next, toNext };
 };
 

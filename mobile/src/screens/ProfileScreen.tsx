@@ -8,6 +8,8 @@ import DataPrivacyCard from '../components/profile/DataPrivacyCard';
 import HelpLegalCard from '../components/profile/HelpLegalCard';
 import SignOutRow from '../components/profile/SignOutRow';
 import { User, Badge, ActivityEntry } from '../types/profile';
+import { useAppStore, useLeague } from '../store/appStore';
+import SegregationBars from '../components/home/SegregationBars';
 
 const mockUser: User = {
   id: '1',
@@ -42,16 +44,23 @@ const mockActivity: ActivityEntry[] = [
 ];
 
 export default function ProfileScreen({ navigation }: any) {
-  const [user, setUser] = useState(mockUser);
+  const user = useAppStore((s) => s.user);
+  const activity = useAppStore((s) => s.activity);
+  const { league } = useLeague();
+  const signOut = useAppStore((s) => s.signOut);
+  const updateSettings = useAppStore((s) => s.updateSettings);
+
+  const mockUser: User = { ...user, level: league.title as any };
 
   const modules = [
-    <ProfileHeader key="header" user={user} onShare={() => {}} onSettings={() => {}} onGoogleSignIn={() => setUser({ ...user, isGuest: false })} />,
-    <ImpactRewardsCard key="impact" user={user} badges={mockBadges} onViewBadges={() => {}} />,
-    <ActivityCard key="activity" entries={mockActivity} onViewAll={() => {}} />,
-    <PreferencesCard key="prefs" user={user} onUpdate={(prefs) => setUser({ ...user, preferences: prefs })} />,
+    <ProfileHeader key="header" user={mockUser} onShare={() => {}} onSettings={() => {}} onGoogleSignIn={() => {}} />,
+    <ImpactRewardsCard key="impact" user={mockUser} badges={mockBadges} onViewBadges={() => {}} />,
+    <ActivityCard key="activity" entries={activity.slice(0, 4)} onViewAll={() => {}} />,
+    <SegregationBars key="segregation" />,
+    <PreferencesCard key="prefs" user={mockUser} onUpdate={(prefs) => updateSettings(prefs)} />,
     <DataPrivacyCard key="privacy" isGuest={user.isGuest} />,
     <HelpLegalCard key="help" />,
-    !user.isGuest && <SignOutRow key="signout" onSignOut={() => setUser({ ...user, isGuest: true })} />,
+    !user.isGuest && <SignOutRow key="signout" onSignOut={signOut} />,
   ].filter(Boolean);
 
   return (

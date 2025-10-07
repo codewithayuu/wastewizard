@@ -7,6 +7,10 @@ import ImpactSummaryCard from '../components/home/ImpactSummaryCard';
 import RecentActivityList from '../components/home/RecentActivityList';
 import TipsCarousel from '../components/home/TipsCarousel';
 import ImpactBreakdownSheet from '../components/home/ImpactBreakdownSheet';
+import LeagueCard from '../components/home/LeagueCard';
+import SegregationBars from '../components/home/SegregationBars';
+import WeeklyGoalCard from '../components/home/WeeklyGoalCard';
+import { useAppStore } from '../store/appStore';
 
 const mockMetrics = { items: 12, co2eKg: 1.8, waterL: 60, energyKwh: 0.9, eq: { drivingKm: 8, phoneCharges: 224 } };
 const mockRecentItems = [
@@ -48,6 +52,9 @@ export default function HomeScreen() {
         <ImpactSummaryCard period="week" goal={20} metrics={mockMetrics} onPressDetails={() => setSheetVisible(true)} />
         <RecentActivityList items={mockRecentItems} limit={6} onPressItem={() => {}} />
         <TipsCarousel tips={mockTips} onPressTip={() => {}} />
+        <LeagueCard />
+        <SegregationBars />
+        <WeeklyGoalCard />
       </ScrollView>
       <ImpactBreakdownSheet visible={sheetVisible} onClose={() => setSheetVisible(false)} metrics={mockMetrics} />
     </>
