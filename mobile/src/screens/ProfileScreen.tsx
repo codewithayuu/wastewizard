@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import ProfileHeader from '../components/profile/ProfileHeader';
 import ImpactRewardsCard from '../components/profile/ImpactRewardsCard';
 import ActivityCard from '../components/profile/ActivityCard';
@@ -54,7 +54,11 @@ export default function ProfileScreen({ navigation }: any) {
     !user.isGuest && <SignOutRow key="signout" onSignOut={() => setUser({ ...user, isGuest: true })} />,
   ].filter(Boolean);
 
-  return <ScrollView contentContainerStyle={styles.container}>{modules}</ScrollView>;
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      {modules.map((m, i) => <View key={i}>{m}</View>)}
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({

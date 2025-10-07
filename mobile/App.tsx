@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import Onboarding from './src/onboarding/Onboarding';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
@@ -13,9 +13,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Pressable, Text, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAppStore } from './src/store/appStore';
+import { LightTheme, DarkTheme_ } from './src/theme/theme';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [firstOpen, setFirstOpen] = useState<boolean | null>(null);
+  const scheme = useColorScheme();
+  const themePref = useAppStore((s) => s.settings.theme);
+  const isDark = themePref === 'system' ? scheme === 'dark' : themePref === 'dark';
 
   useEffect(() => {
     (async () => {
@@ -27,9 +36,6 @@ export default function App() {
   if (firstOpen === null) {
     return <View style={{ flex: 1 }} />;
   }
-
-  const Tab = createBottomTabNavigator();
-  const Stack = createNativeStackNavigator();
 
   function HomeStack() {
     return (
@@ -99,19 +105,19 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       {firstOpen ? (
         <Onboarding onDone={async () => { await AsyncStorage.setItem('onboardingDone', '1'); setFirstOpen(false); }} />
       ) : (
-        <NavigationContainer>
+        <NavigationContainer theme={isDark ? DarkTheme_ : LightTheme}>
           <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'card' }}>
             <Stack.Screen name="Tabs" component={Tabs} />
-            <Stack.Screen name="ScanModal" component={ScanScreen} options={{ presentation: 'modal' }} />
+            <Stack.Screen name="ScanModal" component={ScanScreen} options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
           </Stack.Navigator>
         </NavigationContainer>
       )}
-      <StatusBar style="auto" />
-    </View>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+    </GestureHandlerRootView>
   );
 }
 

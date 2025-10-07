@@ -1,15 +1,18 @@
 import { useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Animated, Dimensions } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { useAppStore } from '../store/appStore';
 import ResultSheet from '../components/scan/ResultSheet';
 
 type ScanState = 'live' | 'analyzing' | 'result';
-type Result = { item: string; category: string; confidence: number; co2eKg: number; instructions: string; prep: string[] };
+type Result = { item: string; category: string; confidence: number; co2eKg: number; instructions: string; prep: string[]; material: 'plastic' | 'paper' | 'glass' | 'metal' | 'organic' | 'e-waste' | 'hazardous' };
 
-// Mock analyze function (replace with real backend call later)
+const { height } = Dimensions.get('window');
+
 const mockAnalyze = async (): Promise<Result> => {
   await new Promise((r) => setTimeout(r, 1500));
   return {
@@ -19,18 +22,19 @@ const mockAnalyze = async (): Promise<Result> => {
     co2eKg: 0.15,
     instructions: 'Rinse bottle, replace cap, and place in recycling bin.',
     prep: ['Rinse', 'Replace cap', 'Check recycling symbol'],
+    material: 'plastic',
   };
 };
 
 export default function ScanScreen({ navigation }: any) {
   const cameraRef = useRef<CameraView>(null);
+  const sheetRef = useRef<BottomSheet>(null);
   const [permission, requestPermission] = useCameraPermissions();
   const [flash, setFlash] = useState(false);
-  // Flashlight only supports two states: Off / On
   const [state, setState] = useState<ScanState>('live');
   const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const imageHeight = useRef(new Animated.Value(height * 0.65)).current;
 
   const onCapture = async () => {
     if (!permission?.granted) {
@@ -41,15 +45,16 @@ export default function ScanScreen({ navigation }: any) {
       setState('analyzing');
       const cam = cameraRef.current;
       if (!cam) return;
-      const photo = await cam.takePictureAsync({ quality: 0.7, skipProcessing: true });
+      const photo = await cam.takePictureAsync({ quality: 0.7 });
+      if (!photo) return;
       const resized = await ImageManipulator.manipulateAsync(photo.uri, [{ resize: { width: 768 } }], { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG });
       setPreview(resized.uri);
-
       const res = await mockAnalyze();
       setResult(res);
       setState('result');
-      Animated.timing(fadeAnim, { toValue: 1, duration: 300, useNativeDriver: true }).start();
+      sheetRef.current?.snapToIndex(1);
     } catch (e) {
+      console.warn('Capture failed', e);
       setState('live');
     }
   };
@@ -62,11 +67,15 @@ export default function ScanScreen({ navigation }: any) {
     const res = await mockAnalyze();
     setResult(res);
     setState('result');
-    Animated.timing(fadeAnim, { toValue: 1, duration: 300, useNativeDriver: true }).start();
+    sheetRef.current?.snapToIndex(1);
   };
 
   const onAddToLog = () => {
-    // TODO: Save to log, update Home impact
+    if (!result) return;
+    const addActivity = useAppStore.getState().addActivity;
+    const addPoints = useAppStore.getState().addPoints;
+    addActivity({ id: Date.now().toString(), type: 'scan', title: result.item, material: result.material, when: 'Just now', points: 10, thumb: preview || undefined });
+    addPoints(10, result.material);
     navigation.goBack();
   };
 
@@ -74,71 +83,65 @@ export default function ScanScreen({ navigation }: any) {
     setState('live');
     setPreview(null);
     setResult(null);
-    fadeAnim.setValue(0);
+    sheetRef.current?.close();
+    Animated.timing(imageHeight, { toValue: height * 0.65, duration: 200, useNativeDriver: false }).start();
+  };
+
+  const onSheetChange = (index: number) => {
+    const targetHeight = index === 0 ? height * 0.65 : index === 1 ? height * 0.45 : height * 0.3;
+    Animated.timing(imageHeight, { toValue: targetHeight, duration: 200, useNativeDriver: false }).start();
   };
 
   return (
     <View style={styles.container}>
-      {/* Camera or Preview */}
-      {state === 'live' && permission?.granted ? (
-        <CameraView ref={cameraRef} style={styles.camera} facing="back" enableTorch={flash} />
-      ) : state === 'live' && !permission?.granted ? (
-        <View style={styles.center}>
-          <Text style={styles.permText}>Camera permission required</Text>
-          <TouchableOpacity style={styles.btn} onPress={() => requestPermission()}>
-            <Text style={styles.btnText}>Grant permission</Text>
+      <Animated.View style={{ height: imageHeight, width: '100%' }}>
+        {state === 'live' && permission?.granted ? (
+          <CameraView ref={cameraRef} style={styles.camera} facing="back" enableTorch={flash} />
+        ) : state === 'live' && !permission?.granted ? (
+          <View style={styles.center}>
+            <Text style={styles.permText}>Camera permission required</Text>
+            <TouchableOpacity style={styles.btn} onPress={() => requestPermission()}>
+              <Text style={styles.btnText}>Grant permission</Text>
+            </TouchableOpacity>
+          </View>
+        ) : preview ? (
+          <Image source={{ uri: preview }} style={styles.preview} />
+        ) : null}
+
+        {state === 'live' && <View style={styles.reticle} />}
+
+        <View style={styles.topBar}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconBtn}>
+            <Ionicons name="close" size={28} color="#fff" />
           </TouchableOpacity>
         </View>
-      ) : (
-        preview && <Image source={{ uri: preview }} style={styles.preview} />
-      )}
 
-      {/* Reticle Overlay */}
-      {state === 'live' && <View style={styles.reticle} />}
+        {state === 'live' && (
+          <View style={styles.dock}>
+            <TouchableOpacity onPress={onGalleryImport} style={styles.dockBtn}>
+              <Ionicons name="images-outline" size={28} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onCapture} style={styles.shutter}>
+              <View style={styles.shutterInner} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setFlash(!flash)} style={styles.dockBtn}>
+              <Ionicons name={flash ? 'flash' : 'flash-off'} size={24} color="#fff" />
+              <Text style={styles.dockText}>{flash ? 'On' : 'Off'}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconBtn}>
-          <Ionicons name="close" size={28} color="#fff" />
-        </TouchableOpacity>
-        <View style={{ flexDirection: 'row', gap: 8 }}>
-          <TouchableOpacity onPress={() => setFlash(!flash)} style={styles.iconBtn}>
-            <Ionicons name={flash ? 'flash' : 'flash-off'} size={24} color="#fff" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconBtn}>
-            <Ionicons name="help-circle-outline" size={24} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      </View>
+        {state === 'analyzing' && (
+          <View style={styles.analyzing}>
+            <Text style={styles.analyzingText}>Analyzing…</Text>
+          </View>
+        )}
+      </Animated.View>
 
-      {/* Bottom Dock */}
-      {state === 'live' && (
-        <View style={styles.dock}>
-          <TouchableOpacity onPress={onGalleryImport} style={styles.dockBtn}>
-            <Ionicons name="images-outline" size={28} color="#fff" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onCapture} style={styles.shutter}>
-            <View style={styles.shutterInner} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setFlash(!flash)} style={styles.dockBtn}>
-            <Ionicons name={flash ? 'flash' : 'flash-off'} size={24} color="#fff" />
-            <Text style={styles.dockText}>{flash ? 'On' : 'Off'}</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {/* Analyzing Overlay */}
-      {state === 'analyzing' && (
-        <View style={styles.analyzing}>
-          <Text style={styles.analyzingText}>Analyzing…</Text>
-        </View>
-      )}
-
-      {/* Result Sheet */}
       {state === 'result' && result && (
-        <Animated.View style={[styles.sheet, { opacity: fadeAnim }]}>
+        <BottomSheet ref={sheetRef} index={1} snapPoints={['18%', '55%', '92%']} enablePanDownToClose onClose={reset} onChange={onSheetChange}>
           <ResultSheet result={result} onAddToLog={onAddToLog} onRetake={reset} onClose={() => navigation.goBack()} />
-        </Animated.View>
+        </BottomSheet>
       )}
     </View>
   );
@@ -153,7 +156,7 @@ const styles = StyleSheet.create({
   btn: { backgroundColor: '#10b981', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 8 },
   btnText: { color: '#fff', fontWeight: '600' },
   reticle: { position: 'absolute', alignSelf: 'center', top: '35%', width: 280, height: 280, borderWidth: 2, borderColor: '#10b981', borderRadius: 16, opacity: 0.8 },
-  topBar: { position: 'absolute', top: 12, left: 12, right: 12, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 8, paddingVertical: 8, backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 12 },
+  topBar: { position: 'absolute', top: 12, left: 12, right: 12, paddingHorizontal: 8, paddingVertical: 8 },
   iconBtn: { alignItems: 'center', justifyContent: 'center', width: 40, height: 40 },
   dock: { position: 'absolute', bottom: 32, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 32 },
   dockBtn: { alignItems: 'center' },
@@ -162,5 +165,4 @@ const styles = StyleSheet.create({
   shutterInner: { width: 60, height: 60, borderRadius: 30, backgroundColor: '#10b981' },
   analyzing: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.7)', alignItems: 'center', justifyContent: 'center' },
   analyzingText: { fontSize: 18, color: '#fff', fontWeight: '600' },
-  sheet: { position: 'absolute', left: 0, right: 0, bottom: 0, maxHeight: '70%' },
 });
