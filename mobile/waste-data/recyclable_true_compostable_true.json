@@ -1,0 +1,56 @@
+{
+  "cardboard_box": {
+    "display_name": "Corrugated Carton / Cardboard Box",
+    "category": "Dry Waste - Paper",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": true,
+    "is_compostable": true,
+    "management_method": "Flatten the box completely. Remove any plastic tape and place it in the Blue Dustbin."
+  },
+  "toilet_tube": {
+    "display_name": "Toilet Tube / Cardboard Tube",
+    "category": "Dry Waste - Paper",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": true,
+    "is_compostable": true,
+    "management_method": "Flatten the tube and place it in the Blue Dustbin. It's excellent for recycling."
+  },
+  "egg_carton": {
+    "display_name": "Egg Carton (Paper)",
+    "category": "Dry Waste - Paper",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": true,
+    "is_compostable": true,
+    "management_method": "Paper and cardboard egg cartons are recyclable and compostable. Place them in the Blue Dustbin."
+  },
+  "pizza_box": {
+    "display_name": "Pizza Box",
+    "category": "Dry Waste - Paper",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": true,
+    "is_compostable": true,
+    "management_method": "Tear off and discard any greasy sections into the Green Dustbin. Recycle the clean cardboard parts in the Blue Dustbin."
+  },
+  "normal_paper": {
+    "display_name": "Normal Paper",
+    "category": "Dry Waste - Paper",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": true,
+    "is_compostable": true,
+    "management_method": "Includes office paper, notebooks, and letters. Keep it clean and dry and place it in the Blue Dustbin."
+  },
+  "paper_bag": {
+    "display_name": "Paper Bag",
+    "category": "Dry Waste - Paper",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": true,
+    "is_compostable": true,
+    "management_method": "Remove any non-paper handles and place the clean bag in the Blue Dustbin."
+  }
+}

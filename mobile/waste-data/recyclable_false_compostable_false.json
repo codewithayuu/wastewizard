@@ -1,0 +1,155 @@
+{
+  "plastic_film": {
+    "display_name": "Plastic Film (Cling Wrap)",
+    "category": "Dry Waste - Plastic",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Generally not recyclable in household collections. Bunch it up and place it in the Blue Dustbin as non-recyclable dry waste."
+  },
+  "plastic_utensils": {
+    "display_name": "Plastic Utensils",
+    "category": "Dry Waste - Plastic",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Generally not recycled due to their small size. Clean them and place them in the Blue Dustbin as non-recyclable dry waste."
+  },
+  "plastic_straw": {
+    "display_name": "Plastic Straw",
+    "category": "Dry Waste - Plastic",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Too small to be sorted for recycling. Dispose of it in the Blue Dustbin."
+  },
+  "glass_cup": {
+    "display_name": "Glass Cup",
+    "category": "Dry Waste - Glass",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Drinking glasses are often treated and cannot be recycled with bottles/jars. Wrap carefully and place in the Blue bin as non-recyclable waste."
+  },
+  "squeezable_tube": {
+    "display_name": "Squeezable Tube (Toothpaste)",
+    "category": "Dry Waste",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "These are made of mixed materials and are hard to clean, making them non-recyclable. Place them in the Blue Dustbin."
+  },
+  "plastified_paper_bag": {
+    "display_name": "Plastified Paper Bag",
+    "category": "Dry Waste",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Bags with a glossy, plastic coating are mixed materials and cannot be recycled. Dispose of them in the Blue Dustbin."
+  },
+  "rope_and_strings": {
+    "display_name": "Rope & Strings",
+    "category": "Dry Waste",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "These can tangle in sorting machinery, so they are not recyclable. Place them in the Blue Dustbin."
+  },
+  "shoe": {
+    "display_name": "Shoe",
+    "category": "Dry Waste",
+    "disposal_location": "Blue Dustbin / Donate",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Donate if they are still wearable. If not, place them in the Blue Dustbin as non-recyclable dry waste."
+  },
+  "unlabeled_litter": {
+    "display_name": "Unlabeled Litter",
+    "category": "Dry Waste",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "If you cannot identify the material and it appears to be dry, place it in the Blue Dustbin. When in doubt, treat it as non-recyclable."
+  },
+  "foam_cup": {
+    "display_name": "Foam Cup",
+    "category": "Dry Waste - Plastic",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Styrofoam/Thermocol is not recyclable in household collections. Place it in the Blue Dustbin."
+  },
+  "foam_food_container": {
+    "display_name": "Foam Food Container",
+    "category": "Dry Waste - Plastic",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Rinse off food waste. Styrofoam is not recyclable, so place it in the Blue Dustbin as non-recyclable dry waste."
+  },
+  "styrofoam_piece": {
+    "display_name": "Styrofoam Piece",
+    "category": "Dry Waste - Plastic",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Place all styrofoam/thermocol packaging pieces in the Blue Dustbin."
+  },
+  "garbage_bag": {
+    "display_name": "Garbage Bag",
+    "category": "Dry Waste - Plastic",
+    "disposal_location": "Blue Dustbin (Dry Waste)",
+    "bin_color": "Blue",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "The garbage bag itself is considered contaminated and not recyclable. Place it in the Blue Dustbin."
+  },
+  "aluminium_blister_pack": {
+    "display_name": "Aluminium Blister Pack",
+    "category": "Hazardous Waste",
+    "disposal_location": "Red Dustbin (Hazardous)",
+    "bin_color": "Red",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Blister packs for medicine are mixed materials (plastic and metal) and are contaminated. Place them in the Red Dustbin."
+  },
+  "broken_glass": {
+    "display_name": "Broken Glass",
+    "category": "Hazardous Waste",
+    "disposal_location": "Red Dustbin (Hazardous)",
+    "bin_color": "Red",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "\u26a0\ufe0f For safety, wrap broken glass securely in several layers of newspaper or a cardboard box, label it 'Broken Glass,' and place it in the Red Dustbin."
+  },
+  "plastic_gloves": {
+    "display_name": "Plastic Gloves",
+    "category": "Sanitary Waste",
+    "disposal_location": "Red Dustbin (Hazardous)",
+    "bin_color": "Red",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "Used disposable gloves are considered sanitary waste. Place them in the Red Dustbin."
+  },
+  "cigarette": {
+    "display_name": "Cigarette",
+    "category": "Hazardous Waste",
+    "disposal_location": "Red Dustbin (Hazardous)",
+    "bin_color": "Red",
+    "is_recyclable": false,
+    "is_compostable": false,
+    "management_method": "\u26a0\ufe0f Make sure the cigarette is fully extinguished. Cigarette butts contain toxic plastic filters and should be disposed of in the Red Dustbin."
+  }
+}
