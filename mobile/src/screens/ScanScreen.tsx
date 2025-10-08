@@ -1,10 +1,12 @@
-import { useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Animated, Dimensions } from 'react-native';
+import { useRef, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Animated, Dimensions, Linking } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import BottomSheet from '@gorhom/bottom-sheet';
+import * as Haptics from 'expo-haptics';
+import { useTheme } from '@react-navigation/native';
 import { useAppStore } from '../store/appStore';
 import ResultSheet from '../components/scan/ResultSheet';
 
@@ -27,6 +29,7 @@ const mockAnalyze = async (): Promise<Result> => {
 };
 
 export default function ScanScreen({ navigation }: any) {
+  const { colors, dark } = useTheme();
   const cameraRef = useRef<CameraView>(null);
   const sheetRef = useRef<BottomSheet>(null);
   const [permission, requestPermission] = useCameraPermissions();
@@ -35,6 +38,20 @@ export default function ScanScreen({ navigation }: any) {
   const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
   const imageHeight = useRef(new Animated.Value(height * 0.65)).current;
+
+  // Auto prompt once if we can ask again
+  useEffect(() => {
+    if (permission && !permission.granted && permission.canAskAgain) {
+      requestPermission();
+    }
+  }, [permission]);
+
+  const onGrantPermission = async () => {
+    const res = await requestPermission();
+    if (!res.granted && !res.canAskAgain) {
+      Linking.openSettings();
+    }
+  };
 
   const onCapture = async () => {
     if (!permission?.granted) {
@@ -49,9 +66,11 @@ export default function ScanScreen({ navigation }: any) {
       if (!photo) return;
       const resized = await ImageManipulator.manipulateAsync(photo.uri, [{ resize: { width: 768 } }], { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG });
       setPreview(resized.uri);
+      sheetRef.current?.snapToIndex(1);
       const res = await mockAnalyze();
       setResult(res);
       setState('result');
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       sheetRef.current?.snapToIndex(1);
     } catch (e) {
       console.warn('Capture failed', e);
@@ -64,6 +83,7 @@ export default function ScanScreen({ navigation }: any) {
     if (r.canceled) return;
     setState('analyzing');
     setPreview(r.assets[0].uri);
+    sheetRef.current?.snapToIndex(1);
     const res = await mockAnalyze();
     setResult(res);
     setState('result');
@@ -100,7 +120,7 @@ export default function ScanScreen({ navigation }: any) {
         ) : state === 'live' && !permission?.granted ? (
           <View style={styles.center}>
             <Text style={styles.permText}>Camera permission required</Text>
-            <TouchableOpacity style={styles.btn} onPress={() => requestPermission()}>
+            <TouchableOpacity style={styles.btn} onPress={onGrantPermission}>
               <Text style={styles.btnText}>Grant permission</Text>
             </TouchableOpacity>
           </View>
@@ -116,31 +136,45 @@ export default function ScanScreen({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
-        {state === 'live' && (
-          <View style={styles.dock}>
-            <TouchableOpacity onPress={onGalleryImport} style={styles.dockBtn}>
-              <Ionicons name="images-outline" size={28} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onCapture} style={styles.shutter}>
-              <View style={styles.shutterInner} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setFlash(!flash)} style={styles.dockBtn}>
-              <Ionicons name={flash ? 'flash' : 'flash-off'} size={24} color="#fff" />
-              <Text style={styles.dockText}>{flash ? 'On' : 'Off'}</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        <View style={styles.dock}>
+          <TouchableOpacity onPress={onGalleryImport} style={styles.dockBtn}>
+            <Ionicons name="images-outline" size={28} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onCapture} style={styles.shutter} disabled={!permission?.granted}>
+            <View style={styles.shutterInner} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setFlash(!flash)} style={styles.dockBtn}>
+            <Ionicons name={flash ? 'flash' : 'flash-off'} size={24} color="#fff" />
+            <Text style={styles.dockText}>{flash ? 'On' : 'Off'}</Text>
+          </TouchableOpacity>
+        </View>
 
-        {state === 'analyzing' && (
-          <View style={styles.analyzing}>
-            <Text style={styles.analyzingText}>Analyzing…</Text>
-          </View>
-        )}
+        {/* Analyzing skeleton moves to BottomSheet */}
       </Animated.View>
 
-      {state === 'result' && result && (
-        <BottomSheet ref={sheetRef} index={1} snapPoints={['18%', '55%', '92%']} enablePanDownToClose onClose={reset} onChange={onSheetChange}>
-          <ResultSheet result={result} onAddToLog={onAddToLog} onRetake={reset} onClose={() => navigation.goBack()} />
+      {(state === 'analyzing' || (state === 'result' && result)) && (
+        <BottomSheet
+          ref={sheetRef}
+          index={1}
+          snapPoints={['18%', '55%', '92%']}
+          enablePanDownToClose
+          onClose={reset}
+          onChange={onSheetChange}
+          backgroundStyle={{ backgroundColor: dark ? 'rgba(14,17,22,0.98)' : 'rgba(255,255,255,0.98)', borderTopLeftRadius: 24, borderTopRightRadius: 24 }}
+          handleIndicatorStyle={{ backgroundColor: dark ? '#4B5563' : '#CBD5E1' }}
+        >
+          {state === 'analyzing' ? (
+            <View style={{ padding: 16 }}>
+              <Text style={{ color: dark ? '#E5E7EB' : '#111827', fontWeight: '600', marginBottom: 8 }}>Analyzing…</Text>
+              <View style={{ height: 8, borderRadius: 999, backgroundColor: dark ? '#1F2937' : '#E5E7EB', overflow: 'hidden' }}>
+                <View style={{ width: '55%', height: 8, backgroundColor: colors.primary, borderRadius: 999 }} />
+              </View>
+            </View>
+          ) : (
+            result && (
+              <ResultSheet result={result} onAddToLog={onAddToLog} onRetake={reset} onClose={() => navigation.goBack()} />
+            )
+          )}
         </BottomSheet>
       )}
     </View>

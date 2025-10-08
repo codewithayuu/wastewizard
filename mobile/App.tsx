@@ -5,7 +5,7 @@ import Onboarding from './src/onboarding/Onboarding';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import ScanScreen from './src/screens/ScanScreen';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BlurView } from 'expo-blur';
@@ -55,16 +55,24 @@ export default function App() {
 
   function FloatingTabBar({ state, descriptors, navigation }: any) {
     const { bottom } = useSafeAreaInsets();
+    const { colors, dark } = useTheme();
+    const bg = dark ? 'rgba(17,24,39,0.80)' : 'rgba(255,255,255,0.92)';
+    const border = dark ? 'rgba(255,255,255,0.08)' : 'rgba(17,24,39,0.08)';
+    const inactive = dark ? 'rgba(229,231,235,0.7)' : 'rgba(17,24,39,0.7)';
+    const active = colors.primary;
     const goScan = () => navigation.navigate('ScanModal');
     return (
       <View pointerEvents="box-none" style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
         <View
           style={{
-            position: 'absolute', left: 16, right: 16, bottom: (bottom || 16) + 12, height: 64, borderRadius: 32,
-            overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.15, shadowRadius: 16, shadowOffset: { width: 0, height: 8 }, elevation: 12,
+            position: 'absolute', left: 16, right: 16, bottom: (bottom || 16) + 12, height: 68, borderRadius: 34,
+            backgroundColor: bg, borderWidth: 1, borderColor: border,
+            overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.18, shadowRadius: 16, shadowOffset: { width: 0, height: 8 }, elevation: 14,
           }}
         >
-          <BlurView intensity={30} tint={Platform.OS === 'ios' ? 'systemThinMaterial' : 'light'} style={{ flex: 1 }} />
+          {Platform.OS === 'ios' ? (
+            <BlurView intensity={24} tint={dark ? 'dark' : 'light'} style={StyleSheet.absoluteFill} />
+          ) : null}
           <View style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 24 }}>
             {['Home', 'Profile'].map((routeName) => {
               const routeIndex = state.routes.findIndex((r: any) => r.name === routeName);
@@ -77,8 +85,8 @@ export default function App() {
               const iconName = routeName === 'Home' ? 'home' : 'person';
               return (
                 <Pressable key={routeName} onPress={onPress} style={{ alignItems: 'center', justifyContent: 'center', minWidth: 80 }}>
-                  <Ionicons name={iconName as any} size={22} color={isFocused ? '#10b981' : '#7a7a7a'} />
-                  {isFocused ? <Text style={{ fontSize: 12, color: '#10b981', marginTop: 4 }}>{routeName}</Text> : null}
+                  <Ionicons name={iconName as any} size={22} color={isFocused ? active : inactive} />
+                  {isFocused ? <Text style={{ fontSize: 12, color: active, marginTop: 4 }}>{routeName}</Text> : null}
                 </Pressable>
               );
             })}

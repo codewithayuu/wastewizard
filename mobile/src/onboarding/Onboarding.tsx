@@ -32,12 +32,11 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
             </View>
           </View>
         )}
-
         {step === 2 && (
           <View style={[styles.card, styles.centeredCard]}>
             <Text style={styles.h1}>Why we built Waste Wizard</Text>
-            <Text style={styles.body}>• Sorting rules are confusing and change by city.{"\n"}
-• We make it instant: scan an item, get the right answer.{"\n"}
+            <Text style={styles.body}>• Sorting can be confusing.{"\n"}
+• Point your camera—get simple guidance.{"\n"}
 • Every correct sort reduces contamination and saves resources.</Text>
             <View style={[styles.row, styles.centerRow]}>
               <TouchableOpacity style={styles.secondary} onPress={skip}><Text>Skip</Text></TouchableOpacity>
@@ -69,9 +68,9 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
           <View style={[styles.card, styles.centeredCard]}>
             <Text style={styles.h1}>How it helps</Text>
             <Text style={styles.body}>Scan → Learn → Act{"\n"}
-Scan: Point your camera or barcode{ "\n" }
-Learn: See the right bin or drop‑off{ "\n" }
-Act: Find centers, schedule pickups, track impact</Text>
+Scan: Point your camera or barcode{"\n"}
+Learn: Get simple sorting guidance{"\n"}
+Act: Track your impact and build better habits</Text>
             <View style={[styles.row, styles.centerRow]}>
               <TouchableOpacity style={styles.secondary} onPress={skip}><Text>Skip for now</Text></TouchableOpacity>
               <TouchableOpacity style={styles.primary} onPress={next}><Text style={styles.primaryText}>Personalize</Text></TouchableOpacity>
@@ -81,11 +80,12 @@ Act: Find centers, schedule pickups, track impact</Text>
 
         {step === 5 && (
           <View style={[styles.card, styles.centeredCard]}>
-            <Text style={styles.h1}>Personalize & permissions</Text>
-            <Text style={styles.body}>Set your city/ZIP, and allow camera and location for best results. You can change this later in Settings.</Text>
+            <Text style={styles.h1}>Permissions</Text>
+            <Text style={styles.body}>Camera: only used when you scan.{"\n"}
+Notifications (optional): reminders and achievements.</Text>
             <View style={[styles.row, styles.centerRow]}>
-              <TouchableOpacity style={styles.secondary} onPress={skip}><Text>Continue without</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.primary} onPress={next}><Text style={styles.primaryText}>Allow all</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.secondary} onPress={skip}><Text>Not now</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.primary} onPress={next}><Text style={styles.primaryText}>Continue</Text></TouchableOpacity>
             </View>
           </View>
         )}

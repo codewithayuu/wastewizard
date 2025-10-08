@@ -46,11 +46,29 @@ const mockActivity: ActivityEntry[] = [
 export default function ProfileScreen({ navigation }: any) {
   const user = useAppStore((s) => s.user);
   const activity = useAppStore((s) => s.activity);
+  const settings = useAppStore((s) => s.settings);
   const { league } = useLeague();
   const signOut = useAppStore((s) => s.signOut);
   const updateSettings = useAppStore((s) => s.updateSettings);
 
-  const mockUser: User = { ...user, level: league.title as any };
+  // Compose a profile User that includes preferences from settings to avoid undefined access
+  const mockUser: User = {
+    id: user.id ?? 'guest',
+    name: user.name ?? 'Guest',
+    email: user.email,
+    photoURL: user.photoURL,
+    isGuest: user.isGuest,
+    points: user.points,
+    streakDays: user.streakDays,
+    level: league.title as any,
+    preferences: {
+      language: settings.language,
+      theme: settings.theme,
+      units: settings.units,
+      notifications: settings.notifications,
+      accessibility: settings.accessibility,
+    },
+  };
 
   const modules = [
     <ProfileHeader key="header" user={mockUser} onShare={() => {}} onSettings={() => {}} onGoogleSignIn={() => {}} />,

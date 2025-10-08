@@ -5,7 +5,14 @@ import { User } from '../../types/profile';
 type Props = { user: User; onUpdate?: (prefs: User['preferences']) => void };
 
 export default function PreferencesCard({ user, onUpdate }: Props) {
-  const { preferences } = user;
+  // Fallback ensures UI doesn't crash if preferences are temporarily undefined
+  const preferences = user.preferences ?? {
+    language: 'English',
+    theme: 'system' as const,
+    units: 'metric' as const,
+    notifications: { reminders: true, tips: true, achievements: true },
+    accessibility: { largerText: false, reducedMotion: false, haptics: true },
+  };
 
   const toggleNotif = (key: keyof typeof preferences.notifications) => {
     const updated = { ...preferences, notifications: { ...preferences.notifications, [key]: !preferences.notifications[key] } };

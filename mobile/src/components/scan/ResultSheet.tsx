@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 
 type Result = { item: string; category: string; confidence: number; co2eKg: number; instructions: string; prep: string[] };
 
@@ -8,7 +7,7 @@ type Props = { result: Result; onAddToLog: () => void; onRetake: () => void; onC
 
 export default function ResultSheet({ result, onAddToLog, onRetake, onClose }: Props) {
   return (
-    <BlurView intensity={60} tint="light" style={styles.container}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View>
@@ -56,7 +55,7 @@ export default function ResultSheet({ result, onAddToLog, onRetake, onClose }: P
           <TouchableOpacity><Text style={styles.link}>View in Guide</Text></TouchableOpacity>
         </View>
       </ScrollView>
-    </BlurView>
+    </View>
   );
 }
 

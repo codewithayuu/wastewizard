@@ -46,7 +46,6 @@ export default function HomeScreen() {
           actions={[
             { icon: 'scan-outline', label: 'Scan', onPress: () => {} },
             { icon: 'search-outline', label: 'Search', onPress: () => {} },
-            { icon: 'map-outline', label: 'Map', onPress: () => {} },
           ]}
         />
         <ImpactSummaryCard period="week" goal={20} metrics={mockMetrics} onPressDetails={() => setSheetVisible(true)} />
