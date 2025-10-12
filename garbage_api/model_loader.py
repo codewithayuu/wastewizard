@@ -14,6 +14,12 @@ MODEL_PATH = os.getenv('MODEL_PATH', 'garbage_classifier.h5')
 
 _model = None
 
+def check_model_status():
+    """Check if trained model exists and return status"""
+    if os.path.exists(MODEL_PATH):
+        return f"Using trained model: {MODEL_PATH}"
+    else:
+        return f"Using fallback model. Place trained model at: {MODEL_PATH}"
 
 def _build_fallback_model():
     # Use weights=None to avoid external downloads in environments without internet
@@ -25,7 +31,6 @@ def _build_fallback_model():
     logger.warning("Using fallback MobileNetV2 model (untrained). Provide garbage_classifier.h5 for real predictions.")
     return model
 
-
 def get_model():
     global _model
     if _model is None:
@@ -34,9 +39,9 @@ def get_model():
             _model = load_model(MODEL_PATH)
             logger.info("Model loaded successfully")
         else:
+            logger.warning(f"Model file not found at {MODEL_PATH}. Using fallback model.")
             _model = _build_fallback_model()
     return _model
-
 
 def preprocess(img_path: str):
     img = image.load_img(img_path, target_size=(224, 224))
@@ -45,11 +50,14 @@ def preprocess(img_path: str):
     arr = arr / 255.0
     return arr
 
-
 def predict_garbage(img_path: str):
     model = get_model()
+    logger.info(f"Using model: {'trained' if os.path.exists(MODEL_PATH) else 'fallback'}")
     arr = preprocess(img_path)
+    logger.info(f"Preprocessed image shape: {arr.shape}")
     preds = model.predict(arr, verbose=0)
+    logger.info(f"Raw predictions: {preds[0]}")
     idx = int(np.argmax(preds[0]))
     conf = float(preds[0][idx])
+    logger.info(f"Predicted class index: {idx}, confidence: {conf}")
     return {"class": CLASS_LABELS[idx], "confidence": conf}
