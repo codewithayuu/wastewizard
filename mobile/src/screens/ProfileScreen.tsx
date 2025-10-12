@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { Alert, Linking, Platform, ScrollView, Share, StyleSheet, View } from 'react-native';
 import ProfileHeader from '../components/profile/ProfileHeader';
 import ImpactRewardsCard from '../components/profile/ImpactRewardsCard';
 import ActivityCard from '../components/profile/ActivityCard';
@@ -7,41 +7,15 @@ import PreferencesCard from '../components/profile/PreferencesCard';
 import DataPrivacyCard from '../components/profile/DataPrivacyCard';
 import HelpLegalCard from '../components/profile/HelpLegalCard';
 import SignOutRow from '../components/profile/SignOutRow';
-import { User, Badge, ActivityEntry } from '../types/profile';
+import TextPromptModal from '../components/common/TextPromptModal';
+import { User } from '../types/profile';
 import { useAppStore, useLeague } from '../store/appStore';
 import SegregationBars from '../components/home/SegregationBars';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import { computeBadges } from '../utils/badges';
 
-const mockUser: User = {
-  id: '1',
-  name: 'Ayush',
-  email: 'ayush@example.com',
-  photoURL: undefined,
-  isGuest: true,
-  points: 1240,
-  streakDays: 6,
-  level: 'Sprout',
-  preferences: {
-    language: 'English',
-    theme: 'system',
-    units: 'metric',
-    notifications: { reminders: true, tips: true, achievements: true },
-    accessibility: { largerText: false, reducedMotion: false, haptics: true },
-  },
-};
-
-const mockBadges: Badge[] = [
-  { id: '1', name: 'First Scan', icon: '🌱', description: 'Scanned your first item', points: 10, earnedAt: '2024-01-01', criteria: 'Scan 1 item' },
-  { id: '2', name: '10 Items', icon: '🌿', description: 'Scanned 10 items', points: 50, earnedAt: '2024-01-10', criteria: 'Scan 10 items' },
-  { id: '3', name: 'Streak Master', icon: '🔥', description: '7-day streak', points: 100, criteria: 'Maintain a 7-day streak', locked: true },
-  { id: '4', name: 'Recycler', icon: '♻️', description: 'Recycled 20 items', points: 150, criteria: 'Recycle 20 items', locked: true },
-  { id: '5', name: 'Eco Hero', icon: '🌍', description: 'Avoided 5 kg CO₂e', points: 200, criteria: 'Avoid 5 kg CO₂e', locked: true },
-];
-
-const mockActivity: ActivityEntry[] = [
-  { id: '1', type: 'scan', title: 'Plastic bottle', material: 'plastic', when: '2h ago', points: 10, thumb: undefined },
-  { id: '2', type: 'disposed', title: 'Glass jar', material: 'glass', when: '5h ago', points: 15, thumb: undefined },
-  { id: '3', type: 'bookmark', title: 'Aluminum can', material: 'metal', when: '1d ago', points: 10, thumb: undefined },
-];
+//
 
 export default function ProfileScreen({ navigation }: any) {
   const user = useAppStore((s) => s.user);
@@ -50,9 +24,14 @@ export default function ProfileScreen({ navigation }: any) {
   const { league } = useLeague();
   const signOut = useAppStore((s) => s.signOut);
   const updateSettings = useAppStore((s) => s.updateSettings);
+  const setUser = useAppStore((s) => s.setUser);
+  const resetApp = useAppStore((s) => s.resetApp);
+
+  const scrollRef = useRef<ScrollView>(null);
+  const [editNameOpen, setEditNameOpen] = useState(false);
 
   // Compose a profile User that includes preferences from settings to avoid undefined access
-  const mockUser: User = {
+  const profileUser: User = {
     id: user.id ?? 'guest',
     name: user.name ?? 'Guest',
     email: user.email,
@@ -70,20 +49,112 @@ export default function ProfileScreen({ navigation }: any) {
     },
   };
 
+  const handleShare = async () => {
+    await Share.share({ message: `I'm in ${league.title} with ${user.points} pts on Waste Wizard.` });
+  };
+
+  const handleManageAccount = () => {
+    Alert.alert('Account', user.email || 'Profile', [
+      { text: 'Edit name', onPress: () => setEditNameOpen(true) },
+      { text: 'Sign out', style: 'destructive', onPress: signOut },
+      { text: 'Close', style: 'cancel' },
+    ]);
+  };
+
+  const handleExport = async () => {
+    try {
+      const rows = [
+        ['id', 'type', 'title', 'material', 'when', 'points'],
+        ...activity.map((e) => [e.id, e.type, e.title, e.material, e.when, e.points ?? ''])
+      ];
+      const csv = rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+      const filename = `activity-${Date.now()}.csv`;
+      const docDir = (FileSystem as any).documentDirectory as string | undefined;
+      const cacheDir = (FileSystem as any).cacheDirectory as string | undefined;
+      const baseDir = docDir || cacheDir || '';
+      if (!baseDir) {
+        Alert.alert('Export unavailable', 'No writable directory found.');
+        return;
+      }
+      const uri = `${baseDir}${filename}`;
+      await FileSystem.writeAsStringAsync(uri, csv, { encoding: 'utf8' as any });
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(uri, { mimeType: 'text/csv', dialogTitle: 'Export activity' });
+      } else {
+        // Fallback open
+        if (Platform.OS === 'android') {
+          const contentUri = await (FileSystem as any).getContentUriAsync(uri);
+          await Linking.openURL(contentUri);
+        } else {
+          await Linking.openURL(uri);
+        }
+      }
+      Alert.alert('Export complete', `Saved to ${uri}`);
+    } catch (e: any) {
+      Alert.alert('Export failed', e?.message || String(e));
+    }
+  };
+
+  const handleClearCache = async () => {
+    try {
+      const cacheDir = (FileSystem as any).cacheDirectory as string | undefined;
+      if (cacheDir) await FileSystem.deleteAsync(cacheDir, { idempotent: true });
+      Alert.alert('Cache cleared');
+    } catch (e: any) {
+      Alert.alert('Failed to clear cache', e?.message || String(e));
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    Alert.alert('Delete account', 'This cannot be undone. Continue?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', style: 'destructive', onPress: () => { resetApp(); } },
+    ]);
+  };
+
+  const openUrl = (u: string) => Linking.openURL(u);
+  const badges = computeBadges(user as any, activity);
+
   const modules = [
-    <ProfileHeader key="header" user={mockUser} onShare={() => {}} onSettings={() => {}} onGoogleSignIn={() => {}} />,
-    <ImpactRewardsCard key="impact" user={mockUser} badges={mockBadges} onViewBadges={() => {}} />,
-    <ActivityCard key="activity" entries={activity.slice(0, 4)} onViewAll={() => {}} />,
-    <SegregationBars key="segregation" />,
-    <PreferencesCard key="prefs" user={mockUser} onUpdate={(prefs) => updateSettings(prefs)} />,
-    <DataPrivacyCard key="privacy" isGuest={user.isGuest} />,
-    <HelpLegalCard key="help" />,
+    <ProfileHeader
+      key="header"
+      user={profileUser}
+      onShare={handleShare}
+      onSettings={() => scrollRef.current?.scrollTo({ y: 600, animated: true })}
+      onEditName={() => setEditNameOpen(true)}
+    />,
+    <ImpactRewardsCard key="impact" user={profileUser} badges={badges} onViewBadges={() => navigation.navigate('Badges')} />,
+    <ActivityCard key="activity" entries={activity.slice(0, 4)} onViewAll={() => navigation.navigate('Activity')} />,
+    <PreferencesCard key="prefs" user={profileUser} onUpdate={(prefs) => updateSettings(prefs)} />,
+    <DataPrivacyCard
+      key="privacy"
+      isGuest={user.isGuest}
+      onManageAccount={handleManageAccount}
+      onExport={handleExport}
+      onDelete={handleDeleteAccount}
+    />,
+    <HelpLegalCard
+      key="help"
+      onFAQ={() => openUrl('https://wastewizard.app/help')}
+      onContact={() => Linking.openURL('mailto:codewithayuu@gmail.com?subject=Support')}
+      onReport={() => Linking.openURL('mailto:codewithayuu@gmail.com?subject=Bug%20report')}
+      onTerms={() => openUrl('https://wastewizard.app/terms')}
+      onPrivacy={() => openUrl('https://wastewizard.app/privacy')}
+    />,
     !user.isGuest && <SignOutRow key="signout" onSignOut={signOut} />,
   ].filter(Boolean);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView ref={scrollRef} contentContainerStyle={styles.container}>
       {modules.map((m, i) => <View key={i}>{m}</View>)}
+      <TextPromptModal
+        visible={editNameOpen}
+        title="Your name"
+        placeholder="Enter your name"
+        initialValue={user.name || ''}
+        onCancel={() => setEditNameOpen(false)}
+        onSubmit={(val) => { setUser({ name: val || 'Guest', isGuest: false }); setEditNameOpen(false); }}
+      />
     </ScrollView>
   );
 }

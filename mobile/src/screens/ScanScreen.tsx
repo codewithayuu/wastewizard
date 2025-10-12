@@ -9,24 +9,41 @@ import * as Haptics from 'expo-haptics';
 import { useTheme } from '@react-navigation/native';
 import { useAppStore } from '../store/appStore';
 import ResultSheet from '../components/scan/ResultSheet';
+import { predictGarbage } from '../api/client';
 
 type ScanState = 'live' | 'analyzing' | 'result';
-type Result = { item: string; category: string; confidence: number; co2eKg: number; instructions: string; prep: string[]; material: 'plastic' | 'paper' | 'glass' | 'metal' | 'organic' | 'e-waste' | 'hazardous' };
+type Material = 'plastic' | 'paper' | 'glass' | 'metal' | 'organic' | 'e-waste' | 'hazardous';
+type Result = { item: string; category: string; confidence: number; co2eKg: number; instructions: string; prep: string[]; material: Material };
 
 const { height } = Dimensions.get('window');
 
-const mockAnalyze = async (): Promise<Result> => {
-  await new Promise((r) => setTimeout(r, 1500));
-  return {
-    item: 'Plastic bottle',
-    category: 'Recyclable',
-    confidence: 0.87,
-    co2eKg: 0.15,
-    instructions: 'Rinse bottle, replace cap, and place in recycling bin.',
-    prep: ['Rinse', 'Replace cap', 'Check recycling symbol'],
-    material: 'plastic',
+function mapLabelToMaterial(label: string): Material {
+  switch (label) {
+    case 'plastic': return 'plastic';
+    case 'paper': return 'paper';
+    case 'glass': return 'glass';
+    case 'metal': return 'metal';
+    case 'cardboard': return 'paper';
+    case 'trash': return 'hazardous';
+    default: return 'plastic';
+  }
+}
+
+function buildResult(label: string, confidence: number, uri: string): Result {
+  const material = mapLabelToMaterial(label);
+  const pretty = label.charAt(0).toUpperCase() + label.slice(1);
+  const guidance: Record<Material, { instructions: string; prep: string[]; co2eKg: number; category: string }> = {
+    plastic: { instructions: 'Rinse, remove liquids, cap back on, recycle if accepted.', prep: ['Rinse', 'Dry', 'Cap on'], co2eKg: 0.15, category: 'Recyclable' },
+    paper: { instructions: 'Keep dry and clean. Flatten before recycling.', prep: ['Flatten', 'Remove tape'], co2eKg: 0.08, category: 'Recyclable' },
+    glass: { instructions: 'Rinse and place in glass recycling bin if accepted.', prep: ['Rinse'], co2eKg: 0.2, category: 'Recyclable' },
+    metal: { instructions: 'Rinse cans, remove labels if possible.', prep: ['Rinse', 'Crush lightly'], co2eKg: 0.25, category: 'Recyclable' },
+    organic: { instructions: 'Compost if available; otherwise dispose as per local rules.', prep: ['Remove packaging'], co2eKg: 0.05, category: 'Compostable' },
+    'e-waste': { instructions: 'Do not bin. Take to an e-waste drop-off.', prep: ['Remove batteries'], co2eKg: 0.0, category: 'Special disposal' },
+    hazardous: { instructions: 'Do not bin. Follow local hazardous waste guidelines.', prep: ['Seal safely'], co2eKg: 0.0, category: 'Special disposal' },
   };
-};
+  const g = guidance[material];
+  return { item: pretty, category: g.category, confidence, co2eKg: g.co2eKg, instructions: g.instructions, prep: g.prep, material };
+}
 
 export default function ScanScreen({ navigation }: any) {
   const { colors, dark } = useTheme();
@@ -67,13 +84,23 @@ export default function ScanScreen({ navigation }: any) {
       const resized = await ImageManipulator.manipulateAsync(photo.uri, [{ resize: { width: 768 } }], { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG });
       setPreview(resized.uri);
       sheetRef.current?.snapToIndex(1);
-      const res = await mockAnalyze();
-      setResult(res);
+      try {
+        const pred = await predictGarbage(resized.uri);
+        const built = buildResult(pred.class, pred.confidence, resized.uri);
+        setResult(built);
+      } catch (err) {
+        // prediction failed, fallback to local guidance
+        const built = buildResult('plastic', 0.5, resized.uri);
+        setResult(built);
+      }
       setState('result');
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      const achievementsOn = useAppStore.getState().settings.notifications.achievements;
+      if (achievementsOn) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      }
       sheetRef.current?.snapToIndex(1);
     } catch (e) {
-      console.warn('Capture failed', e);
+      // capture failed
       setState('live');
     }
   };
@@ -84,8 +111,15 @@ export default function ScanScreen({ navigation }: any) {
     setState('analyzing');
     setPreview(r.assets[0].uri);
     sheetRef.current?.snapToIndex(1);
-    const res = await mockAnalyze();
-    setResult(res);
+    try {
+      const pred = await predictGarbage(r.assets[0].uri);
+      const built = buildResult(pred.class, pred.confidence, r.assets[0].uri);
+      setResult(built);
+    } catch (err) {
+      // prediction failed, fallback
+      const built = buildResult('plastic', 0.5, r.assets[0].uri);
+      setResult(built);
+    }
     setState('result');
     sheetRef.current?.snapToIndex(1);
   };
@@ -155,7 +189,7 @@ export default function ScanScreen({ navigation }: any) {
       {(state === 'analyzing' || (state === 'result' && result)) && (
         <BottomSheet
           ref={sheetRef}
-          index={1}
+          index={0}
           snapPoints={['18%', '55%', '92%']}
           enablePanDownToClose
           onClose={reset}

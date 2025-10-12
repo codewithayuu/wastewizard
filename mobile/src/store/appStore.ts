@@ -41,6 +41,7 @@ export type User = {
   isGuest: boolean;
   points: number;
   streakDays: number;
+  lastActiveISO?: string;
   segregatedCounts: Record<Material, number>;
 };
 
@@ -61,8 +62,10 @@ export type AppState = {
   addPoints: (n: number, material?: Material) => void;
   updateSettings: (s: Partial<Settings>) => void;
   setWeeklyGoal: (goal: number) => void;
+  setUser: (u: Partial<User>) => void;
   signInGoogle: (profile: Partial<User>) => void;
   signOut: () => void;
+  resetApp: () => void;
 };
 
 export const useAppStore = create<AppState>()(
@@ -83,13 +86,34 @@ export const useAppStore = create<AppState>()(
         accessibility: { largerText: false, reducedMotion: false, haptics: true },
         weeklyGoal: 20,
       },
-      addActivity: (e) => set((s) => ({ activity: [e, ...s.activity] })),
+      addActivity: (e) => set((s) => {
+        // update streak based on calendar days
+        const todayStr = new Date().toISOString().slice(0, 10);
+        let streak = s.user.streakDays || 0;
+        const prevStr = s.user.lastActiveISO;
+        if (!prevStr) {
+          streak = Math.max(1, streak || 0);
+        } else {
+          const prev = new Date(prevStr + 'T00:00:00Z');
+          const today = new Date(todayStr + 'T00:00:00Z');
+          const diffDays = Math.round((today.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24));
+          if (diffDays === 0) {
+            // same day, keep streak
+          } else if (diffDays === 1) {
+            streak = streak + 1;
+          } else if (diffDays > 1) {
+            streak = 1;
+          }
+        }
+        return { activity: [e, ...s.activity], user: { ...s.user, streakDays: streak, lastActiveISO: todayStr } };
+      }),
       addPoints: (n, material) =>
         set((s) => {
           const u = { ...s.user, points: s.user.points + n };
           if (material) u.segregatedCounts = { ...u.segregatedCounts, [material]: (u.segregatedCounts[material] ?? 0) + 1 };
           return { user: u };
         }),
+      setUser: (u) => set((s) => ({ user: { ...s.user, ...u } })),
       updateSettings: (partial) => set((s) => ({ settings: { ...s.settings, ...partial } })),
       setWeeklyGoal: (goal) => set((s) => ({ settings: { ...s.settings, weeklyGoal: goal } })),
       signInGoogle: (profile) => set((s) => ({ user: { ...s.user, ...profile, isGuest: false } })),
@@ -100,6 +124,24 @@ export const useAppStore = create<AppState>()(
             points: 0,
             streakDays: 0,
             segregatedCounts: { plastic: 0, paper: 0, glass: 0, metal: 0, organic: 0, 'e-waste': 0, hazardous: 0 },
+          },
+        }),
+      resetApp: () =>
+        set({
+          user: {
+            isGuest: true,
+            points: 0,
+            streakDays: 0,
+            segregatedCounts: { plastic: 0, paper: 0, glass: 0, metal: 0, organic: 0, 'e-waste': 0, hazardous: 0 },
+          },
+          activity: [],
+          settings: {
+            theme: 'system',
+            language: 'English',
+            units: 'metric',
+            notifications: { reminders: true, tips: true, achievements: true },
+            accessibility: { largerText: false, reducedMotion: false, haptics: true },
+            weeklyGoal: 20,
           },
         }),
     }),

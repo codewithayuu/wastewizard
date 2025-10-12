@@ -5,6 +5,9 @@ import Onboarding from './src/onboarding/Onboarding';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import ScanScreen from './src/screens/ScanScreen';
+import BadgesScreen from './src/screens/BadgesScreen';
+import ActivityFullScreen from './src/screens/ActivityFullScreen';
+import SearchScreen from './src/screens/SearchScreen';
 import { NavigationContainer, useTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -41,6 +44,8 @@ export default function App() {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomeMain" component={HomeScreen} />
+        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen name="ActivityFull" component={ActivityFullScreen} />
       </Stack.Navigator>
     );
   }
@@ -49,6 +54,8 @@ export default function App() {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="ProfileMain" component={ProfileScreen} />
+        <Stack.Screen name="Badges" component={BadgesScreen} />
+        <Stack.Screen name="Activity" component={ActivityFullScreen} />
       </Stack.Navigator>
     );
   }
@@ -113,7 +120,7 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView style={[styles.container, { backgroundColor: isDark ? '#0B0F14' : '#F6F8FA' }]}>
       {firstOpen ? (
         <Onboarding onDone={async () => { await AsyncStorage.setItem('onboardingDone', '1'); setFirstOpen(false); }} />
       ) : (
@@ -132,7 +139,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    // background set dynamically
   },
   // styles below moved to screen components
 });

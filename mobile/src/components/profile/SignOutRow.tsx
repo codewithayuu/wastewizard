@@ -1,8 +1,10 @@
 import { TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 
 type Props = { onSignOut?: () => void };
 
 export default function SignOutRow({ onSignOut }: Props) {
+  const { colors } = useTheme();
   const handleSignOut = () => {
     Alert.alert('Sign out', "You'll keep your data on this device.", [
       { text: 'Cancel', style: 'cancel' },
@@ -11,14 +13,14 @@ export default function SignOutRow({ onSignOut }: Props) {
   };
 
   return (
-    <TouchableOpacity style={styles.btn} onPress={handleSignOut}>
-      <Text style={styles.btnText}>Sign out</Text>
+    <TouchableOpacity style={[styles.btn, { backgroundColor: colors.card, borderColor: '#dc2626' }]} onPress={handleSignOut}>
+      <Text style={[styles.btnText, { color: '#dc2626' }]}>Sign out</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  btn: { backgroundColor: '#fff', borderRadius: 12, paddingVertical: 14, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 10, elevation: 4, borderWidth: 1, borderColor: '#dc2626' },
-  btnText: { fontSize: 16, fontWeight: '600', color: '#dc2626' },
+  btn: { borderRadius: 12, paddingVertical: 14, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 10, elevation: 4, borderWidth: 1 },
+  btnText: { fontSize: 16, fontWeight: '600' },
 });
 

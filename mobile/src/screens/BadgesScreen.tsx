@@ -1,40 +1,37 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Badge } from '../types/profile';
-
-const mockBadges: Badge[] = [
-  { id: '1', name: 'First Scan', icon: '🌱', description: 'Scanned your first item', points: 10, earnedAt: '2024-01-01', criteria: 'Scan 1 item' },
-  { id: '2', name: '10 Items', icon: '🌿', description: 'Scanned 10 items', points: 50, earnedAt: '2024-01-10', criteria: 'Scan 10 items' },
-  { id: '3', name: 'Streak Master', icon: '🔥', description: '7-day streak', points: 100, criteria: 'Maintain a 7-day streak', locked: true },
-  { id: '4', name: 'Recycler', icon: '♻️', description: 'Recycled 20 items', points: 150, criteria: 'Recycle 20 items', locked: true },
-  { id: '5', name: 'Eco Hero', icon: '🌍', description: 'Avoided 5 kg CO₂e', points: 200, criteria: 'Avoid 5 kg CO₂e', locked: true },
-  { id: '6', name: 'Compost King', icon: '🍂', description: 'Composted 30 items', points: 250, criteria: 'Compost 30 items', locked: true },
-];
+import { useTheme } from '@react-navigation/native';
+import { useAppStore } from '../store/appStore';
+import { computeBadges } from '../utils/badges';
 
 export default function BadgesScreen({ navigation }: any) {
+  const { colors } = useTheme();
   const [filter, setFilter] = useState<'all' | 'earned' | 'locked'>('all');
+  const user = useAppStore((s) => s.user);
+  const activity = useAppStore((s) => s.activity);
+  const badges = computeBadges(user as any, activity);
 
-  const filtered = mockBadges.filter((b) => {
+  const filtered = badges.filter((b) => {
     if (filter === 'earned') return !b.locked;
     if (filter === 'locked') return b.locked;
     return true;
   });
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} color="#333" />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Badges</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Badges</Text>
         <View style={{ width: 40 }} />
       </View>
 
-      <View style={styles.filterRow}>
+      <View style={[styles.filterRow, { backgroundColor: colors.card }]}>
         {(['all', 'earned', 'locked'] as const).map((f) => (
-          <TouchableOpacity key={f} onPress={() => setFilter(f)} style={[styles.filterChip, filter === f && styles.filterChipActive]}>
-            <Text style={[styles.filterText, filter === f && styles.filterTextActive]}>{f.charAt(0).toUpperCase() + f.slice(1)}</Text>
+          <TouchableOpacity key={f} onPress={() => setFilter(f)} style={[styles.filterChip, { backgroundColor: colors.border }, filter === f && { backgroundColor: '#e0f2f1' }]}>
+            <Text style={[styles.filterText, { color: colors.text + '99' }, filter === f && { color: '#00695c' }]}>{f.charAt(0).toUpperCase() + f.slice(1)}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -44,16 +41,16 @@ export default function BadgesScreen({ navigation }: any) {
         numColumns={2}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.grid}
+        ListEmptyComponent={<Text style={{ textAlign: 'center', color: colors.text + '99', marginTop: 20 }}>No badges yet. Scan to start earning!</Text>}
         renderItem={({ item }) => (
-          <TouchableOpacity style={[styles.badgeCard, item.locked && styles.badgeCardLocked]}>
-            <View style={styles.badgeIcon}>
+          <TouchableOpacity style={[styles.badgeCard, { backgroundColor: colors.card }, item.locked && styles.badgeCardLocked]}>
+            <View style={[styles.badgeIcon, { backgroundColor: '#e0f2f1' }]}>
               <Text style={styles.badgeIconText}>{item.icon}</Text>
               {item.locked && <Ionicons name="lock-closed" size={16} color="#999" style={styles.lock} />}
             </View>
-            <Text style={styles.badgeName}>{item.name}</Text>
-            <Text style={styles.badgeDesc}>{item.description}</Text>
+            <Text style={[styles.badgeName, { color: colors.text }]}>{item.name}</Text>
+            <Text style={[styles.badgeDesc, { color: colors.text + '99' }]}>{item.description}</Text>
             <Text style={styles.badgePoints}>{item.points} pts</Text>
-            {item.earnedAt && <Text style={styles.badgeEarned}>Earned {item.earnedAt}</Text>}
           </TouchableOpacity>
         )}
       />
@@ -62,24 +59,24 @@ export default function BadgesScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9fafb' },
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e5e7eb' },
+  container: { flex: 1 },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1 },
   backBtn: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center' },
   headerTitle: { fontSize: 18, fontWeight: '700' },
-  filterRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 16, paddingVertical: 12, backgroundColor: '#fff' },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 999, backgroundColor: '#f3f4f6' },
+  filterRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 16, paddingVertical: 12 },
+  filterChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 999 },
   filterChipActive: { backgroundColor: '#e0f2f1' },
-  filterText: { fontSize: 13, fontWeight: '600', color: '#666' },
+  filterText: { fontSize: 13, fontWeight: '600' },
   filterTextActive: { color: '#00695c' },
   grid: { padding: 12, gap: 12 },
-  badgeCard: { flex: 1, margin: 4, backgroundColor: '#fff', borderRadius: 12, padding: 16, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
+  badgeCard: { flex: 1, margin: 4, borderRadius: 12, padding: 16, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
   badgeCardLocked: { opacity: 0.6 },
-  badgeIcon: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#e0f2f1', alignItems: 'center', justifyContent: 'center', marginBottom: 10, position: 'relative' },
+  badgeIcon: { width: 72, height: 72, borderRadius: 36, alignItems: 'center', justifyContent: 'center', marginBottom: 10, position: 'relative' },
   badgeIconText: { fontSize: 32 },
   lock: { position: 'absolute', bottom: 4, right: 4 },
   badgeName: { fontSize: 15, fontWeight: '700', marginBottom: 4, textAlign: 'center' },
-  badgeDesc: { fontSize: 12, color: '#666', marginBottom: 6, textAlign: 'center' },
+  badgeDesc: { fontSize: 12, marginBottom: 6, textAlign: 'center' },
   badgePoints: { fontSize: 13, fontWeight: '600', color: '#10b981' },
-  badgeEarned: { fontSize: 11, color: '#999', marginTop: 4 },
+  badgeEarned: { fontSize: 11, marginTop: 4 },
 });
 
