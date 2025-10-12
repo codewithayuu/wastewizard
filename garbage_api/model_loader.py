@@ -10,6 +10,22 @@ from tensorflow.keras.preprocessing import image
 logger = logging.getLogger("garbage_api.model")
 
 CLASS_LABELS = ['cardboard','glass','metal','paper','plastic','trash']
+
+# Class mapping from notebook 12 classes to mobile app 6 classes
+CLASS_MAPPING = {
+    0: 3,  # paper -> paper
+    1: 0,  # cardboard -> cardboard
+    2: 4,  # plastic -> plastic
+    3: 2,  # metal -> metal
+    4: 5,  # trash -> trash
+    5: 5,  # battery -> trash (hazardous waste)
+    6: 5,  # shoes -> trash (textile waste)
+    7: 5,  # clothes -> trash (textile waste)
+    8: 1,  # green-glass -> glass
+    9: 1,  # brown-glass -> glass
+    10: 1, # white-glass -> glass
+    11: 5  # biological -> trash (organic waste)
+}
 MODEL_PATH = os.getenv('MODEL_PATH', 'garbage_classifier.h5')
 
 _model = None
