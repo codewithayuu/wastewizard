@@ -117,8 +117,6 @@ app/
 - Update `themes.xml` for custom Material Design themes
 - Adjust layouts in `activity_main.xml`
 
-## 📱 Screenshots
-
 The app features:
 - Clean, intuitive interface with Material Design 3
 - Real-time image preview
