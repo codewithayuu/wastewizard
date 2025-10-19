@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Tree trunk -->
+    <path
+        android:fillColor="#8D6E63"
+        android:pathData="M50,75 L58,75 L58,95 L50,95 Z" />
+    
+    <!-- Tree crown layers -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M32,65 A22,20 0 1,1 76,65 Z" />
+    
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M34,55 A20,18 0 1,1 74,55 Z" />
+    
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M36,47 A18,16 0 1,1 72,47 Z" />
+    
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M38,40 A16,14 0 1,1 70,40 Z" />
+    
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M40,34 A14,12 0 1,1 68,34 Z" />
+    
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M42,29 A12,10 0 1,1 66,29 Z" />
+    
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M44,25 A10,8 0 1,1 64,25 Z" />
+    
+    <!-- Recycling symbol -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FF9800"
+        android:strokeWidth="2.5"
+        android:pathData="M20,20 A10,10 0 1,1 40,20 A10,10 0 1,1 20,20" />
+    
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FF9800"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M15,15 L25,15 L25,25 L20,20 M20,20 L20,10 M20,20 L30,20" />
+    
+    <!-- Arrow tip -->
+    <path
+        android:fillColor="#FF9800"
+        android:pathData="M30,18 L30,22 L34,20 Z" />
+    
+    <!-- Small decorative leaves -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M35,35 A3,3 0 1,1 41,35 A3,3 0 1,1 35,35" />
+    
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M73,38 A3,3 0 1,1 79,38 A3,3 0 1,1 73,38" />
+    
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M42,42 A2,2 0 1,1 46,42 A2,2 0 1,1 42,42" />
+    
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M66,45 A2,2 0 1,1 70,45 A2,2 0 1,1 66,45" />
+</vector>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Category Colors -->
+    <color name="cat_plastic">#2196F3</color>
+    <color name="cat_glass">#4CAF50</color>
+    <color name="cat_metal">#9E9E9E</color>
+    <color name="cat_paper">#795548</color>
+    <color name="cat_cardboard">#FF9800</color>
+    
+    <!-- App Theme Colors -->
+    <color name="primary_color">#2E7D32</color>
+    <color name="primary_dark">#1B5E20</color>
+    <color name="primary_light">#4CAF50</color>
+    <color name="accent_color">#FF9800</color>
+    <color name="success_color">#4CAF50</color>
+    <color name="warning_color">#FF9800</color>
+    <color name="error_color">#F44336</color>
+    
+    <!-- Background Colors -->
+    <color name="background_light">#F5F5F5</color>
+    <color name="background_dark">#121212</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_background_dark">#1E1E1E</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#000000</color>
+    <color name="text_secondary">#424242</color>
+    <color name="text_primary_dark">#FFFFFF</color>
+    <color name="text_secondary_dark">#B3FFFFFF</color>
+    
+    <!-- Utility Colors -->
+    <color name="white_alpha_80">#CCFFFFFF</color>
+    <color name="white_alpha_60">#99FFFFFF</color>
+    <color name="white_alpha_30">#4DFFFFFF</color>
+    <color name="progress_track_color">#E0E0E0</color>
+    
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#2E7D32</color>
+    <color name="gradient_end">#4CAF50</color>
+</resources>

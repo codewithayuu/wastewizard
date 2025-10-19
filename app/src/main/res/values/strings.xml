@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">WasteWizard</string>
+    <string name="pick_image">Pick Image</string>
+    <string name="capture">Capture</string>
+    <string name="predict">Predict</string>
+    <string name="reduce">Reduce</string>
+    <string name="recycle">Recycle</string>
+    <string name="predicted">Predicted: %1$s</string>
+    <string name="cardboard_tips">Cardboard can be recycled. Flatten boxes before recycling.</string>
+    <string name="glass_tips">Glass can be recycled infinitely. Separate by color for better recycling.</string>
+    <string name="metal_tips">Metal is highly recyclable. Aluminum and steel can be recycled indefinitely.</string>
+    <string name="paper_tips">Paper can be recycled 5-7 times. Remove staples and plastic before recycling.</string>
+    <string name="plastic_tips">Check recycling symbols. Not all plastics are recyclable in all areas.</string>
+    <string name="model_loading_failed">Failed to load AI model</string>
+    <string name="prediction_failed">Prediction failed. Please try again.</string>
+    <string name="no_image_selected">Please select or capture an image first</string>
+    <string name="camera_permission_denied">Camera permission is required to capture photos</string>
+    <string name="image_load_failed">Failed to load image</string>
+    <string name="toggle_theme">Toggle Theme</string>
+    
+    <!-- Gamification Strings -->
+    <string name="stats">Statistics</string>
+    <string name="achievements">Achievements</string>
+    <string name="about">About</string>
+    <string name="level">Level</string>
+    <string name="points">Points</string>
+    <string name="streak">Streak</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="level_up">Level Up!</string>
+    <string name="congratulations">Congratulations! You\'ve reached a new level!</string>
+    <string name="select_or_capture">Select or capture an image</string>
+    
+    <!-- Achievement Names -->
+    <string name="achievement_accuracy_master">Accuracy Master</string>
+    <string name="achievement_perfect_shot">Perfect Shot</string>
+    <string name="achievement_hot_streak">Hot Streak</string>
+    <string name="achievement_unstoppable">Unstoppable</string>
+    <string name="achievement_rising_star">Rising Star</string>
+    <string name="achievement_waste_warrior">Waste Warrior</string>
+    <string name="achievement_dedicated_learner">Dedicated Learner</string>
+    <string name="achievement_expert_classifier">Expert Classifier</string>
+</resources>
