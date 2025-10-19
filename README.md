@@ -134,9 +134,6 @@ The app features:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🙏 Acknowledgments
 
@@ -144,10 +141,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Material Design team for the UI components
 - Android development community for best practices
 
-## 📞 Support
-
-For support, email [your-email@example.com] or create an issue in the repository.
-
 ---
 
 **WasteWizard** - Making waste management smarter, one classification at a time! 🌍♻️
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
