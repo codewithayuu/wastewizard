@@ -39,7 +39,7 @@ An intelligent Android application for waste classification using TensorFlow Lit
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/codewithayuu/wastewizard
    cd wastewizard
    ```
 
