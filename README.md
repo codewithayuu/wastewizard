@@ -217,9 +217,6 @@ app/
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 📱 Download
-
-The latest APK is available in the device Downloads folder as `WasteWizard.apk` (39.2 MB).
 
 ### Installation Instructions
 1. Enable "Install from unknown sources" in device settings
