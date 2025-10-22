@@ -4,8 +4,13 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 
+import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.TensorFlowLite;
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.image.ops.ResizeOp;
+import org.tensorflow.lite.support.image.ops.ResizeOp.ResizeMethod;
+import org.tensorflow.lite.support.image.ImageProcessor;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -27,7 +32,17 @@ public class TFLiteClassifier {
     private static final int CHANNELS = 3;
 
     private final Interpreter tflite;
-    private final List<String> labels;
+    private List<String> labels;
+    private final int inputSize = 180;
+    private org.tensorflow.lite.DataType inType, outType;
+    private boolean inputIsQuant = false;
+    private org.tensorflow.lite.support.image.ImageProcessor procFloat;
+    private org.tensorflow.lite.support.image.ImageProcessor procUint8;
+    private org.tensorflow.lite.support.image.TensorImage tensorImage;
+    private float[][] outFloat;
+    private byte[][] outByte;
+    private float outScale = 1f; 
+    private int outZero = 0;
 
     public TFLiteClassifier(Context context) throws IOException {
         // Log TensorFlow Lite runtime version - CRITICAL for debugging
@@ -88,6 +103,9 @@ public class TFLiteClassifier {
         } catch (Exception e) {
             android.util.Log.e("TFLiteClassifier", "Error validating model: " + e.getMessage());
         }
+        
+        // Setup unified preprocessing pipeline
+        setupPipelines();
     }
 
     private MappedByteBuffer loadModelFile(Context context) throws IOException {
@@ -112,6 +130,63 @@ public class TFLiteClassifier {
         return list;
     }
 
+    private void setupPipelines() {
+        inType = tflite.getInputTensor(0).dataType();
+        outType = tflite.getOutputTensor(0).dataType();
+        inputIsQuant = (inType == org.tensorflow.lite.DataType.UINT8);
+
+        int numClasses = tflite.getOutputTensor(0).shape()[1];
+        // Make sure labels size matches numClasses (no auto-drop of headers)
+        labels = sanitizeLabels(labels, numClasses);
+
+        if (inputIsQuant) {
+            procUint8 = new org.tensorflow.lite.support.image.ImageProcessor.Builder()
+                    .add(new org.tensorflow.lite.support.image.ops.ResizeOp(inputSize, inputSize,
+                            org.tensorflow.lite.support.image.ops.ResizeOp.ResizeMethod.BILINEAR))
+                    .build();
+            tensorImage = new org.tensorflow.lite.support.image.TensorImage(org.tensorflow.lite.DataType.UINT8);
+        } else {
+            // FLOAT32 with RAW 0..255 input → no NormalizeOp
+            procFloat = new org.tensorflow.lite.support.image.ImageProcessor.Builder()
+                    .add(new org.tensorflow.lite.support.image.ops.ResizeOp(inputSize, inputSize,
+                            org.tensorflow.lite.support.image.ops.ResizeOp.ResizeMethod.BILINEAR))
+                    .build();
+            tensorImage = new org.tensorflow.lite.support.image.TensorImage(org.tensorflow.lite.DataType.FLOAT32);
+        }
+
+        if (outType == org.tensorflow.lite.DataType.FLOAT32) {
+            outFloat = new float[1][numClasses];
+        } else {
+            outByte = new byte[1][numClasses];
+            org.tensorflow.lite.Tensor tOut = tflite.getOutputTensor(0);
+            org.tensorflow.lite.Tensor.QuantizationParams q = tOut.quantizationParams();
+            outScale = q.getScale();
+            outZero = q.getZeroPoint();
+        }
+
+        android.util.Log.d("TFLite", "input=" + inType + " output=" + outType + " classes=" + numClasses);
+    }
+
+    private static java.util.List<String> sanitizeLabels(java.util.List<String> raw, int classes) {
+        java.util.List<String> clean = new java.util.ArrayList<>();
+        if (raw != null) {
+            for (String s : raw) {
+                if (s != null) {
+                    String t = s.trim();
+                    if (!t.isEmpty()) clean.add(t);
+                }
+            }
+        }
+        if (clean.size() == classes) return clean;
+        // If mismatch, fall back to known order or generic
+        android.util.Log.w("TFLite", "labels size " + clean.size() + " != classes " + classes + "; using known order or generic");
+        java.util.List<String> fallback = java.util.Arrays.asList("cardboard","glass","metal","paper","plastic");
+        if (classes == 5) return fallback;
+        clean = new java.util.ArrayList<>();
+        for (int i = 0; i < classes; i++) clean.add("class_" + i);
+        return clean;
+    }
+
     public static class Result {
         public final String label;
         public final float confidence; // raw model score
@@ -124,106 +199,76 @@ public class TFLiteClassifier {
         }
     }
 
-    public Result classify(Bitmap bitmap) {
-        if (bitmap == null) {
-            throw new IllegalArgumentException("Bitmap cannot be null");
+    // New API: always returns normalized 0..1 probs
+    public float[] inferProbs(android.graphics.Bitmap src) {
+        if (tflite == null) throw new IllegalStateException("Interpreter not ready");
+
+        android.graphics.Bitmap argb = (src.getConfig() == android.graphics.Bitmap.Config.ARGB_8888)
+                ? src : src.copy(android.graphics.Bitmap.Config.ARGB_8888, false);
+        android.graphics.Bitmap cropped = centerCrop(argb);
+
+        tensorImage.load(cropped);
+        org.tensorflow.lite.support.image.TensorImage processed =
+                inputIsQuant ? procUint8.process(tensorImage) : procFloat.process(tensorImage);
+
+        float[] probs;
+        if (outFloat != null) {
+            tflite.run(processed.getBuffer(), outFloat);
+            probs = outFloat[0].clone();
+            // If they already look like probs (sum≈1), softmax keeps them same
+            softmax(probs);
+        } else {
+            tflite.run(processed.getBuffer(), outByte);
+            probs = dequantize(outByte[0], outScale, outZero);
+            softmax(probs); // normalize logits
         }
-        
-        try {
-            android.util.Log.d("TFLiteClassifier", "Input bitmap: " + bitmap.getWidth() + "x" + bitmap.getHeight() + ", config: " + bitmap.getConfig());
-            
-            // Convert to RGB and resize to 180x180 (exactly like Python: .convert("RGB").resize((180, 180)))
-            Bitmap rgbBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, false);
-            Bitmap resized = Bitmap.createScaledBitmap(rgbBitmap, IMAGE_SIZE, IMAGE_SIZE, true);
-            
-            android.util.Log.d("TFLiteClassifier", "Resized bitmap: " + resized.getWidth() + "x" + resized.getHeight());
+        return probs;
+    }
 
-            // Prepare input: float32 0..255 (exactly like Python: dtype=np.float32)
-            ByteBuffer inputBuffer = ByteBuffer.allocateDirect(1 * IMAGE_SIZE * IMAGE_SIZE * CHANNELS * 4);
-            inputBuffer.order(ByteOrder.nativeOrder());
+    public Result classify(android.graphics.Bitmap src) {
+        float[] probs = inferProbs(src);
+        int idx = 0; float best = -1f;
+        for (int i = 0; i < probs.length; i++) if (probs[i] > best) { best = probs[i]; idx = i; }
+        String label = (labels != null && idx < labels.size()) ? labels.get(idx) : ("class_" + idx);
+        return new Result(label, best, idx);
+    }
 
-            int[] intValues = new int[IMAGE_SIZE * IMAGE_SIZE];
-            resized.getPixels(intValues, 0, IMAGE_SIZE, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+    private static android.graphics.Bitmap centerCrop(android.graphics.Bitmap src) {
+        int w = src.getWidth(), h = src.getHeight();
+        int size = Math.min(w, h);
+        int x = (w - size) / 2, y = (h - size) / 2;
+        return android.graphics.Bitmap.createBitmap(src, x, y, size, size);
+    }
 
-            // Convert bitmap to float array - RAW pixel values (0-255)
-            // The model was trained with raw pixel values, NOT normalized!
-            int pixel = 0;
-            for (int i = 0; i < IMAGE_SIZE; i++) {
-                for (int j = 0; j < IMAGE_SIZE; j++) {
-                    int val = intValues[pixel++];
-                    // Extract RGB values as RAW float32 (0-255 range)
-                    float r = ((val >> 16) & 0xFF);
-                    float g = ((val >> 8) & 0xFF);
-                    float b = (val & 0xFF);
-                    
-                    inputBuffer.putFloat(r); // Red (0-255)
-                    inputBuffer.putFloat(g);  // Green (0-255)
-                    inputBuffer.putFloat(b);         // Blue (0-255)
-                    
-                    // Log first pixel for debugging
-                    if (pixel == 1) {
-                        android.util.Log.d("TFLiteClassifier", "First pixel RGB: [" + r + ", " + g + ", " + b + "]");
-                    }
-                }
-            }
+    private Result top1(float[] v) {
+        int idx = 0; float best = -Float.MAX_VALUE;
+        for (int i = 0; i < v.length; i++) if (v[i] > best) { best = v[i]; idx = i; }
+        String label = (labels != null && idx < labels.size()) ? labels.get(idx) : ("class_" + idx);
+        return new Result(label, best, idx);
+    }
 
-            // Output buffer (matching Python output shape)
-            int numClasses = labels.size();
-            float[][] output = new float[1][numClasses];
+    private static float[] dequantize(byte[] q, float s, int zp) {
+        float[] f = new float[q.length];
+        for (int i = 0; i < q.length; i++) f[i] = ((q[i] & 0xFF) - zp) * s;
+        return f;
+    }
 
-            // Run inference (matching Python: interpreter.invoke())
-            tflite.run(inputBuffer, output);
-
-            // Apply softmax to convert logits to probabilities (0-1 range)
-            float[] scores = output[0];
-            android.util.Log.d("TFLiteClassifier", "Raw scores: " + java.util.Arrays.toString(scores));
-            
-            // Find max value for numerical stability
-            float maxScore = scores[0];
-            for (int i = 1; i < scores.length; i++) {
-                if (scores[i] > maxScore) {
-                    maxScore = scores[i];
-                }
-            }
-            
-            // Apply softmax: exp(x - max) / sum(exp(x - max))
-            float sum = 0.0f;
-            float[] softmaxScores = new float[scores.length];
-            for (int i = 0; i < scores.length; i++) {
-                softmaxScores[i] = (float) Math.exp(scores[i] - maxScore);
-                sum += softmaxScores[i];
-            }
-            
-            // Normalize to get probabilities
-            for (int i = 0; i < softmaxScores.length; i++) {
-                softmaxScores[i] = softmaxScores[i] / sum;
-            }
-            
-            android.util.Log.d("TFLiteClassifier", "Softmax scores: " + java.util.Arrays.toString(softmaxScores));
-            
-            // Find argmax
-            int maxIdx = 0;
-            float maxVal = softmaxScores[0];
-            for (int i = 1; i < softmaxScores.length; i++) {
-                if (softmaxScores[i] > maxVal) {
-                    maxVal = softmaxScores[i];
-                    maxIdx = i;
-                }
-            }
-
-            // Get predicted class name (matching Python: class_names[predicted_class])
-            String predictedLabel = (maxIdx >= 0 && maxIdx < labels.size()) ? labels.get(maxIdx) : "unknown";
-            
-            android.util.Log.d("TFLiteClassifier", "Prediction: " + predictedLabel + " (confidence: " + maxVal + ", index: " + maxIdx + ")");
-            
-            return new Result(predictedLabel, maxVal, maxIdx);
-            
-        } catch (Exception e) {
-            android.util.Log.e("TFLiteClassifier", "Error during classification: " + e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException("Classification failed: " + e.getMessage(), e);
+    private static void softmax(float[] v) {
+        float max = Float.NEGATIVE_INFINITY;
+        for (float x : v) if (x > max) max = x;
+        float sum = 0f;
+        for (int i = 0; i < v.length; i++) {
+            v[i] = (float) Math.exp(v[i] - max);
+            sum += v[i];
+        }
+        if (sum == 0f) return;
+        for (int i = 0; i < v.length; i++) {
+            v[i] /= sum;
+            if (v[i] < 0f) v[i] = 0f;
+            if (v[i] > 1f) v[i] = 1f;
         }
     }
+
 
     /**
      * Get the number of classes the model can classify
@@ -240,6 +285,16 @@ public class TFLiteClassifier {
     }
     
     /**
+     * Get label at specific index
+     */
+    public String getLabelAt(int index) {
+        if (labels != null && index >= 0 && index < labels.size()) {
+            return labels.get(index);
+        }
+        return "class_" + index;
+    }
+    
+    /**
      * Check if the model is loaded and ready
      */
     public boolean isModelReady() {
@@ -249,8 +304,15 @@ public class TFLiteClassifier {
     /**
      * Get model input size
      */
-    public int getInputSize() {
-        return IMAGE_SIZE;
+    public int getInputSize() { 
+        return inputSize; 
+    }
+    
+    /**
+     * Close the interpreter and free resources
+     */
+    public void close() { 
+        if (tflite != null) tflite.close(); 
     }
     
     /**
@@ -272,16 +334,5 @@ public class TFLiteClassifier {
             android.util.Log.e("TFLiteClassifier", "Model test failed: " + e.getMessage());
             return false;
         }
-    }
-    
-    /**
-     * Close the model and free resources
-     */
-    public void close() {
-        try { 
-            if (tflite != null) {
-                tflite.close(); 
-            }
-        } catch (Exception ignored) {}
     }
 }

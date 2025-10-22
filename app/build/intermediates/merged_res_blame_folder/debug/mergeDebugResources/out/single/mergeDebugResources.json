@@ -64,24 +64,24 @@
         "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\xml\\prefs_settings.xml"
     },
     {
-        "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\drawable_ic_achievement.xml.flat",
-        "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\drawable\\ic_achievement.xml"
-    },
-    {
         "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\drawable_ic_launcher_background.xml.flat",
         "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\drawable\\ic_launcher_background.xml"
     },
     {
-        "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\layout_dialog_licenses.xml.flat",
-        "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\layout\\dialog_licenses.xml"
+        "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\drawable_ic_achievement.xml.flat",
+        "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\drawable\\ic_achievement.xml"
+    },
+    {
+        "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\mipmap-mdpi\\ic_launcher_round.png"
     },
     {
         "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\mipmap-hdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\mipmap-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\mipmap-mdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\layout_dialog_licenses.xml.flat",
+        "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\layout\\dialog_licenses.xml"
     },
     {
         "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\layout_item_scan_history.xml.flat",
@@ -94,10 +94,6 @@
     {
         "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-debug-44:\\drawable_ic_stats.xml.flat",
         "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\drawable\\ic_stats.xml"
-    },
-    {
-        "merged": "com.example.wastewizard.app-debug-44:/layout_fragment_scan.xml.flat",
-        "source": "com.example.wastewizard.app-main-46:/layout/fragment_scan.xml"
     },
     {
         "merged": "com.example.wastewizard.app-debug-44:/layout_item_scan_history.xml.flat",

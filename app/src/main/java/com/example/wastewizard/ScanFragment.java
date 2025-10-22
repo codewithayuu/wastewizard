@@ -48,8 +48,8 @@ public class ScanFragment extends Fragment {
     private Context appContext;
 
     // ML
-    private TFLiteClassifier classifier;
-    
+  private TFLiteClassifier classifier;
+
     // GameManager for gamification
     private GameManager gameManager;
 
@@ -65,10 +65,14 @@ public class ScanFragment extends Fragment {
     private final java.util.concurrent.atomic.AtomicBoolean analyzing = new java.util.concurrent.atomic.AtomicBoolean(false);
     private final java.util.concurrent.atomic.AtomicInteger liveSeq = new java.util.concurrent.atomic.AtomicInteger(0);
     private static final long ANALYZE_INTERVAL_MS = 400; // ~2.5 FPS
-    private static final float LIVE_MIN_CONFIDENCE = 0.60f; // ignore low-confidence noise
+    private static final float LIVE_MIN_CONF = 0.5f; // raise later to 0.6–0.7
 
     // GameManager integration
     private TFLiteClassifier.Result lastLiveResult;
+    
+    // Real-time smoothing
+    private float[] emaProbs = null;
+    private static final float EMA_ALPHA = 0.6f; // higher = snappier, lower = smoother
 
     // Executors
     private ExecutorService cameraExecutor;
@@ -80,8 +84,8 @@ public class ScanFragment extends Fragment {
     private ActivityResultLauncher<String> cameraPermissionLauncher;
 
     // Current image
-    private Uri currentImageUri;
-    private Bitmap currentBitmap;
+  private Uri currentImageUri;
+  private Bitmap currentBitmap;
     
     // Race condition guard
     private final AtomicInteger classifySeq = new AtomicInteger(0);
@@ -92,7 +96,7 @@ public class ScanFragment extends Fragment {
         appContext = context.getApplicationContext();
     }
 
-    @Override
+  @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setEnterTransition(new com.google.android.material.transition.MaterialFadeThrough());
@@ -163,6 +167,12 @@ public class ScanFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        android.util.Log.d("Scan", "Realtime " + (AppThemeManager.isRealtimeEnabled() ? "ON" : "OFF"));
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -185,8 +195,7 @@ public class ScanFragment extends Fragment {
                 @Override public void onImageSaved(@NonNull ImageCapture.OutputFileResults output) {
                     Uri uri = Uri.fromFile(photoFile);
                     try {
-                        int input = classifier.getInputSize();
-                        Bitmap bmp = decodeBitmap(requireContext().getContentResolver(), uri, input, input);
+                        Bitmap bmp = decodeBitmap(requireContext().getContentResolver(), uri);
                         TFLiteClassifier.Result res = classifier.classify(bmp);
                         postToMain(() -> {
                             showLoading(false);
@@ -197,7 +206,7 @@ public class ScanFragment extends Fragment {
                                 askCorrectnessAndRecord(res, uri.toString());
                             }
                         });
-                    } catch (Exception e) {
+      } catch (Exception e) {
                         postToMain(() -> { showLoading(false); toast("Live confirm failed: " + e.getMessage()); });
                     }
                 }
@@ -258,7 +267,7 @@ public class ScanFragment extends Fragment {
                 binding.imagePreview.setVisibility(View.GONE);
                 binding.btnCapture.setText("Snap");
                 binding.btnPredict.setEnabled(false); // wait for capture
-            } catch (Exception e) {
+      } catch (Exception e) {
                 toast("Camera error: " + e.getMessage());
             }
         }, ContextCompat.getMainExecutor(requireContext()));
@@ -286,6 +295,7 @@ public class ScanFragment extends Fragment {
 
         if (AppThemeManager.isRealtimeEnabled()) {
             imageAnalysis = new androidx.camera.core.ImageAnalysis.Builder()
+                    .setOutputImageFormat(androidx.camera.core.ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                     .setBackpressureStrategy(androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .setTargetResolution(new android.util.Size(640, 480)) // smaller is faster
                     .build();
@@ -303,23 +313,37 @@ public class ScanFragment extends Fragment {
                         image.close();
                         return;
                     }
-                    int sz = classifier.getInputSize(); // 180
-                    Bitmap input = yuvToRgbCenterCropped(image, sz); // this closes image
+                    Bitmap frame = toBitmapFromRgba8888(image);
                     final int token = liveSeq.incrementAndGet();
-                    TFLiteClassifier.Result result = classifier.classify(input);
+                    
+                    // Get normalized probabilities
+                    float[] probs = classifier.inferProbs(frame);
+                    if (emaProbs == null || emaProbs.length != probs.length) {
+                        emaProbs = probs.clone();
+                    } else {
+                        for (int i = 0; i < probs.length; i++) {
+                            emaProbs[i] = EMA_ALPHA * probs[i] + (1f - EMA_ALPHA) * emaProbs[i];
+                        }
+                    }
+                    
+                    // Top-1 from smoothed probs
+                    int best = 0; float max = -1f;
+                    for (int i = 0; i < emaProbs.length; i++) if (emaProbs[i] > max) { max = emaProbs[i]; best = i; }
+                    String bestLabel = classifier.getLabelAt(best);
+                    final float conf = max;
 
                     postToMain(() -> {
                         if (!isFragmentSafe() || token != liveSeq.get()) return;
-                        if (result != null && result.confidence >= LIVE_MIN_CONFIDENCE) {
-                            binding.chipLiveResult.setText(
-                                    String.format(java.util.Locale.getDefault(), "%s • %.0f%%",
-                                            result.label, result.confidence * 100f));
+                        if (conf >= LIVE_MIN_CONF) {
+                            binding.chipLiveResult.setText(String.format(java.util.Locale.getDefault(),
+                                    "%s • %.0f%%", bestLabel, conf * 100f));
                             binding.chipLiveResult.setVisibility(View.VISIBLE);
                         } else {
                             binding.chipLiveResult.setVisibility(View.GONE);
                         }
                     });
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    android.util.Log.e("Analyzer", "error", e);
                 } finally {
                     analyzing.set(false);
                 }
@@ -380,8 +404,7 @@ public class ScanFragment extends Fragment {
     private void handleImageUri(@NonNull Uri uri) {
         if (!isFragmentSafe()) return;
         try {
-            int input = (classifier != null) ? classifier.getInputSize() : 180;
-            Bitmap bmp = decodeBitmap(requireContext().getContentResolver(), uri, input, input);
+            Bitmap bmp = decodeBitmap(requireContext().getContentResolver(), uri);
             currentImageUri = uri;
             currentBitmap = bmp;
 
@@ -405,47 +428,54 @@ public class ScanFragment extends Fragment {
     private void runClassification(@NonNull Bitmap source) {
         if (classifier == null || !classifier.isModelReady()) {
             toast("Model not ready");
-            return;
-        }
-        
+      return;
+    }
+
         final int token = classifySeq.incrementAndGet();
         showLoading(true);
 
         inferenceExecutor.execute(() -> {
             try {
                 long startTime = System.currentTimeMillis();
-                int sz = classifier.getInputSize();
-                Bitmap resized = (source.getWidth() == sz && source.getHeight() == sz)
-                        ? source
-                        : Bitmap.createScaledBitmap(source, sz, sz, true);
-
-                TFLiteClassifier.Result result = classifier.classify(resized);
-                long inferenceTime = System.currentTimeMillis() - startTime;
                 
-                android.util.Log.d("ScanFragment", "Inference completed in " + inferenceTime + "ms");
+                // Multi-crop averaging for robust classification
+                float[] avg = averageProbs(source);
+                int best = 0; float max = -1f;
+                for (int i = 0; i < avg.length; i++) if (avg[i] > max) { max = avg[i]; best = i; }
+                final String label = classifier.getLabelAt(best);
+                final float conf = max;
+                final int bestIndex = best;
+                
+                long inferenceTime = System.currentTimeMillis() - startTime;
+                android.util.Log.d("ScanFragment", "Multi-crop inference completed in " + inferenceTime + "ms");
 
                 if (!isFragmentSafe() || binding == null) return;
 
                 postToMain(() -> {
                     if (token != classifySeq.get()) return; // stale result, ignore
                     showLoading(false);
-                    if (result != null) {
+                    
+                    // Optional: de-noise low-confidence snaps
+                    if (conf < 0.55f) {
+                        binding.txtPredicted.setText("Not sure — try better lighting");
+                        binding.txtPredicted.setTextColor(getResources().getColor(android.R.color.holo_orange_light));
+                    } else {
                         revealResultCard();
                         binding.txtPredicted.setText(
                                 String.format(Locale.getDefault(),
                                         "Predicted: %s (%.1f%%)",
-                                        result.label, result.confidence * 100f));
+                                        label, conf * 100f));
+                        binding.txtPredicted.setTextColor(getResources().getColor(android.R.color.black));
                         
-                        // Set tips based on result.label
-                        showTipsFor(result.label);
-                        updateCardColors(result.label);
-                        
-                        // Ask user for correctness feedback and record
-                        String imagePath = currentImageUri != null ? currentImageUri.toString() : "";
-                        askCorrectnessAndRecord(result, imagePath);
-                    } else {
-                        toast("No result");
+                        // Set tips based on label
+                        showTipsFor(label);
+                        updateCardColors(label);
                     }
+                    
+                    // Ask user for correctness feedback and record
+                    String imagePath = currentImageUri != null ? currentImageUri.toString() : "";
+                    TFLiteClassifier.Result result = new TFLiteClassifier.Result(label, conf, bestIndex);
+                    askCorrectnessAndRecord(result, imagePath);
                 });
       } catch (Exception e) {
                 if (!isFragmentSafe()) return;
@@ -466,16 +496,42 @@ public class ScanFragment extends Fragment {
         binding.btnPredict.setEnabled(!loading && currentBitmap != null);
     }
 
-    private static Bitmap decodeBitmap(ContentResolver resolver, Uri uri, int targetW, int targetH) throws IOException {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+    private float[] averageProbs(Bitmap src) {
+        // 3 crops: center (80%), left (80%), right (80%). You can add top/bottom too.
+        float[][] probs = new float[3][];
+        probs[0] = classifier.inferProbs(cropFraction(src, 0.10f, 0.10f, 0.90f, 0.90f)); // centered
+        probs[1] = classifier.inferProbs(cropFraction(src, 0.00f, 0.10f, 0.80f, 0.90f)); // left
+        probs[2] = classifier.inferProbs(cropFraction(src, 0.20f, 0.10f, 1.00f, 0.90f)); // right
+        int n = probs[0].length;
+        float[] avg = new float[n];
+        for (int i = 0; i < n; i++) {
+            float s = 0f; for (float[] p : probs) s += p[i];
+            avg[i] = s / probs.length;
+        }
+        return avg;
+    }
+
+    private Bitmap cropFraction(Bitmap src, float left, float top, float right, float bottom) {
+        int w = src.getWidth(), h = src.getHeight();
+        int x = Math.round(left * w);
+        int y = Math.round(top * h);
+        int cw = Math.round((right - left) * w);
+        int ch = Math.round((bottom - top) * h);
+        cw = Math.max(1, Math.min(cw, w - x));
+        ch = Math.max(1, Math.min(ch, h - y));
+        return Bitmap.createBitmap(src, x, y, cw, ch);
+    }
+
+    private static Bitmap decodeBitmap(ContentResolver resolver, Uri uri) throws IOException {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
             ImageDecoder.Source src = ImageDecoder.createSource(resolver, uri);
-            return ImageDecoder.decodeBitmap(src, (decoder, info, src1) -> {
+            return ImageDecoder.decodeBitmap(src, (decoder, info, s) -> {
                 decoder.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE);
-                decoder.setTargetSize(targetW, targetH);
+                // Don't setTargetSize to input; let classifier resize. This keeps more texture detail.
+                decoder.setMemorySizePolicy(ImageDecoder.MEMORY_POLICY_LOW_RAM); // safe downscale if needed
             });
         } else {
-            // minSdk is 28, so this path won't be hit
-            throw new IOException("Unsupported SDK for decode path");
+            throw new IOException("Unsupported SDK");
         }
     }
 
@@ -503,8 +559,8 @@ public class ScanFragment extends Fragment {
             .setMessage("Enable camera permission in Settings to take photos.")
             .setPositiveButton("Open Settings", (d, w) -> openAppSettings())
             .setNegativeButton("Cancel", null)
-            .show();
-    }
+        .show();
+  }
 
     private void openAppSettings() {
         try {
@@ -617,7 +673,7 @@ public class ScanFragment extends Fragment {
         binding.cardRecycle.setStrokeColor(color);
   }
 
-    private int getClassColor(String label) {
+  private int getClassColor(String label) {
         // Use harmonized category colors that blend with dynamic theme
         return CategoryColors.accent(requireContext(), label);
     }
@@ -668,6 +724,43 @@ public class ScanFragment extends Fragment {
         if (classifier != null) classifier.close();
         if (cameraExecutor != null) cameraExecutor.shutdown();
         if (inferenceExecutor != null) inferenceExecutor.shutdown();
+    }
+
+    private Bitmap toBitmapFromRgba8888(androidx.camera.core.ImageProxy image) {
+        int w = image.getWidth();
+        int h = image.getHeight();
+        int rot = image.getImageInfo().getRotationDegrees();
+
+        androidx.camera.core.ImageProxy.PlaneProxy plane = image.getPlanes()[0];
+        java.nio.ByteBuffer buf = plane.getBuffer();
+        int rowStride = plane.getRowStride();
+        int pixelStride = plane.getPixelStride(); // should be 4 (R,G,B,A in order)
+
+        buf.rewind();
+        int[] pixels = new int[w * h];
+        byte[] row = new byte[rowStride];
+        for (int y = 0; y < h; y++) {
+            buf.get(row, 0, rowStride);
+            for (int x = 0; x < w; x++) {
+                int o = x * pixelStride; // RGBA order
+                int r = row[o] & 0xFF;
+                int g = row[o + 1] & 0xFF;
+                int b = row[o + 2] & 0xFF;
+                int a = row[o + 3] & 0xFF;
+                pixels[y * w + x] = (a << 24) | (r << 16) | (g << 8) | b; // ARGB int
+            }
+        }
+        image.close();
+
+        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        bmp.setPixels(pixels, 0, w, 0, 0, w, h);
+
+        if (rot != 0) {
+            android.graphics.Matrix m = new android.graphics.Matrix();
+            m.postRotate(rot);
+            bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), m, true);
+        }
+        return bmp; // No crop/resize here; classifier will do it
     }
 
     private Bitmap yuvToRgbCenterCropped(@NonNull androidx.camera.core.ImageProxy image, int outSize) {
@@ -751,5 +844,5 @@ public class ScanFragment extends Fragment {
         if (v < 0) return 0;
         if (v > 255) return 255;
         return v;
-    }
+  }
 }

@@ -12,10 +12,6 @@
         "source": "com.example.wastewizard.app-main-46:/layout/item_scan_history.xml"
     },
     {
-        "merged": "com.example.wastewizard.app-mergeDebugResources-43:/layout/fragment_scan.xml",
-        "source": "com.example.wastewizard.app-main-46:/layout/fragment_scan.xml"
-    },
-    {
         "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-mergeDebugResources-43:\\layout\\activity_splash.xml",
         "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\layout\\activity_splash.xml"
     },
@@ -24,12 +20,12 @@
         "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\layout\\item_achievement.xml"
     },
     {
-        "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-mergeDebugResources-43:\\layout\\fragment_about.xml",
-        "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\layout\\fragment_about.xml"
-    },
-    {
         "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-mergeDebugResources-43:\\layout\\item_scan_history.xml",
         "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\layout\\item_scan_history.xml"
+    },
+    {
+        "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-mergeDebugResources-43:\\layout\\fragment_about.xml",
+        "source": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-main-46:\\layout\\fragment_about.xml"
     },
     {
         "merged": "C:\\Users\\Ayush\\.gradle\\daemon\\8.9\\com.example.wastewizard.app-mergeDebugResources-43:\\layout\\activity_simple_splash.xml",
