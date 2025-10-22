@@ -69,6 +69,9 @@ public final class FragmentDashboardBinding implements ViewBinding {
   @NonNull
   public final TextView txtWeeklyGoal;
 
+  @NonNull
+  public final TextView txtWelcome;
+
   private FragmentDashboardBinding(@NonNull NestedScrollView rootView,
       @NonNull MaterialCardView cardAchievements, @NonNull MaterialCardView cardQuickActions,
       @NonNull MaterialCardView cardStats, @NonNull MaterialCardView cardToday,
@@ -76,7 +79,8 @@ public final class FragmentDashboardBinding implements ViewBinding {
       @NonNull TextView txtAchievements, @NonNull TextView txtLastWeek, @NonNull TextView txtLevel,
       @NonNull TextView txtMonthly, @NonNull TextView txtPoints, @NonNull TextView txtStreak,
       @NonNull TextView txtThisWeek, @NonNull TextView txtTodayScans,
-      @NonNull TextView txtTotalScans, @NonNull TextView txtWeeklyGoal) {
+      @NonNull TextView txtTotalScans, @NonNull TextView txtWeeklyGoal,
+      @NonNull TextView txtWelcome) {
     this.rootView = rootView;
     this.cardAchievements = cardAchievements;
     this.cardQuickActions = cardQuickActions;
@@ -94,6 +98,7 @@ public final class FragmentDashboardBinding implements ViewBinding {
     this.txtTodayScans = txtTodayScans;
     this.txtTotalScans = txtTotalScans;
     this.txtWeeklyGoal = txtWeeklyGoal;
+    this.txtWelcome = txtWelcome;
   }
 
   @Override
@@ -219,10 +224,16 @@ public final class FragmentDashboardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.txtWelcome;
+      TextView txtWelcome = ViewBindings.findChildViewById(rootView, id);
+      if (txtWelcome == null) {
+        break missingId;
+      }
+
       return new FragmentDashboardBinding((NestedScrollView) rootView, cardAchievements,
           cardQuickActions, cardStats, cardToday, recyclerViewQuickActions, txtAccuracy,
           txtAchievements, txtLastWeek, txtLevel, txtMonthly, txtPoints, txtStreak, txtThisWeek,
-          txtTodayScans, txtTotalScans, txtWeeklyGoal);
+          txtTodayScans, txtTotalScans, txtWeeklyGoal, txtWelcome);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

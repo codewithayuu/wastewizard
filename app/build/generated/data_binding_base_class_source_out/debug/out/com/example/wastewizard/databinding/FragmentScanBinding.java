@@ -9,12 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.camera.view.PreviewView;
 import androidx.core.widget.NestedScrollView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.wastewizard.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -34,10 +36,16 @@ public final class FragmentScanBinding implements ViewBinding {
   public final MaterialButton btnPredict;
 
   @NonNull
+  public final PreviewView cameraPreview;
+
+  @NonNull
   public final MaterialCardView cardRecycle;
 
   @NonNull
   public final MaterialCardView cardReduce;
+
+  @NonNull
+  public final Chip chipLiveResult;
 
   @NonNull
   public final ImageView imagePreview;
@@ -65,8 +73,9 @@ public final class FragmentScanBinding implements ViewBinding {
 
   private FragmentScanBinding(@NonNull NestedScrollView rootView,
       @NonNull MaterialButton btnCapture, @NonNull MaterialButton btnPickImage,
-      @NonNull MaterialButton btnPredict, @NonNull MaterialCardView cardRecycle,
-      @NonNull MaterialCardView cardReduce, @NonNull ImageView imagePreview,
+      @NonNull MaterialButton btnPredict, @NonNull PreviewView cameraPreview,
+      @NonNull MaterialCardView cardRecycle, @NonNull MaterialCardView cardReduce,
+      @NonNull Chip chipLiveResult, @NonNull ImageView imagePreview,
       @NonNull LinearLayout noImageLayout, @NonNull CircularProgressIndicator progressIndicator,
       @NonNull MaterialCardView resultCard, @NonNull TextView txtPredicted,
       @NonNull TextView txtRecycle, @NonNull TextView txtReduce, @NonNull TextView txtTips) {
@@ -74,8 +83,10 @@ public final class FragmentScanBinding implements ViewBinding {
     this.btnCapture = btnCapture;
     this.btnPickImage = btnPickImage;
     this.btnPredict = btnPredict;
+    this.cameraPreview = cameraPreview;
     this.cardRecycle = cardRecycle;
     this.cardReduce = cardReduce;
+    this.chipLiveResult = chipLiveResult;
     this.imagePreview = imagePreview;
     this.noImageLayout = noImageLayout;
     this.progressIndicator = progressIndicator;
@@ -131,6 +142,12 @@ public final class FragmentScanBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.cameraPreview;
+      PreviewView cameraPreview = ViewBindings.findChildViewById(rootView, id);
+      if (cameraPreview == null) {
+        break missingId;
+      }
+
       id = R.id.cardRecycle;
       MaterialCardView cardRecycle = ViewBindings.findChildViewById(rootView, id);
       if (cardRecycle == null) {
@@ -140,6 +157,12 @@ public final class FragmentScanBinding implements ViewBinding {
       id = R.id.cardReduce;
       MaterialCardView cardReduce = ViewBindings.findChildViewById(rootView, id);
       if (cardReduce == null) {
+        break missingId;
+      }
+
+      id = R.id.chipLiveResult;
+      Chip chipLiveResult = ViewBindings.findChildViewById(rootView, id);
+      if (chipLiveResult == null) {
         break missingId;
       }
 
@@ -192,8 +215,9 @@ public final class FragmentScanBinding implements ViewBinding {
       }
 
       return new FragmentScanBinding((NestedScrollView) rootView, btnCapture, btnPickImage,
-          btnPredict, cardRecycle, cardReduce, imagePreview, noImageLayout, progressIndicator,
-          resultCard, txtPredicted, txtRecycle, txtReduce, txtTips);
+          btnPredict, cameraPreview, cardRecycle, cardReduce, chipLiveResult, imagePreview,
+          noImageLayout, progressIndicator, resultCard, txtPredicted, txtRecycle, txtReduce,
+          txtTips);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

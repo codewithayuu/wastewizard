@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.color.MaterialColors;
 
 import java.io.File;
 import java.util.List;
@@ -54,6 +55,12 @@ public class HistoryFragment extends Fragment {
         }
     }
     
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshData(); // rebuilds the adapter from prefs
+    }
+    
     // History Adapter
     public static class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
         private List<GameManager.ScanHistory> history;
@@ -74,7 +81,8 @@ public class HistoryFragment extends Fragment {
             GameManager.ScanHistory scan = history.get(position);
             
             holder.txtLabel.setText(scan.predictedLabel);
-            holder.txtConfidence.setText(String.format("%.1f%%", scan.confidence * 100));
+            holder.txtConfidence.setText(String.format("%.1f%%", scan.confidence * 100f));
+            holder.txtConfidenceBadge.setText(String.format("%.0f%%", scan.confidence * 100f));
             holder.txtTime.setText(scan.getFormattedTime());
             
             // Load image if available
@@ -99,9 +107,17 @@ public class HistoryFragment extends Fragment {
                 holder.imgThumbnail.setVisibility(View.GONE);
             }
             
-            // Set color based on predicted label
-            int color = getClassColor(holder.itemView.getContext(), scan.predictedLabel);
-            holder.card.setStrokeColor(color);
+            // Set harmonized category color for stroke
+            int stroke = CategoryColors.accent(holder.itemView.getContext(), scan.predictedLabel);
+            holder.card.setStrokeColor(stroke);
+            holder.card.setStrokeWidth(2);
+            
+            // Primary/secondary text via theme
+            int onSurface = MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurface);
+            int onSurfaceVariant = MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurfaceVariant);
+            holder.txtLabel.setTextColor(onSurface);
+            holder.txtConfidence.setTextColor(onSurfaceVariant);
+            holder.txtTime.setTextColor(onSurfaceVariant);
         }
         
         @Override
@@ -110,20 +126,14 @@ public class HistoryFragment extends Fragment {
         }
         
         private int getClassColor(android.content.Context context, String label) {
-            switch (label.toLowerCase()) {
-                case "plastic": return context.getResources().getColor(R.color.cat_plastic);
-                case "glass": return context.getResources().getColor(R.color.cat_glass);
-                case "paper": return context.getResources().getColor(R.color.cat_paper);
-                case "metal": return context.getResources().getColor(R.color.cat_metal);
-                case "cardboard": return context.getResources().getColor(R.color.cat_cardboard);
-                default: return context.getResources().getColor(R.color.text_secondary);
-            }
+            // Use harmonized category colors that blend with dynamic theme
+            return CategoryColors.accent(context, label);
         }
         
         public static class ViewHolder extends RecyclerView.ViewHolder {
             MaterialCardView card;
             ImageView imgThumbnail;
-            TextView txtLabel, txtConfidence, txtTime;
+            TextView txtLabel, txtConfidence, txtTime, txtConfidenceBadge;
             
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -132,6 +142,7 @@ public class HistoryFragment extends Fragment {
                 txtLabel = itemView.findViewById(R.id.txtLabel);
                 txtConfidence = itemView.findViewById(R.id.txtConfidence);
                 txtTime = itemView.findViewById(R.id.txtTime);
+                txtConfidenceBadge = itemView.findViewById(R.id.txtConfidenceBadge);
             }
         }
     }

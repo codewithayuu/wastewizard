@@ -2,6 +2,7 @@ package com.example.wastewizard;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +59,7 @@ public class GameManager {
     
     // Statistics
     public void recordPrediction(boolean isCorrect) {
+        android.util.Log.d("GM", "recordPrediction isCorrect=" + isCorrect);
         int total = getTotalPredictions() + 1;
         int correct = getCorrectPredictions();
         if (isCorrect) {
@@ -124,69 +126,156 @@ public class GameManager {
     // Scan History Management
     private static final String KEY_SCAN_HISTORY = "scan_history";
     
-    public void addScanHistory(String imagePath, String predictedLabel, float confidence, long timestamp) {
-        String historyJson = prefs.getString(KEY_SCAN_HISTORY, "[]");
-        try {
-            java.util.List<ScanHistory> history = new java.util.ArrayList<>();
-            
-            // Parse existing history (simplified JSON-like format)
-            if (!historyJson.equals("[]")) {
-                String[] entries = historyJson.split("\\|");
-                for (String entry : entries) {
-                    String[] parts = entry.split(",");
-                    if (parts.length >= 4) {
-                        history.add(new ScanHistory(parts[0], parts[1], Float.parseFloat(parts[2]), Long.parseLong(parts[3])));
+    public void addScanHistory(String imagePath, String predictedLabel, float confidence, long timestamp, boolean isCorrect) {
+        android.util.Log.d("GM", "addScanHistory correct=" + isCorrect + " label=" + predictedLabel + " confidence=" + confidence);
+        String historyStr = prefs.getString(KEY_SCAN_HISTORY, "");
+        java.util.List<ScanHistory> list = new java.util.ArrayList<>();
+        if (historyStr != null && !historyStr.isEmpty() && !"[]".equals(historyStr)) {
+            String[] entries = historyStr.split("\\|");
+            for (String entry : entries) {
+                String[] p = entry.split(",");
+                try {
+                    if (p.length >= 5) {
+                        list.add(new ScanHistory(p[0], p[1], Float.parseFloat(p[2]), Long.parseLong(p[3]), Boolean.parseBoolean(p[4])));
+                    } else if (p.length >= 4) {
+                        list.add(new ScanHistory(p[0], p[1], Float.parseFloat(p[2]), Long.parseLong(p[3]), null));
                     }
-                }
+                } catch (Exception ignored) {}
             }
-            
-            // Add new scan
-            history.add(new ScanHistory(imagePath, predictedLabel, confidence, timestamp));
-            
-            // Keep only last 50 scans
-            if (history.size() > 50) {
-                history = history.subList(history.size() - 50, history.size());
-            }
-            
-            // Save back to preferences
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < history.size(); i++) {
-                if (i > 0) sb.append("|");
-                ScanHistory scan = history.get(i);
-                sb.append(scan.imagePath).append(",")
-                  .append(scan.predictedLabel).append(",")
-                  .append(scan.confidence).append(",")
-                  .append(scan.timestamp);
-            }
-            
-            prefs.edit().putString(KEY_SCAN_HISTORY, sb.toString()).apply();
-            
-        } catch (Exception e) {
-            android.util.Log.e("GameManager", "Error saving scan history", e);
         }
+
+        list.add(new ScanHistory(imagePath, predictedLabel, confidence, timestamp, isCorrect));
+        if (list.size() > 50) list = list.subList(list.size() - 50, list.size());
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            if (i > 0) sb.append("|");
+            ScanHistory s = list.get(i);
+            sb.append(s.imagePath).append(",")
+              .append(s.predictedLabel).append(",")
+              .append(String.format("%.6f", s.confidence)).append(",")
+              .append(s.timestamp).append(",")
+              .append(s.isCorrect == null ? "false" : s.isCorrect.toString());
+        }
+        prefs.edit().putString(KEY_SCAN_HISTORY, sb.toString()).apply();
+    }
+
+    @Deprecated
+    public void addScanHistory(String imagePath, String predictedLabel, float confidence, long timestamp) {
+        // Fallback: mark unknown as false to avoid inflating accuracy
+        addScanHistory(imagePath, predictedLabel, confidence, timestamp, false);
     }
     
     public java.util.List<ScanHistory> getScanHistory() {
-        java.util.List<ScanHistory> history = new java.util.ArrayList<>();
-        String historyJson = prefs.getString(KEY_SCAN_HISTORY, "[]");
-        
-        try {
-            if (!historyJson.equals("[]")) {
-                String[] entries = historyJson.split("\\|");
-                for (String entry : entries) {
-                    String[] parts = entry.split(",");
-                    if (parts.length >= 4) {
-                        history.add(new ScanHistory(parts[0], parts[1], Float.parseFloat(parts[2]), Long.parseLong(parts[3])));
+        java.util.List<ScanHistory> list = new java.util.ArrayList<>();
+        String historyStr = prefs.getString(KEY_SCAN_HISTORY, "");
+        if (historyStr != null && !historyStr.isEmpty() && !"[]".equals(historyStr)) {
+            String[] entries = historyStr.split("\\|");
+            for (String entry : entries) {
+                String[] p = entry.split(",");
+                try {
+                    if (p.length >= 5) {
+                        float conf = Float.parseFloat(p[2]);
+                        android.util.Log.d("GM", "Retrieved confidence: " + conf + " for label: " + p[1]);
+                        list.add(new ScanHistory(p[0], p[1], conf, Long.parseLong(p[3]), Boolean.parseBoolean(p[4])));
+                    } else if (p.length >= 4) {
+                        float conf = Float.parseFloat(p[2]);
+                        android.util.Log.d("GM", "Retrieved confidence: " + conf + " for label: " + p[1]);
+                        list.add(new ScanHistory(p[0], p[1], conf, Long.parseLong(p[3]), null));
                     }
+                } catch (Exception ignored) {}
+            }
+        }
+        java.util.Collections.reverse(list); // newest first
+        return list;
+    }
+    
+    // Clear scan history method
+    public void clearScanHistory() {
+        String historyStr = prefs.getString(KEY_SCAN_HISTORY, "");
+        if (historyStr != null && !historyStr.isEmpty() && !"[]".equals(historyStr)) {
+            String[] entries = historyStr.split("\\|");
+            for (String entry : entries) {
+                String[] parts = entry.split(",");
+                if (parts.length >= 1) {
+                    String path = parts[0];
+                    try {
+                        if (path != null && !path.isEmpty()) {
+                            java.io.File f;
+                            if (path.startsWith("file:")) {
+                                android.net.Uri u = android.net.Uri.parse(path);
+                                f = new java.io.File(u.getPath());
+                            } else {
+                                f = new java.io.File(path);
+                            }
+                            if (f.exists() && isAppOwnedFile(f)) {
+                                // Best-effort delete
+                                //noinspection ResultOfMethodCallIgnored
+                                f.delete();
+                            }
+                        }
+                    } catch (Exception ignored) { }
                 }
             }
-        } catch (Exception e) {
-            android.util.Log.e("GameManager", "Error loading scan history", e);
         }
-        
-        // Return in reverse order (newest first)
-        java.util.Collections.reverse(history);
-        return history;
+        prefs.edit().remove(KEY_SCAN_HISTORY).apply();
+    }
+
+    private boolean isAppOwnedFile(java.io.File f) {
+        try {
+            String p = f.getCanonicalPath();
+            String files = context.getFilesDir().getCanonicalPath();
+            String cache = context.getCacheDir().getCanonicalPath();
+            return p.startsWith(files) || p.startsWith(cache);
+        } catch (java.io.IOException e) {
+            return false;
+        }
+    }
+    
+    // Reset all game data (optional)
+    public void resetAllData() {
+        prefs.edit().clear().apply();
+    }
+    
+    // Stats helpers (today, week, accuracy)
+    public int getScanHistoryCount() {
+        return getScanHistory().size();
+    }
+
+    public int getScanCountBetween(long startMs, long endMs) {
+        int c = 0;
+        for (ScanHistory s : getScanHistory()) {
+            if (s.timestamp >= startMs && s.timestamp < endMs) c++;
+        }
+        return c;
+    }
+
+    public int getScanCountToday() {
+        java.time.ZonedDateTime now = java.time.ZonedDateTime.now();
+        long start = now.toLocalDate().atStartOfDay(now.getZone()).toInstant().toEpochMilli();
+        long end = now.plusDays(1).toLocalDate().atStartOfDay(now.getZone()).toInstant().toEpochMilli();
+        return getScanCountBetween(start, end);
+    }
+
+    public int getScanCountThisWeek() {
+        java.time.ZonedDateTime now = java.time.ZonedDateTime.now();
+        java.time.ZonedDateTime weekStart = now.with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY))
+                .toLocalDate().atStartOfDay(now.getZone());
+        long start = weekStart.toInstant().toEpochMilli();
+        long end = now.plusDays(1).toLocalDate().atStartOfDay(now.getZone()).toInstant().toEpochMilli();
+        return getScanCountBetween(start, end);
+    }
+
+    public double getAccuracyFromHistory() {
+        int total = 0, correct = 0;
+        for (ScanHistory s : getScanHistory()) {
+            if (s.isCorrect != null) {
+                total++;
+                if (s.isCorrect) correct++;
+            }
+        }
+        if (total == 0) return 0.0;
+        return (correct * 100.0) / total;
     }
     
     public static class ScanHistory {
@@ -194,12 +283,14 @@ public class GameManager {
         public String predictedLabel;
         public float confidence;
         public long timestamp;
+        public Boolean isCorrect; // null = unknown (old entries)
         
-        public ScanHistory(String imagePath, String predictedLabel, float confidence, long timestamp) {
+        public ScanHistory(String imagePath, String predictedLabel, float confidence, long timestamp, @Nullable Boolean isCorrect) {
             this.imagePath = imagePath;
             this.predictedLabel = predictedLabel;
             this.confidence = confidence;
             this.timestamp = timestamp;
+            this.isCorrect = isCorrect;
         }
         
         public String getFormattedTime() {

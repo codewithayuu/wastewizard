@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="?attr/colorSurface"
     tools:context=".MainAppActivity">
 
     <!-- App Bar -->
@@ -13,17 +13,16 @@
         android:layout_height="wrap_content"
         android:elevation="4dp"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:background="?attr/colorSurface">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary_color"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="WasteWizard"
-            app:titleTextColor="@android:color/white"
-            app:titleTextAppearance="@style/ToolbarTitleText" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/App.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="@string/app_name"
+        app:menu="@menu/main_app_menu"
+        app:subtitleTextColor="?attr/colorOnSurfaceVariant" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -41,13 +40,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/card_background"
+        android:background="?attr/colorSurface"
         android:elevation="8dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconSize="28dp"
-        app:itemIconTint="@color/bottom_nav_selector"
+        app:itemIconTint="?attr/colorOnSurface"
+        app:itemTextColor="?attr/colorOnSurface"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_navigation_menu" />
 
     <!-- Floating Action Button for Scan -->

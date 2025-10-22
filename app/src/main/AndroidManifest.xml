@@ -6,18 +6,12 @@
     <!-- Camera feature (not required so app is installable on devices without a camera) -->
     <uses-feature android:name="android.hardware.camera.any" android:required="false" />
 
-    <!-- Storage permissions -->
-    <!-- Android 13+ (Tiramisu) scoped read for images -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <!-- For Android 12 and below when picking from Gallery -->
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-
-    <!-- WRITE_EXTERNAL_STORAGE is not needed (and discouraged).
-         We save to app-specific directory (pre-Android 10) or use MediaStore (Android 10+). -->
+    <!-- Storage permissions - Optional: not needed if you stick to Photo Picker / GetContent -->
+    <!-- <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" /> -->
 
     <application
+        android:name=".WasteWizardApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -61,7 +55,8 @@
             android:launchMode="singleTop"
             android:theme="@style/Theme.WasteWizard" />
 
-        <!-- FileProvider for pre-Android 10 photo capture (TakePicture uses this when needed) -->
+        <!-- FileProvider: safe to remove if no legacy camera intent use anywhere -->
+        <!--
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -71,6 +66,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        -->
 
     </application>
 </manifest>

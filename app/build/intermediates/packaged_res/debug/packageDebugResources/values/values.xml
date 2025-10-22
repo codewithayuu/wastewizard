@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="theme_entries">
+        <item>System default</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>system</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
     <color name="accent_color">#FF9800</color>
     <color name="background_dark">#121212</color>
     <color name="background_light">#F5F5F5</color>
@@ -26,7 +36,16 @@
     <color name="white_alpha_30">#4DFFFFFF</color>
     <color name="white_alpha_60">#99FFFFFF</color>
     <color name="white_alpha_80">#CCFFFFFF</color>
+    <dimen name="card_elevation">3dp</dimen>
+    <dimen name="corner_lg">16dp</dimen>
+    <dimen name="corner_md">12dp</dimen>
+    <dimen name="space_lg">24dp</dimen>
+    <dimen name="space_md">16dp</dimen>
+    <dimen name="space_sm">8dp</dimen>
+    <dimen name="space_xl">32dp</dimen>
+    <dimen name="space_xs">4dp</dimen>
     <string name="about">About</string>
+    <string name="about_summary">App info, model details, and licenses</string>
     <string name="accuracy">Accuracy</string>
     <string name="achievement_accuracy_master">Accuracy Master</string>
     <string name="achievement_dedicated_learner">Dedicated Learner</string>
@@ -39,16 +58,24 @@
     <string name="achievements">Achievements</string>
     <string name="app_name">WasteWizard</string>
     <string name="camera_permission_denied">Camera permission is required to capture photos</string>
+    <string name="camera_preview">Camera preview</string>
     <string name="capture">Capture</string>
     <string name="cardboard_tips">Cardboard can be recycled. Flatten boxes before recycling.</string>
+    <string name="clear">Clear</string>
+    <string name="clear_history_message">This will remove all saved scan history on this device.</string>
+    <string name="clear_history_summary">Remove all scan entries stored locally</string>
+    <string name="clear_history_title">Clear scan history</string>
     <string name="congratulations">Congratulations! You\'ve reached a new level!</string>
     <string name="glass_tips">Glass can be recycled infinitely. Separate by color for better recycling.</string>
+    <string name="history_cleared">History cleared</string>
     <string name="image_load_failed">Failed to load image</string>
     <string name="level">Level</string>
     <string name="level_up">Level Up!</string>
     <string name="metal_tips">Metal is highly recyclable. Aluminum and steel can be recycled indefinitely.</string>
     <string name="model_loading_failed">Failed to load AI model</string>
+    <string name="model_version">Model version</string>
     <string name="no_image_selected">Please select or capture an image first</string>
+    <string name="open_source_licenses">Open source licenses</string>
     <string name="paper_tips">Paper can be recycled 5-7 times. Remove staples and plastic before recycling.</string>
     <string name="pick_image">Pick Image</string>
     <string name="plastic_tips">Check recycling symbols. Not all plastics are recyclable in all areas.</string>
@@ -56,12 +83,57 @@
     <string name="predict">Predict</string>
     <string name="predicted">Predicted: %1$s</string>
     <string name="prediction_failed">Prediction failed. Please try again.</string>
+    <string name="pref_auto_classify_summary">Automatically run classification after taking or selecting a photo</string>
+    <string name="pref_auto_classify_title">Auto-classify after capture/pick</string>
+    <string name="pref_dynamic_color_summary">Use system wallpaper colors for the app UI</string>
+    <string name="pref_dynamic_color_title">Dynamic color (Android 12+)</string>
+    <string name="pref_realtime_summary">Classify items live in the camera preview</string>
+    <string name="pref_realtime_title">Real-time classification</string>
+    <string name="pref_theme_title">Theme</string>
+    <string name="pref_username_title">Username</string>
+    <string name="profile">Profile</string>
     <string name="recycle">Recycle</string>
     <string name="reduce">Reduce</string>
     <string name="select_or_capture">Select or capture an image</string>
+    <string name="settings">Settings</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_data">Data</string>
+    <string name="settings_general">General</string>
+    <string name="settings_scanning">Scanning</string>
     <string name="stats">Statistics</string>
     <string name="streak">Streak</string>
     <string name="toggle_theme">Toggle Theme</string>
+    <string name="version">Version</string>
+    <style name="App.Button.Filled" parent="Widget.Material3.Button">
+        <item name="android:minHeight">48dp</item>
+        <item name="shapeAppearance">@style/Shape.Small</item>
+    </style>
+    <style name="App.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="shapeAppearance">@style/Shape.Small</item>
+    </style>
+    <style name="App.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="shapeAppearance">@style/Shape.Medium</item>
+    </style>
+    <style name="App.FAB" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="tint">?attr/colorOnPrimary</item>
+        <item name="shapeAppearance">@style/Shape.Large</item>
+    </style>
+    <style name="App.PreferenceTheme" parent="ThemeOverlay.Material3.Light"/>
+    <style name="App.Text.Body" parent="TextAppearance.Material3.BodyLarge"/>
+    <style name="App.Text.Caption" parent="TextAppearance.Material3.BodySmall"/>
+    <style name="App.Text.Headline" parent="TextAppearance.Material3.HeadlineSmall"/>
+    <style name="App.Text.Title" parent="TextAppearance.Material3.TitleLarge"/>
+    <style name="App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="titleTextColor">?attr/colorOnSurface</item>
+        <item name="subtitleTextColor">?attr/colorOnSurfaceVariant</item>
+        <item name="navigationIconTint">?attr/colorOnSurface</item>
+        <item name="popupTheme">@style/ThemeOverlay.Material3.Light</item>
+    </style>
     <style name="BottomNavTextActive" parent="TextAppearance.AppCompat.Caption">
         <item name="android:textSize">10sp</item>
         <item name="android:textStyle">bold</item>
@@ -73,26 +145,37 @@
         <item name="android:lineSpacingExtra">4dp</item>
         <item name="android:paddingTop">4dp</item>
     </style>
-    <style name="Theme.WasteWizard" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Shape.Large" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+    <style name="Shape.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="Shape.Small" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="Theme.WasteWizard" parent="Theme.Material3.DayNight.NoActionBar">
         
         <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorSecondary">@color/accent_color</item>
-        <item name="colorOnSecondary">@android:color/white</item>
 
         
-        <item name="android:statusBarColor">@color/primary_dark</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:navigationBarColor">@color/card_background</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="preferenceTheme">@style/App.PreferenceTheme</item>
 
         
-        <item name="android:windowBackground">@color/background_light</item>
+        <item name="shapeAppearanceSmallComponent">@style/Shape.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/Shape.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/Shape.Large</item>
 
         
-        <item name="colorSurface">@android:color/white</item>
-        <item name="colorOnSurface">@android:color/black</item>
+        <item name="materialCardViewStyle">@style/App.Card</item>
+        <item name="materialButtonStyle">@style/App.Button.Filled</item>
+        <item name="materialButtonOutlinedStyle">@style/App.Button.Outlined</item>
+        <item name="floatingActionButtonStyle">@style/App.FAB</item>
+        <item name="toolbarStyle">@style/App.Toolbar</item>
     </style>
     <style name="Theme.WasteWizard.NoActionBar">
         <item name="windowActionBar">false</item>

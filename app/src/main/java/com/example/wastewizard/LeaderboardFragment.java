@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,24 +143,29 @@ public class LeaderboardFragment extends Fragment {
             holder.txtPoints.setText(String.valueOf(entry.points));
             holder.txtLevel.setText("Level " + entry.level);
             
-            // Highlight current user
+            // Get Material colors for dynamic theming
+            int colorPrimary = MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorPrimary);
+            int onSurface = MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurface);
+            int onSurfaceVariant = MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurfaceVariant);
+            
+            // Highlight current user using theme colors (dynamic-safe)
             if (entry.isCurrentUser) {
-                holder.card.setStrokeColor(holder.itemView.getContext().getResources().getColor(R.color.primary_color));
+                holder.card.setStrokeColor(colorPrimary);
                 holder.card.setStrokeWidth(2);
-                holder.txtName.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.primary_color));
+                holder.txtName.setTextColor(colorPrimary);
             } else {
                 holder.card.setStrokeWidth(0);
-                holder.txtName.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_primary));
+                holder.txtName.setTextColor(onSurface);
             }
+            holder.txtLevel.setTextColor(onSurfaceVariant);
             
-            // Set rank badge color
-            if (entry.rank == 1) {
-                holder.txtRank.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.accent_color));
-            } else if (entry.rank <= 3) {
-                holder.txtRank.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.success_color));
-            } else {
-                holder.txtRank.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_secondary));
-            }
+            // Rank color using theme accents instead of fixed colors
+            int rankColor = (entry.rank == 1)
+                    ? MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorSecondary)
+                    : (entry.rank <= 3
+                        ? MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorTertiary)
+                        : onSurfaceVariant);
+            holder.txtRank.setTextColor(rankColor);
         }
         
         @Override
@@ -180,5 +186,11 @@ public class LeaderboardFragment extends Fragment {
                 txtLevel = itemView.findViewById(R.id.txtLevel);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshData();
     }
 }

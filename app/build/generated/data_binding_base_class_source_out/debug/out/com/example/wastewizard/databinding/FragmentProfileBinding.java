@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.wastewizard.R;
+import com.google.android.material.button.MaterialButton;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -19,6 +20,9 @@ import java.lang.String;
 public final class FragmentProfileBinding implements ViewBinding {
   @NonNull
   private final NestedScrollView rootView;
+
+  @NonNull
+  public final MaterialButton btnOpenSettings;
 
   @NonNull
   public final RecyclerView recyclerViewAchievements;
@@ -39,23 +43,29 @@ public final class FragmentProfileBinding implements ViewBinding {
   public final TextView txtPoints;
 
   @NonNull
+  public final TextView txtProfileTitle;
+
+  @NonNull
   public final TextView txtStreak;
 
   @NonNull
   public final TextView txtTotalScans;
 
   private FragmentProfileBinding(@NonNull NestedScrollView rootView,
-      @NonNull RecyclerView recyclerViewAchievements, @NonNull TextView txtAccuracy,
-      @NonNull TextView txtAchievementsUnlocked, @NonNull TextView txtBestStreak,
-      @NonNull TextView txtLevel, @NonNull TextView txtPoints, @NonNull TextView txtStreak,
+      @NonNull MaterialButton btnOpenSettings, @NonNull RecyclerView recyclerViewAchievements,
+      @NonNull TextView txtAccuracy, @NonNull TextView txtAchievementsUnlocked,
+      @NonNull TextView txtBestStreak, @NonNull TextView txtLevel, @NonNull TextView txtPoints,
+      @NonNull TextView txtProfileTitle, @NonNull TextView txtStreak,
       @NonNull TextView txtTotalScans) {
     this.rootView = rootView;
+    this.btnOpenSettings = btnOpenSettings;
     this.recyclerViewAchievements = recyclerViewAchievements;
     this.txtAccuracy = txtAccuracy;
     this.txtAchievementsUnlocked = txtAchievementsUnlocked;
     this.txtBestStreak = txtBestStreak;
     this.txtLevel = txtLevel;
     this.txtPoints = txtPoints;
+    this.txtProfileTitle = txtProfileTitle;
     this.txtStreak = txtStreak;
     this.txtTotalScans = txtTotalScans;
   }
@@ -87,6 +97,12 @@ public final class FragmentProfileBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnOpenSettings;
+      MaterialButton btnOpenSettings = ViewBindings.findChildViewById(rootView, id);
+      if (btnOpenSettings == null) {
+        break missingId;
+      }
+
       id = R.id.recyclerViewAchievements;
       RecyclerView recyclerViewAchievements = ViewBindings.findChildViewById(rootView, id);
       if (recyclerViewAchievements == null) {
@@ -123,6 +139,12 @@ public final class FragmentProfileBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.txtProfileTitle;
+      TextView txtProfileTitle = ViewBindings.findChildViewById(rootView, id);
+      if (txtProfileTitle == null) {
+        break missingId;
+      }
+
       id = R.id.txtStreak;
       TextView txtStreak = ViewBindings.findChildViewById(rootView, id);
       if (txtStreak == null) {
@@ -135,9 +157,9 @@ public final class FragmentProfileBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentProfileBinding((NestedScrollView) rootView, recyclerViewAchievements,
-          txtAccuracy, txtAchievementsUnlocked, txtBestStreak, txtLevel, txtPoints, txtStreak,
-          txtTotalScans);
+      return new FragmentProfileBinding((NestedScrollView) rootView, btnOpenSettings,
+          recyclerViewAchievements, txtAccuracy, txtAchievementsUnlocked, txtBestStreak, txtLevel,
+          txtPoints, txtProfileTitle, txtStreak, txtTotalScans);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

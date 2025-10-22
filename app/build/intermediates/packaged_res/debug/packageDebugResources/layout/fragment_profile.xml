@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="?attr/colorSurface"
     android:padding="12dp"
     android:fillViewport="true"
     android:scrollbars="vertical"
@@ -16,12 +16,45 @@
         android:orientation="vertical"
         android:paddingBottom="80dp">
 
+        <!-- Profile Header with Settings -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/txtProfileTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/profile"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOpenSettings"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@android:drawable/ic_menu_preferences"
+                app:iconTint="?attr/colorOnSurface"
+                android:contentDescription="@string/settings"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                app:iconPadding="0dp"
+                android:padding="8dp" />
+        </LinearLayout>
+
         <!-- Profile Header -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@android:color/white"
+            style="@style/App.Card"
             app:cardCornerRadius="16dp"
             app:cardElevation="8dp"
             app:strokeWidth="2dp"
@@ -60,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:text="Eco Champion"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -126,7 +159,7 @@
                             android:layout_height="wrap_content"
                             android:text="Points"
                             android:textSize="12sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
 
@@ -151,7 +184,7 @@
                             android:layout_height="wrap_content"
                             android:text="Current Streak"
                             android:textSize="12sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
 
@@ -176,7 +209,7 @@
                             android:layout_height="wrap_content"
                             android:text="Accuracy"
                             android:textSize="12sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
 
@@ -225,7 +258,7 @@
                             android:layout_height="wrap_content"
                             android:text="Total Scans"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/txtTotalScans"
@@ -234,7 +267,7 @@
                             android:text="0"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -249,7 +282,7 @@
                             android:layout_height="wrap_content"
                             android:text="Best Streak"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/txtBestStreak"
@@ -258,7 +291,7 @@
                             android:text="0"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -273,7 +306,7 @@
                             android:layout_height="wrap_content"
                             android:text="Achievements"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/txtAchievementsUnlocked"
@@ -282,7 +315,7 @@
                             android:text="0"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -311,7 +344,7 @@
                     android:text="Achievement Badges"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/text_primary"
+                    android:textColor="?attr/colorOnSurface"
                     android:layout_marginBottom="16dp" />
 
                 <androidx.recyclerview.widget.RecyclerView

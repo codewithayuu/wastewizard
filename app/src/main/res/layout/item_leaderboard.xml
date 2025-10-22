@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    style="@style/App.Card">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +22,7 @@
             android:text="#1"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/accent_color"
+            android:textColor="?attr/colorSecondary"
             android:gravity="center"
             android:background="@drawable/rank_background"
             android:layout_marginEnd="16dp" />
@@ -42,7 +41,7 @@
                 android:text="Player Name"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/txtLevel"
@@ -50,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text="Level 1"
                 android:textSize="12sp"
-                android:textColor="@color/text_secondary" />
+                android:textColor="?attr/colorOnSurfaceVariant" />
 
         </LinearLayout>
 
@@ -62,7 +61,7 @@
             android:text="1000"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/primary_color" />
+            android:textColor="?attr/colorPrimary" />
 
     </LinearLayout>
 

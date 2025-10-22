@@ -5,10 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="2dp"
-    app:strokeColor="@color/primary_color">
+    style="@style/App.Card"
+    app:strokeColor="?attr/colorPrimary"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +22,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
-            android:background="@color/card_background"
+            android:background="?attr/colorSurfaceVariant"
             android:layout_marginEnd="16dp"
             android:visibility="gone"
             android:contentDescription="Scan thumbnail" />
@@ -42,15 +41,15 @@
                 android:text="Plastic"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/txtConfidence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="85.2%"
+                android:text=""
                 android:textSize="14sp"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:layout_marginTop="2dp" />
 
             <TextView
@@ -59,19 +58,20 @@
                 android:layout_height="wrap_content"
                 android:text="Dec 15, 14:30"
                 android:textSize="12sp"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:layout_marginTop="4dp" />
 
         </LinearLayout>
 
         <!-- Confidence Badge -->
         <TextView
+            android:id="@+id/txtConfidenceBadge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="85%"
+            android:text=""
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/colorOnPrimary"
             android:background="@drawable/rank_background"
             android:padding="8dp"
             android:gravity="center" />

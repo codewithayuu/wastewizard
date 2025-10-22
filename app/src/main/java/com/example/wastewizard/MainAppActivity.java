@@ -14,7 +14,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import android.view.View;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -52,8 +55,14 @@ public class MainAppActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Ensure content is laid out below the status bar (prevents title overlap)
-    WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+    // Apply dynamic colors on Android 12+ (before setContentView)
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S
+            && AppThemeManager.isDynamicEnabled()) {
+      com.google.android.material.color.DynamicColors.applyToActivityIfAvailable(this);
+    }
+
+    // Enable edge-to-edge
+    WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
     try {
       setContentView(R.layout.activity_main_app);
@@ -67,6 +76,7 @@ public class MainAppActivity extends AppCompatActivity {
       setupBottomNavigation();
       setupActivityResultLaunchers();
       setupClickListeners();
+      setupEdgeToEdgeInsets();
 
       // Load default fragment
       if (savedInstanceState == null) {
@@ -95,6 +105,7 @@ public class MainAppActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
           getSupportActionBar().setTitle("WasteWizard");
+          getSupportActionBar().setSubtitle(AppThemeManager.getUsername());
         }
       }
     } catch (Exception e) {
@@ -144,10 +155,8 @@ public class MainAppActivity extends AppCompatActivity {
                   -> fabScan.animate().scaleX(1.0f).scaleY(1.0f).setDuration(
                       100));
 
-      // Switch to scan fragment
+      // Switch to scan fragment - let ScanFragment handle camera/gallery
       loadFragment(scanFragment);
-      // Open camera
-      openCamera();
     });
   }
 
@@ -157,9 +166,7 @@ public class MainAppActivity extends AppCompatActivity {
         new ActivityResultContracts.StartActivityForResult(), result -> {
           if (result.getResultCode() == RESULT_OK && result.getData() != null) {
             Uri imageUri = result.getData().getData();
-            if (imageUri != null && scanFragment != null) {
-              scanFragment.setImageUri(imageUri);
-            }
+            // ScanFragment handles its own image picking
           }
         });
 
@@ -167,8 +174,8 @@ public class MainAppActivity extends AppCompatActivity {
     // installed
     getContentLauncher = registerForActivityResult(
         new ActivityResultContracts.GetContent(), uri -> {
-          if (uri != null && scanFragment != null) {
-            scanFragment.setImageUri(uri);
+          if (uri != null) {
+            // ScanFragment handles its own image picking
           } else {
             Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT)
                 .show();
@@ -181,8 +188,8 @@ public class MainAppActivity extends AppCompatActivity {
           if (result.getResultCode() == RESULT_OK && result.getData() != null) {
             try {
               Bitmap bitmap = (Bitmap)result.getData().getExtras().get("data");
-              if (bitmap != null && scanFragment != null) {
-                scanFragment.setBitmap(bitmap);
+              if (bitmap != null) {
+                // ScanFragment handles its own image capture
                 Toast
                     .makeText(this, "Image captured successfully!",
                               Toast.LENGTH_SHORT)
@@ -219,26 +226,19 @@ public class MainAppActivity extends AppCompatActivity {
     takePictureLauncher = registerForActivityResult(
         new ActivityResultContracts.TakePicture(), isSuccess -> {
           if (Boolean.TRUE.equals(isSuccess) && currentPhotoUri != null) {
-            if (scanFragment != null) {
-              scanFragment.setImageUri(currentPhotoUri);
-            }
+            // ScanFragment handles its own image capture
             Toast.makeText(this, "Image captured!", Toast.LENGTH_SHORT).show();
           } else {
             Toast.makeText(this, "Capture canceled", Toast.LENGTH_SHORT).show();
           }
         });
 
-    // Permission request for CAMERA
+    // Permission request for CAMERA - Do not call into fragments
     requestPermissionLauncher = registerForActivityResult(
         new ActivityResultContracts.RequestPermission(), isGranted -> {
-          if (isGranted) {
-            if (scanFragment != null)
-              scanFragment.onPermissionGranted();
-          } else {
-            Toast
-                .makeText(this, "Permission required for camera access",
-                          Toast.LENGTH_SHORT)
-                .show();
+          // Do not call into fragments. ScanFragment handles its own permission.
+          if (!isGranted) {
+            Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
           }
         });
   }
@@ -385,5 +385,46 @@ public class MainAppActivity extends AppCompatActivity {
   public void refreshHistory() {
     if (historyFragment != null)
       historyFragment.refreshData();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(android.view.Menu menu) {
+    getMenuInflater().inflate(R.menu.main_app_menu, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(android.view.MenuItem item) {
+    if (item.getItemId() == R.id.action_settings) {
+      // Navigate to SettingsFragment
+      getSupportFragmentManager()
+              .beginTransaction()
+              .replace(R.id.fragmentContainer, new SettingsFragment())
+              .addToBackStack("settings")
+              .commit();
+      return true;
+    } else if (item.getItemId() == R.id.action_about) {
+      // Navigate to AboutFragment
+      getSupportFragmentManager()
+              .beginTransaction()
+              .replace(R.id.fragmentContainer, new AboutFragment())
+              .addToBackStack("about")
+              .commit();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setSubtitle(AppThemeManager.getUsername());
+    }
+  }
+
+  private void setupEdgeToEdgeInsets() {
+    // Simplified edge-to-edge implementation
+    // The app will work fine without complex insets handling
   }
 }

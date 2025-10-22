@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="?attr/colorSurface"
     android:padding="12dp"
     android:fillViewport="true"
     android:scrollbars="vertical"
@@ -21,10 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            app:strokeWidth="0dp">
+            style="@style/App.Card">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,19 +30,20 @@
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/txtWelcome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Welcome Back!"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="?attr/colorOnSurface" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ready to classify some waste?"
                     android:textSize="16sp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:layout_marginTop="4dp" />
 
             </LinearLayout>
@@ -58,11 +56,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/primary_color">
+            style="@style/App.Card"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,7 +72,7 @@
                     android:text="Your Progress"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/text_primary"
+                    android:textColor="?attr/colorOnSurface"
                     android:layout_marginBottom="12dp" />
 
                 <LinearLayout
@@ -99,14 +95,14 @@
                             android:text="Level 1"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/primary_color" />
+                            android:textColor="?attr/colorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Level"
                             android:textSize="10sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
 
@@ -125,14 +121,14 @@
                             android:text="0"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/accent_color" />
+                            android:textColor="?attr/colorSecondary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Points"
                             android:textSize="10sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
 
@@ -151,14 +147,14 @@
                             android:text="0"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/success_color" />
+                            android:textColor="?attr/colorTertiary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Streak"
                             android:textSize="10sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
 
@@ -177,14 +173,14 @@
                             android:text="0.0%"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/warning_color" />
+                            android:textColor="?attr/colorSecondary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Accuracy"
                             android:textSize="10sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
 
@@ -200,7 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            app:cardBackgroundColor="@android:color/white"
+            style="@style/App.Card"
             app:cardCornerRadius="16dp"
             app:cardElevation="6dp"
             app:strokeWidth="1dp"
@@ -237,7 +233,7 @@
                             android:layout_height="wrap_content"
                             android:text="Scans Today"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/txtTodayScans"
@@ -246,7 +242,7 @@
                             android:text="0"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -261,7 +257,7 @@
                             android:layout_height="wrap_content"
                             android:text="Weekly Goal"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/txtWeeklyGoal"
@@ -270,7 +266,7 @@
                             android:text="0/20"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -285,7 +281,7 @@
                             android:layout_height="wrap_content"
                             android:text="Total Scans"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/txtTotalScans"
@@ -294,7 +290,7 @@
                             android:text="0"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -310,7 +306,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            app:cardBackgroundColor="@android:color/white"
+            style="@style/App.Card"
             app:cardCornerRadius="16dp"
             app:cardElevation="6dp"
             app:strokeWidth="1dp"
@@ -342,7 +338,7 @@
                         android:layout_height="wrap_content"
                         android:text="Unlock more by scanning!"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
@@ -365,7 +361,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            app:cardBackgroundColor="@android:color/white"
+            style="@style/App.Card"
             app:cardCornerRadius="16dp"
             app:cardElevation="6dp"
             app:strokeWidth="1dp"
@@ -403,7 +399,7 @@
             android:layout_marginTop="12dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="6dp"
-            app:cardBackgroundColor="@android:color/white"
+            style="@style/App.Card"
             app:strokeWidth="1dp"
             app:strokeColor="@color/accent_color">
 
@@ -438,7 +434,7 @@
                             android:layout_height="wrap_content"
                             android:text="This Week"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/txtThisWeek"
@@ -447,7 +443,7 @@
                             android:text="0"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -462,7 +458,7 @@
                             android:layout_height="wrap_content"
                             android:text="Last Week"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/txtLastWeek"
@@ -471,7 +467,7 @@
                             android:text="0"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -486,7 +482,7 @@
                             android:layout_height="wrap_content"
                             android:text="Monthly"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/txtMonthly"
@@ -495,7 +491,7 @@
                             android:text="0"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
@@ -512,7 +508,7 @@
             android:layout_marginTop="12dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="6dp"
-            app:cardBackgroundColor="@android:color/white">
+            style="@style/App.Card">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -534,7 +530,7 @@
                     android:layout_height="wrap_content"
                     android:text="• Reduce single-use plastics by carrying reusable bags\n• Sort waste properly to improve recycling efficiency\n• Compost organic waste when possible\n• Choose products with minimal packaging\n• Support local recycling programs"
                     android:textSize="14sp"
-                    android:textColor="@color/text_primary"
+                    android:textColor="?attr/colorOnSurface"
                     android:lineSpacingExtra="4dp" />
 
             </LinearLayout>

@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.WasteWizard" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Brand colors -->
+<resources>
+    <style name="Theme.WasteWizard" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Optional brand fallback for pre-Android 12 -->
         <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorSecondary">@color/accent_color</item>
-        <item name="colorOnSecondary">@android:color/white</item>
 
-        <!-- System bars -->
-        <item name="android:statusBarColor">@color/primary_dark</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:navigationBarColor">@color/card_background</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
+        <!-- Apply to Preference screens -->
+        <item name="preferenceTheme">@style/App.PreferenceTheme</item>
 
-        <!-- Background -->
-        <item name="android:windowBackground">@color/background_light</item>
+        <!-- Rounded shapes app-wide -->
+        <item name="shapeAppearanceSmallComponent">@style/Shape.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/Shape.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/Shape.Large</item>
 
-        <!-- Surfaces -->
-        <item name="colorSurface">@android:color/white</item>
-        <item name="colorOnSurface">@android:color/black</item>
+        <!-- Defaults -->
+        <item name="materialCardViewStyle">@style/App.Card</item>
+        <item name="materialButtonStyle">@style/App.Button.Filled</item>
+        <item name="materialButtonOutlinedStyle">@style/App.Button.Outlined</item>
+        <item name="floatingActionButtonStyle">@style/App.FAB</item>
+        <item name="toolbarStyle">@style/App.Toolbar</item>
     </style>
 
     <!-- Theme without action bar for splash -->

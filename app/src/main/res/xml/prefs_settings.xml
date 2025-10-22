@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/settings_general">
+        <EditTextPreference
+            android:key="pref_username"
+            android:title="@string/pref_username_title"
+            android:dialogTitle="@string/pref_username_title"
+            android:singleLine="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_appearance">
+        <ListPreference
+            android:key="pref_theme"
+            android:title="@string/pref_theme_title"
+            android:entries="@array/theme_entries"
+            android:entryValues="@array/theme_values"
+            android:defaultValue="system" />
+
+        <SwitchPreferenceCompat
+            android:key="pref_dynamic_color"
+            android:title="@string/pref_dynamic_color_title"
+            android:summary="@string/pref_dynamic_color_summary"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_scanning">
+        <SwitchPreferenceCompat
+            android:key="pref_realtime"
+            android:title="@string/pref_realtime_title"
+            android:summary="@string/pref_realtime_summary"
+            android:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            android:key="pref_auto_classify"
+            android:title="@string/pref_auto_classify_title"
+            android:summary="@string/pref_auto_classify_summary"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_data">
+        <Preference
+            android:key="pref_clear_history"
+            android:title="@string/clear_history_title"
+            android:summary="@string/clear_history_summary"
+            android:icon="@android:drawable/ic_menu_delete" />
+    </PreferenceCategory>
+
+    <Preference
+        android:key="pref_about"
+        android:title="@string/about"
+        android:summary="@string/about_summary" />
+
+</PreferenceScreen>
+
+
+

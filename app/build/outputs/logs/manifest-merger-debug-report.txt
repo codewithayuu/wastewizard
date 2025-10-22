@@ -1,40 +1,43 @@
 -- Merging decision tree log ---
-provider#androidx.core.content.FileProvider
-INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:65:9-73:20
-	android:grantUriPermissions
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:69:13-47
-	android:authorities
-		INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:67:13-64
-	android:exported
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:68:13-37
-	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:66:13-62
 manifest
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:1:1-76:12
-INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:1:1-76:12
-INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:1:1-76:12
-INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:1:1-76:12
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:1:1-72:12
+INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:1:1-72:12
+INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:1:1-72:12
+INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:1:1-72:12
 MERGED from [androidx.databinding:viewbinding:8.6.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\aaccbb97fe3a50fb51c88e2e38820e20\transformed\viewbinding-8.6.1\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\c58c3fa3d6d4e597e9bb6bde2e73415b\transformed\material-1.12.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.camera:camera-video:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\9c3a94a8a85089d7b946e9a92d04f0f9\transformed\camera-video-1.3.4\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:17:1-36:12
+MERGED from [androidx.camera:camera-lifecycle:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\fe5caaf80bf111eda187a43d8db7ec3f\transformed\camera-lifecycle-1.3.4\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:17:1-36:12
+MERGED from [androidx.camera:camera-view:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\a8112325b257ce0cf911674420365bc1\transformed\camera-view-1.3.4\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.preference:preference:1.2.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\ec521c64056adde33d7ed7dc16e41d0b\transformed\preference-1.2.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\b474e7856061875d3d6107ba7a467b66\transformed\appcompat-resources-1.7.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\5f9da40860e9a516ac4b0192accf718b\transformed\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3878e76833c33bafa2b2d21b5c597cd1\transformed\appcompat-1.7.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\d3572b6534d55a1ef1bd67708eb2f17d\transformed\viewpager2-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment-ktx:1.3.6] C:\Users\Ayush\.gradle\caches\8.9\transforms\31d70c53f55d8fb0c4c3f77dcf62f226\transformed\fragment-ktx-1.3.6\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.fragment:fragment:1.5.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\7ab984b8a47142fb49a76474e6d181af\transformed\fragment-1.5.4\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity-ktx:1.9.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\61fa2041197bf663a5f2bd05628c0dca\transformed\activity-ktx-1.9.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.activity:activity:1.9.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\307265d26ef0a7789cbddae73e9eab51\transformed\activity-1.9.0\AndroidManifest.xml:17:1-22:12
 MERGED from [org.tensorflow:tensorflow-lite-support:0.4.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\82c03ea0701ccc4d9c220a1b1ee818e3\transformed\tensorflow-lite-support-0.4.4\AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\Ayush\.gradle\caches\8.9\transforms\4a01eed6d2d2908be7ff2e6b09ffd828\transformed\exifinterface-1.3.7\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\30e5ef27afbfab25745c736453b76297\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\5d929f67dfd58915f623573618017b7d\transformed\savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fe095371250ab222cd8619a80826ba75\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3ae9b560a95747ee736cf742bd14b4ee\transformed\emoji2-1.3.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\75aef9a84835c6edb58ecccb0bf06f80\transformed\slidingpanelayout-1.2.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.transition:transition:1.5.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\23335989839bcdf7829e2fe40f7c63d2\transformed\transition-1.5.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\6b7db92081b2fff9b2f4516fffca3fd5\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\166b93f0f4300b0c2e8b8809780aa935\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.loader:loader:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\e320155dc88a54846c56c5b4ccb060dc\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\d0cd8beb87a1e4bc0aa3ae410a83597f\transformed\lifecycle-livedata-2.6.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fe095371250ab222cd8619a80826ba75\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3ae9b560a95747ee736cf742bd14b4ee\transformed\emoji2-1.3.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\df8392c8433dc6815b124874ec0d0cf1\transformed\lifecycle-viewmodel-ktx-2.6.2\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\d7f90f90d4e2ba2fe7b2f0dd3b3a4394\transformed\lifecycle-viewmodel-2.6.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\6fc4e2fefd6c6c977c6608c3ba1146b6\transformed\lifecycle-runtime-ktx-2.6.2\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\7b4d6f693a71b1979a11a489bb08bd9b\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\85129cfd96b5b79b2b1dc340b9ff8050\transformed\lifecycle-livedata-core-ktx-2.6.2\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\4d90fad4f40d80c5caa24c40edd9d5ca\transformed\lifecycle-livedata-core-2.6.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\d0cd8beb87a1e4bc0aa3ae410a83597f\transformed\lifecycle-livedata-2.6.2\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\af36e507a2e7fb4d687810d85f72e4a3\transformed\lifecycle-runtime-2.6.2\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\9e9e73e867b1d0d78f389effe96d14fa\transformed\lifecycle-viewmodel-savedstate-2.6.2\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core-ktx:1.13.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\7684b31a054556be52b85b1771d26bdb\transformed\core-ktx-1.13.0\AndroidManifest.xml:2:1-7:12
@@ -45,6 +48,7 @@ MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\Ayush\.gradl
 MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\b8b0826c1974630c579ef66544bcc11c\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\831f84c28508615bf3f363f88f40f500\transformed\recyclerview-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.customview:customview:1.1.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\5f972bf324880ecad97e351936712d4a\transformed\customview-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.core:core:1.13.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fb6bb9c387c3e541b5ac95556e55d7d4\transformed\core-1.13.0\AndroidManifest.xml:17:1-30:12
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\64ffdd961098c3a171ad8c83ba0749c3\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\c8773d10cba8996a46462a1b83c4f498\transformed\profileinstaller-1.3.1\AndroidManifest.xml:17:1-55:12
@@ -63,44 +67,40 @@ MERGED from [org.tensorflow:tensorflow-lite-support-api:0.4.4] C:\Users\Ayush\.g
 MERGED from [com.google.ai.edge.litert:litert-api:1.0.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\6858ae00a58939ccdbbab490da2118a4\transformed\litert-api-1.0.1\AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\Ayush\.gradle\caches\8.9\transforms\bb55a6116f8de642766e40092847aad5\transformed\image-1.0.0-beta1\AndroidManifest.xml:2:1-9:12
 	package
-		INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml
 	android:versionCode
-		INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:1:11-69
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:1:11-69
 uses-permission#android.permission.CAMERA
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:4:5-65
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:4:5-65
 	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:4:22-62
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:4:22-62
 uses-feature#android.hardware.camera.any
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:7:5-89
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:7:5-89
 	android:required
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:7:62-86
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:7:62-86
 	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:7:19-61
-uses-permission#android.permission.READ_MEDIA_IMAGES
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:11:5-76
-	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:11:22-73
-uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:13:5-15:38
-	android:maxSdkVersion
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:15:9-35
-	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:14:9-64
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:7:19-61
 application
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:20:5-75:19
-INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:20:5-75:19
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:13:5-71:19
+INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:13:5-71:19
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\c58c3fa3d6d4e597e9bb6bde2e73415b\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\c58c3fa3d6d4e597e9bb6bde2e73415b\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
+MERGED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:23:5-34:19
+MERGED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:23:5-34:19
+MERGED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:23:5-34:19
+MERGED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:23:5-34:19
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\5f9da40860e9a516ac4b0192accf718b\transformed\constraintlayout-2.0.1\AndroidManifest.xml:9:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\5f9da40860e9a516ac4b0192accf718b\transformed\constraintlayout-2.0.1\AndroidManifest.xml:9:5-20
 MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3ae9b560a95747ee736cf742bd14b4ee\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3ae9b560a95747ee736cf742bd14b4ee\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\7b4d6f693a71b1979a11a489bb08bd9b\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\7b4d6f693a71b1979a11a489bb08bd9b\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:24:5-31:19
+MERGED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:24:5-31:19
 MERGED from [androidx.core:core:1.13.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fb6bb9c387c3e541b5ac95556e55d7d4\transformed\core-1.13.0\AndroidManifest.xml:28:5-89
 MERGED from [androidx.core:core:1.13.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fb6bb9c387c3e541b5ac95556e55d7d4\transformed\core-1.13.0\AndroidManifest.xml:28:5-89
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\c8773d10cba8996a46462a1b83c4f498\transformed\profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
@@ -116,93 +116,101 @@ MERGED from [com.google.ai.edge.litert:litert-api:1.0.1] C:\Users\Ayush\.gradle\
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\Ayush\.gradle\caches\8.9\transforms\bb55a6116f8de642766e40092847aad5\transformed\image-1.0.0-beta1\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\Ayush\.gradle\caches\8.9\transforms\bb55a6116f8de642766e40092847aad5\transformed\image-1.0.0-beta1\AndroidManifest.xml:7:5-20
 	android:extractNativeLibs
-		INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fb6bb9c387c3e541b5ac95556e55d7d4\transformed\core-1.13.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:24:9-35
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:18:9-35
 	android:label
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:23:9-41
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:17:9-41
 	android:icon
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:22:9-43
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:16:9-43
 	android:allowBackup
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:21:9-35
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:15:9-35
 	android:theme
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:25:9-49
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:19:9-49
+	android:name
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:14:9-39
 activity#com.example.wastewizard.MainAppActivity
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:28:9-37:20
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:22:9-31:20
 	android:launchMode
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:31:13-43
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:25:13-43
 	android:exported
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:30:13-36
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:24:13-36
 	android:theme
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:32:13-53
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:26:13-53
 	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:29:13-44
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:23:13-44
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:33:13-36:29
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:27:13-30:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:34:17-69
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:28:17-69
 	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:34:25-66
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:28:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:35:17-77
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:29:17-77
 	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:35:27-74
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:29:27-74
 activity#com.example.wastewizard.MainActivity
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:40:9-44:56
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:34:9-38:56
 	android:launchMode
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:43:13-43
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:37:13-43
 	android:exported
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:42:13-37
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:36:13-37
 	android:theme
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:44:13-53
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:38:13-53
 	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:41:13-41
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:35:13-41
 activity#com.example.wastewizard.SimpleMainActivity
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:46:9-50:56
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:40:9-44:56
 	android:launchMode
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:49:13-43
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:43:13-43
 	android:exported
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:48:13-37
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:42:13-37
 	android:theme
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:50:13-53
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:44:13-53
 	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:47:13-47
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:41:13-47
 activity#com.example.wastewizard.TestMainActivity
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:52:9-56:56
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:46:9-50:56
 	android:launchMode
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:55:13-43
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:49:13-43
 	android:exported
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:54:13-37
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:48:13-37
 	android:theme
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:56:13-53
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:50:13-53
 	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:53:13-45
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:47:13-45
 activity#com.example.wastewizard.EnhancedMainActivity
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:58:9-62:56
+ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:52:9-56:56
 	android:launchMode
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:61:13-43
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:55:13-43
 	android:exported
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:60:13-37
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:54:13-37
 	android:theme
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:62:13-53
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:56:13-53
 	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:59:13-49
-meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:70:13-72:54
-	android:resource
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:72:17-51
-	android:name
-		ADDED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml:71:17-67
+		ADDED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml:53:13-49
 uses-sdk
-INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml
 MERGED from [androidx.databinding:viewbinding:8.6.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\aaccbb97fe3a50fb51c88e2e38820e20\transformed\viewbinding-8.6.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.databinding:viewbinding:8.6.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\aaccbb97fe3a50fb51c88e2e38820e20\transformed\viewbinding-8.6.1\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\c58c3fa3d6d4e597e9bb6bde2e73415b\transformed\material-1.12.0\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\c58c3fa3d6d4e597e9bb6bde2e73415b\transformed\material-1.12.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.camera:camera-video:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\9c3a94a8a85089d7b946e9a92d04f0f9\transformed\camera-video-1.3.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-video:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\9c3a94a8a85089d7b946e9a92d04f0f9\transformed\camera-video-1.3.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:21:5-44
+MERGED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:21:5-44
+MERGED from [androidx.camera:camera-lifecycle:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\fe5caaf80bf111eda187a43d8db7ec3f\transformed\camera-lifecycle-1.3.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-lifecycle:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\fe5caaf80bf111eda187a43d8db7ec3f\transformed\camera-lifecycle-1.3.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:21:5-44
+MERGED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:21:5-44
+MERGED from [androidx.camera:camera-view:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\a8112325b257ce0cf911674420365bc1\transformed\camera-view-1.3.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-view:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\a8112325b257ce0cf911674420365bc1\transformed\camera-view-1.3.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.preference:preference:1.2.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\ec521c64056adde33d7ed7dc16e41d0b\transformed\preference-1.2.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.preference:preference:1.2.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\ec521c64056adde33d7ed7dc16e41d0b\transformed\preference-1.2.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\b474e7856061875d3d6107ba7a467b66\transformed\appcompat-resources-1.7.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\b474e7856061875d3d6107ba7a467b66\transformed\appcompat-resources-1.7.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\5f9da40860e9a516ac4b0192accf718b\transformed\constraintlayout-2.0.1\AndroidManifest.xml:5:5-7:41
@@ -211,18 +219,24 @@ MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\Ayush\.gradle\caches\8
 MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3878e76833c33bafa2b2d21b5c597cd1\transformed\appcompat-1.7.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\d3572b6534d55a1ef1bd67708eb2f17d\transformed\viewpager2-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\d3572b6534d55a1ef1bd67708eb2f17d\transformed\viewpager2-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment-ktx:1.3.6] C:\Users\Ayush\.gradle\caches\8.9\transforms\31d70c53f55d8fb0c4c3f77dcf62f226\transformed\fragment-ktx-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment-ktx:1.3.6] C:\Users\Ayush\.gradle\caches\8.9\transforms\31d70c53f55d8fb0c4c3f77dcf62f226\transformed\fragment-ktx-1.3.6\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.fragment:fragment:1.5.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\7ab984b8a47142fb49a76474e6d181af\transformed\fragment-1.5.4\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.fragment:fragment:1.5.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\7ab984b8a47142fb49a76474e6d181af\transformed\fragment-1.5.4\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity-ktx:1.9.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\61fa2041197bf663a5f2bd05628c0dca\transformed\activity-ktx-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\61fa2041197bf663a5f2bd05628c0dca\transformed\activity-ktx-1.9.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.activity:activity:1.9.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\307265d26ef0a7789cbddae73e9eab51\transformed\activity-1.9.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.activity:activity:1.9.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\307265d26ef0a7789cbddae73e9eab51\transformed\activity-1.9.0\AndroidManifest.xml:20:5-44
 MERGED from [org.tensorflow:tensorflow-lite-support:0.4.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\82c03ea0701ccc4d9c220a1b1ee818e3\transformed\tensorflow-lite-support-0.4.4\AndroidManifest.xml:4:3-71
 MERGED from [org.tensorflow:tensorflow-lite-support:0.4.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\82c03ea0701ccc4d9c220a1b1ee818e3\transformed\tensorflow-lite-support-0.4.4\AndroidManifest.xml:4:3-71
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\Ayush\.gradle\caches\8.9\transforms\4a01eed6d2d2908be7ff2e6b09ffd828\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\Ayush\.gradle\caches\8.9\transforms\4a01eed6d2d2908be7ff2e6b09ffd828\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\30e5ef27afbfab25745c736453b76297\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\30e5ef27afbfab25745c736453b76297\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\5d929f67dfd58915f623573618017b7d\transformed\savedstate-1.2.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\Ayush\.gradle\caches\8.9\transforms\5d929f67dfd58915f623573618017b7d\transformed\savedstate-1.2.1\AndroidManifest.xml:20:5-44
-MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fe095371250ab222cd8619a80826ba75\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fe095371250ab222cd8619a80826ba75\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3ae9b560a95747ee736cf742bd14b4ee\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
-MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3ae9b560a95747ee736cf742bd14b4ee\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\75aef9a84835c6edb58ecccb0bf06f80\transformed\slidingpanelayout-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\75aef9a84835c6edb58ecccb0bf06f80\transformed\slidingpanelayout-1.2.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.transition:transition:1.5.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\23335989839bcdf7829e2fe40f7c63d2\transformed\transition-1.5.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.transition:transition:1.5.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\23335989839bcdf7829e2fe40f7c63d2\transformed\transition-1.5.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\6b7db92081b2fff9b2f4516fffca3fd5\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
@@ -231,14 +245,24 @@ MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Ayush\.gr
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\166b93f0f4300b0c2e8b8809780aa935\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.loader:loader:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\e320155dc88a54846c56c5b4ccb060dc\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.loader:loader:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\e320155dc88a54846c56c5b4ccb060dc\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\d0cd8beb87a1e4bc0aa3ae410a83597f\transformed\lifecycle-livedata-2.6.2\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\d0cd8beb87a1e4bc0aa3ae410a83597f\transformed\lifecycle-livedata-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fe095371250ab222cd8619a80826ba75\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fe095371250ab222cd8619a80826ba75\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3ae9b560a95747ee736cf742bd14b4ee\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3ae9b560a95747ee736cf742bd14b4ee\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\df8392c8433dc6815b124874ec0d0cf1\transformed\lifecycle-viewmodel-ktx-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\df8392c8433dc6815b124874ec0d0cf1\transformed\lifecycle-viewmodel-ktx-2.6.2\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\d7f90f90d4e2ba2fe7b2f0dd3b3a4394\transformed\lifecycle-viewmodel-2.6.2\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\d7f90f90d4e2ba2fe7b2f0dd3b3a4394\transformed\lifecycle-viewmodel-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\6fc4e2fefd6c6c977c6608c3ba1146b6\transformed\lifecycle-runtime-ktx-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\6fc4e2fefd6c6c977c6608c3ba1146b6\transformed\lifecycle-runtime-ktx-2.6.2\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\7b4d6f693a71b1979a11a489bb08bd9b\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:21:5-44
 MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\7b4d6f693a71b1979a11a489bb08bd9b\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\85129cfd96b5b79b2b1dc340b9ff8050\transformed\lifecycle-livedata-core-ktx-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\85129cfd96b5b79b2b1dc340b9ff8050\transformed\lifecycle-livedata-core-ktx-2.6.2\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\4d90fad4f40d80c5caa24c40edd9d5ca\transformed\lifecycle-livedata-core-2.6.2\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\4d90fad4f40d80c5caa24c40edd9d5ca\transformed\lifecycle-livedata-core-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\d0cd8beb87a1e4bc0aa3ae410a83597f\transformed\lifecycle-livedata-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\d0cd8beb87a1e4bc0aa3ae410a83597f\transformed\lifecycle-livedata-2.6.2\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\af36e507a2e7fb4d687810d85f72e4a3\transformed\lifecycle-runtime-2.6.2\AndroidManifest.xml:5:5-44
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\af36e507a2e7fb4d687810d85f72e4a3\transformed\lifecycle-runtime-2.6.2\AndroidManifest.xml:5:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\9e9e73e867b1d0d78f389effe96d14fa\transformed\lifecycle-viewmodel-savedstate-2.6.2\AndroidManifest.xml:20:5-44
@@ -259,6 +283,8 @@ MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\Ayush\.gradle\ca
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\831f84c28508615bf3f363f88f40f500\transformed\recyclerview-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.customview:customview:1.1.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\5f972bf324880ecad97e351936712d4a\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.customview:customview:1.1.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\5f972bf324880ecad97e351936712d4a\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core:1.13.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fb6bb9c387c3e541b5ac95556e55d7d4\transformed\core-1.13.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.core:core:1.13.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fb6bb9c387c3e541b5ac95556e55d7d4\transformed\core-1.13.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\64ffdd961098c3a171ad8c83ba0749c3\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
@@ -294,9 +320,27 @@ MERGED from [com.google.ai.edge.litert:litert-api:1.0.1] C:\Users\Ayush\.gradle\
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\Ayush\.gradle\caches\8.9\transforms\bb55a6116f8de642766e40092847aad5\transformed\image-1.0.0-beta1\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\Ayush\.gradle\caches\8.9\transforms\bb55a6116f8de642766e40092847aad5\transformed\image-1.0.0-beta1\AndroidManifest.xml:5:5-44
 	android:targetSdkVersion
-		INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\Ayush\Downloads\project\wastewizard\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Ayush\Downloads\dev\wastewizard\app\src\main\AndroidManifest.xml
+service#androidx.camera.core.impl.MetadataHolderService
+ADDED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:29:9-33:78
+MERGED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:24:9-33:19
+MERGED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:24:9-33:19
+	android:enabled
+		ADDED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:31:13-36
+	android:exported
+		ADDED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:32:13-37
+	tools:ignore
+		ADDED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:33:13-75
+	android:name
+		ADDED from [androidx.camera:camera-core:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\c908c2137e8faf6367d6477de7401d82\transformed\camera-core-1.3.4\AndroidManifest.xml:30:13-75
+meta-data#androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER
+ADDED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:30:13-32:89
+	android:value
+		ADDED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:32:17-86
+	android:name
+		ADDED from [androidx.camera:camera-camera2:1.3.4] C:\Users\Ayush\.gradle\caches\8.9\transforms\3f266d5bc6659bb26fc0e55f8b6ea1dc\transformed\camera-camera2-1.3.4\AndroidManifest.xml:31:17-103
 provider#androidx.startup.InitializationProvider
 ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\3ae9b560a95747ee736cf742bd14b4ee\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
 MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\7b4d6f693a71b1979a11a489bb08bd9b\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:24:9-32:20
@@ -325,6 +369,18 @@ ADDED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Ayush\.gradle\c
 		ADDED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\7b4d6f693a71b1979a11a489bb08bd9b\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
 	android:name
 		ADDED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Ayush\.gradle\caches\8.9\transforms\7b4d6f693a71b1979a11a489bb08bd9b\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+uses-library#androidx.window.extensions
+ADDED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:25:9-27:40
+	android:required
+		ADDED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:26:13-54
+uses-library#androidx.window.sidecar
+ADDED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:28:9-30:40
+	android:required
+		ADDED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:30:13-37
+	android:name
+		ADDED from [androidx.window:window:1.0.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\901cf5ad980cdef2713f1b18a71dbe81\transformed\window-1.0.0\AndroidManifest.xml:29:13-51
 permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.13.0] C:\Users\Ayush\.gradle\caches\8.9\transforms\fb6bb9c387c3e541b5ac95556e55d7d4\transformed\core-1.13.0\AndroidManifest.xml:22:5-24:47
 	android:protectionLevel

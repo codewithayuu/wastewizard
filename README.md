@@ -12,21 +12,41 @@ An intelligent Android application for waste classification using TensorFlow Lit
   - 🟫 Paper
   - 🟠 Cardboard
 
+### Advanced Features
+- **Real-time Classification**: Live camera preview with throttled AI analysis
+- **Auto-classify**: Automatic classification after capture/pick
+- **Yes/No Confirmation**: User feedback system for gamification
+- **Scan History**: Complete history of all classifications with timestamps
+- **Gamification**: Points, levels, streaks, and achievements system
+- **Settings Screen**: Username, theme preferences, and app configuration
+
 ### User Interface
 - **Material Design 3**: Modern, intuitive UI following Google's design guidelines
+- **Dynamic Colors**: Material You integration on Android 12+
 - **Dark/Light Theme**: Automatic theme switching with manual toggle option
+- **Edge-to-Edge Display**: Modern full-screen experience with proper insets
 - **Responsive Layout**: Optimized for various screen sizes
 - **Loading Indicators**: Visual feedback during AI processing
 
 ### Image Input
-- **Camera Capture**: Take photos directly within the app
-- **Gallery Picker**: Select images from device gallery
-- **Permission Handling**: Smart camera permission management
+- **CameraX Integration**: Modern camera API with in-app preview
+- **Photo Picker**: Android 13+ native image picker
+- **Gallery Selection**: Fallback for older Android versions
+- **Permission Handling**: Smart camera permission management with rationale dialogs
 
 ### Educational Content
 - **Reduce Tips**: Personalized advice for minimizing waste
 - **Recycle Guidelines**: Specific recycling instructions for each material type
 - **Color-Coded Results**: Visual indicators for different waste categories
+- **Category Colors**: Harmonized colors that blend with dynamic themes
+
+### Gamification System
+- **Points System**: Earn points for correct classifications
+- **Level Progression**: Level up based on total points
+- **Streak Tracking**: Maintain classification streaks
+- **Achievements**: Unlock achievements for milestones
+- **Leaderboard**: Compare progress with other users
+- **Statistics**: Today's scans, weekly progress, accuracy tracking
 
 ## 🚀 Getting Started
 
@@ -55,9 +75,10 @@ An intelligent Android application for waste classification using TensorFlow Lit
 
 ### First Run
 1. Grant camera permission when prompted
-2. Take a photo or select from gallery
-3. Tap "Predict" to analyze the waste material
-4. View classification results and tips
+2. Set your username in Settings
+3. Take a photo or select from gallery
+4. Confirm classification accuracy (Yes/No)
+5. View your progress in Dashboard and History
 
 ## 📁 Project Structure
 
@@ -65,44 +86,100 @@ An intelligent Android application for waste classification using TensorFlow Lit
 app/
 ├── src/main/
 │   ├── java/com/example/wastewizard/
-│   │   ├── MainActivity.java          # Main activity with UI logic
-│   │   └── TFLiteClassifier.java      # TensorFlow Lite integration
+│   │   ├── MainAppActivity.java          # Main activity with navigation
+│   │   ├── ScanFragment.java             # Camera and classification logic
+│   │   ├── DashboardFragment.java        # Stats and quick actions
+│   │   ├── HistoryFragment.java          # Scan history display
+│   │   ├── ProfileFragment.java          # User profile and achievements
+│   │   ├── LeaderboardFragment.java     # User rankings
+│   │   ├── SettingsFragment.java         # App settings and preferences
+│   │   ├── AboutFragment.java            # App information and licenses
+│   │   ├── TFLiteClassifier.java         # TensorFlow Lite integration
+│   │   ├── GameManager.java              # Gamification system
+│   │   ├── AppThemeManager.java          # Theme and settings management
+│   │   ├── CategoryColors.java           # Dynamic color harmonization
+│   │   └── WasteWizardApp.java           # Application class
 │   ├── assets/
-│   │   ├── garbage_model.tflite       # Pre-trained ML model
-│   │   └── labels.txt                 # Model classification labels
+│   │   ├── garbage_model.tflite          # Pre-trained ML model
+│   │   ├── labels.txt                    # Model classification labels
+│   │   └── model_version.txt             # Model version information
 │   ├── res/
 │   │   ├── layout/
-│   │   │   └── activity_main.xml      # Main UI layout
+│   │   │   ├── activity_main_app.xml     # Main activity layout
+│   │   │   ├── fragment_scan.xml         # Scan screen layout
+│   │   │   ├── fragment_dashboard.xml   # Dashboard layout
+│   │   │   ├── fragment_history.xml     # History layout
+│   │   │   ├── fragment_profile.xml     # Profile layout
+│   │   │   ├── fragment_leaderboard.xml # Leaderboard layout
+│   │   │   ├── fragment_settings.xml    # Settings layout
+│   │   │   ├── fragment_about.xml       # About layout
+│   │   │   └── item_*.xml               # RecyclerView item layouts
 │   │   ├── values/
-│   │   │   ├── colors.xml             # Color definitions
-│   │   │   ├── strings.xml            # String resources
-│   │   │   └── themes.xml             # App themes
+│   │   │   ├── colors.xml                # Color definitions
+│   │   │   ├── strings.xml               # String resources
+│   │   │   ├── themes.xml                # App themes
+│   │   │   ├── styles.xml                # Custom styles
+│   │   │   └── dimens.xml                # Spacing and dimensions
+│   │   ├── values-night/
+│   │   │   └── themes.xml                # Dark theme overrides
 │   │   ├── menu/
-│   │   │   └── menu_main.xml          # Options menu
-│   │   └── xml/
-│   │       └── file_paths.xml         # File provider configuration
-│   └── AndroidManifest.xml            # App configuration
-└── build.gradle                       # Dependencies and build config
+│   │   │   ├── bottom_nav_menu.xml       # Bottom navigation
+│   │   │   └── main_app_menu.xml         # Toolbar menu
+│   │   ├── xml/
+│   │   │   └── prefs_settings.xml        # Settings preferences
+│   │   └── raw/
+│   │       └── licenses.html             # Open source licenses
+│   └── AndroidManifest.xml               # App configuration
+└── build.gradle                          # Dependencies and build config
 ```
 
 ## 🛠 Technical Details
 
 ### Machine Learning
-- **Framework**: TensorFlow Lite 2.12.0
+- **Framework**: TensorFlow Lite 2.16.1+
 - **Model**: Custom-trained CNN for waste classification
-- **Input**: 180x180 RGB images
+- **Input**: 180x180 RGB images with YUV_420_888 conversion
 - **Output**: 5-class classification (cardboard, glass, metal, paper, plastic)
 - **Processing**: On-device inference for privacy and speed
+- **Real-time**: Throttled analysis at ~2.5 FPS for live preview
 
 ### Architecture
-- **UI Framework**: Material Design Components
-- **Image Processing**: Android CameraX and MediaStore
+- **UI Framework**: Material Design Components 1.12.0+
+- **Navigation**: Fragment-based navigation with bottom navigation
+- **Image Processing**: CameraX for camera, Photo Picker for gallery
 - **Async Processing**: Background threads for ML inference
 - **Memory Management**: Efficient bitmap handling and model cleanup
+- **Theme System**: Dynamic colors with Material You integration
 
 ### Permissions
 - `CAMERA`: Required for photo capture functionality
-- File provider configured for secure image sharing
+- `READ_MEDIA_IMAGES`: For Android 13+ gallery access
+- `READ_EXTERNAL_STORAGE`: Fallback for older Android versions
+
+### Recent Updates
+
+#### v2.0.0 - Major Feature Update
+- ✅ **Real-time Classification**: Live camera preview with AI analysis
+- ✅ **Gamification System**: Points, levels, streaks, and achievements
+- ✅ **Settings Screen**: Username, theme preferences, and app configuration
+- ✅ **Dynamic Colors**: Material You integration on Android 12+
+- ✅ **Edge-to-Edge**: Modern full-screen experience
+- ✅ **Yes/No Confirmation**: User feedback system for accurate stats
+- ✅ **Scan History**: Complete history with timestamps and accuracy tracking
+- ✅ **Material Design 3**: Updated UI with latest design guidelines
+
+#### v1.5.0 - Stability Improvements
+- ✅ **CameraX Migration**: Modern camera API with in-app preview
+- ✅ **Permission Handling**: Smart permission management with rationale dialogs
+- ✅ **Fragment Lifecycle**: Proper lifecycle management for stability
+- ✅ **Memory Optimization**: Efficient bitmap handling and cleanup
+- ✅ **Error Handling**: Comprehensive error handling and user feedback
+
+#### v1.0.0 - Initial Release
+- ✅ **Basic Classification**: TensorFlow Lite waste classification
+- ✅ **Camera Integration**: Photo capture and gallery selection
+- ✅ **Material Design**: Modern UI with dark/light themes
+- ✅ **Educational Content**: Tips and guidelines for waste management
 
 ## 🎨 Customization
 
@@ -110,19 +187,38 @@ app/
 1. Retrain the TensorFlow model with additional classes
 2. Update `labels.txt` with new category names
 3. Add corresponding colors in `colors.xml`
-4. Update tip generation methods in `MainActivity.java`
+4. Update tip generation methods in `ScanFragment.java`
 
 ### UI Customization
 - Modify `colors.xml` for different color schemes
 - Update `themes.xml` for custom Material Design themes
-- Adjust layouts in `activity_main.xml`
+- Adjust layouts in fragment XML files
+- Customize spacing in `dimens.xml`
 
-The app features:
-- Clean, intuitive interface with Material Design 3
-- Real-time image preview
-- Instant AI-powered waste classification
-- Educational tips with color-coded categories
-- Dark/light theme support
+### Gamification Customization
+- Modify point values in `GameManager.java`
+- Add new achievements in the achievements system
+- Customize level progression requirements
+- Update leaderboard scoring algorithms
+
+## 🧪 Testing
+
+### Manual Testing Checklist
+- [ ] Camera permission grant/deny flows
+- [ ] Real-time classification accuracy
+- [ ] Yes/No confirmation system
+- [ ] Stats updates in Dashboard
+- [ ] History persistence and display
+- [ ] Theme switching (light/dark/dynamic)
+- [ ] Settings screen functionality
+- [ ] Navigation between screens
+- [ ] Memory usage during extended use
+
+### Performance Testing
+- [ ] Classification speed (< 1 second)
+- [ ] Memory usage during camera preview
+- [ ] Battery usage during real-time analysis
+- [ ] App stability during rapid navigation
 
 ## 🤝 Contributing
 
@@ -132,18 +228,37 @@ The app features:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+### Development Guidelines
+- Follow Material Design 3 guidelines
+- Use proper fragment lifecycle management
+- Implement proper error handling
+- Add appropriate logging for debugging
+- Test on multiple Android versions
+- Ensure accessibility compliance
 
 ## 🙏 Acknowledgments
 
 - TensorFlow Lite team for the ML framework
 - Material Design team for the UI components
 - Android development community for best practices
+- CameraX team for modern camera APIs
+- Material You team for dynamic color system
 
 ---
 
 **WasteWizard** - Making waste management smarter, one classification at a time! 🌍♻️
----
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📱 Download
+
+The latest APK is available in the device Downloads folder as `WasteWizard.apk` (39.2 MB).
+
+### Installation Instructions
+1. Enable "Install from unknown sources" in device settings
+2. Navigate to Downloads folder
+3. Tap `WasteWizard.apk` to install
+4. Launch the app and grant camera permission
+5. Start classifying waste and earning points!

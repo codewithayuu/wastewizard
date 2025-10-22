@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.wastewizard.app-mergeDebugResources-29:/values-v23/values-v23.xml",
+            "outputFile": "com.example.wastewizard.app-mergeDebugResources-42:/values-v23/values-v23.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Ayush\\.gradle\\caches\\8.9\\transforms\\1c2be613246f8e80030087b4f5874505\\transformed\\cardview-1.0.0\\res\\values-v23\\values-v23.xml",

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="?attr/colorSurface"
     android:padding="12dp"
     android:fillViewport="true"
     android:scrollbars="vertical"
@@ -21,10 +21,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/primary_color">
+            style="@style/App.Card"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,14 +37,14 @@
                     android:text="Scan Waste"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary_color" />
+                    android:textColor="?attr/colorOnSurface" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Take a photo or select from gallery"
                     android:textSize="16sp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:layout_marginTop="4dp" />
 
             </LinearLayout>
@@ -63,7 +62,29 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:background="@color/card_background">
+                android:background="?attr/colorSurface">
+
+        <!-- CameraX preview (hidden until started) -->
+        <androidx.camera.view.PreviewView
+            android:id="@+id/cameraPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:contentDescription="@string/camera_preview"/>
+
+        <!-- Live result chip -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipLiveResult"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            app:chipIcon="@android:drawable/ic_dialog_info"
+            app:chipIconTint="?attr/colorOnSecondaryContainer"
+            app:chipBackgroundColor="?attr/colorSecondaryContainer"
+            app:iconStartPadding="8dp" />
 
                 <ImageView
                     android:id="@+id/imagePreview"
@@ -93,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:text="No image selected"
                         android:textSize="16sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:layout_marginTop="16dp"
                         android:alpha="0.7" />
 
@@ -174,7 +195,7 @@
                     android:id="@+id/txtPredicted"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Predicted: Plastic (85.2%)"
+                    android:text=""
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/primary_color"
@@ -188,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:text="Tips will appear here..."
                     android:textSize="14sp"
-                    android:textColor="@color/text_primary"
+                    android:textColor="?attr/colorOnSurface"
                     android:layout_marginBottom="12dp" />
 
                 <!-- Reduce and Recycle Cards -->
@@ -229,7 +250,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Reduce tips..."
                                 android:textSize="12sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="?attr/colorOnSurfaceVariant" />
 
                         </LinearLayout>
 
@@ -267,7 +288,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Recycle tips..."
                                 android:textSize="12sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="?attr/colorOnSurfaceVariant" />
 
                         </LinearLayout>
 
@@ -286,7 +307,7 @@
             android:layout_marginTop="12dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="6dp"
-            app:cardBackgroundColor="@android:color/white">
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -308,7 +329,7 @@
                     android:layout_height="wrap_content"
                     android:text="• Ensure good lighting when taking photos\n• Keep the waste item centered in the frame\n• Avoid shadows and reflections\n• Take photos from multiple angles if needed\n• Clean the lens before capturing"
                     android:textSize="14sp"
-                    android:textColor="@color/text_primary"
+                    android:textColor="?attr/colorOnSurface"
                     android:lineSpacingExtra="4dp" />
 
             </LinearLayout>

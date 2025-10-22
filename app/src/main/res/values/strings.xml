@@ -39,4 +39,47 @@
     <string name="achievement_waste_warrior">Waste Warrior</string>
     <string name="achievement_dedicated_learner">Dedicated Learner</string>
     <string name="achievement_expert_classifier">Expert Classifier</string>
+    <string name="camera_preview">Camera preview</string>
+    
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="profile">Profile</string>
+    <string name="settings_general">General</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_data">Data</string>
+
+    <string name="pref_username_title">Username</string>
+    <string name="pref_theme_title">Theme</string>
+    <string name="pref_dynamic_color_title">Dynamic color (Android 12+)</string>
+    <string name="pref_dynamic_color_summary">Use system wallpaper colors for the app UI</string>
+
+    <string name="clear_history_title">Clear scan history</string>
+    <string name="clear_history_message">This will remove all saved scan history on this device.</string>
+    <string name="clear_history_summary">Remove all scan entries stored locally</string>
+    <string name="history_cleared">History cleared</string>
+    <string name="clear">Clear</string>
+
+    <string-array name="theme_entries">
+        <item>System default</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>system</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+    
+    <!-- Scanning Settings -->
+    <string name="settings_scanning">Scanning</string>
+    <string name="pref_realtime_title">Real-time classification</string>
+    <string name="pref_realtime_summary">Classify items live in the camera preview</string>
+    <string name="pref_auto_classify_title">Auto-classify after capture/pick</string>
+    <string name="pref_auto_classify_summary">Automatically run classification after taking or selecting a photo</string>
+    <string name="about_summary">App info, model details, and licenses</string>
+    
+    <!-- About -->
+    <string name="version">Version</string>
+    <string name="model_version">Model version</string>
+    <string name="open_source_licenses">Open source licenses</string>
 </resources>

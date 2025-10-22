@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class ProfileFragment extends Fragment {
     private GameManager gameManager;
     private TextView txtLevel, txtPoints, txtStreak, txtAccuracy;
     private TextView txtTotalScans, txtBestStreak, txtAchievementsUnlocked;
+    private TextView txtProfileTitle;
     private RecyclerView recyclerViewAchievements;
     
     @Override
@@ -49,6 +51,21 @@ public class ProfileFragment extends Fragment {
         
         // Achievements
         recyclerViewAchievements = view.findViewById(R.id.recyclerViewAchievements);
+        
+        // Profile title and settings
+        txtProfileTitle = view.findViewById(R.id.txtProfileTitle);
+        View btnSettings = view.findViewById(R.id.btnOpenSettings);
+        
+        // Setup settings button
+        if (btnSettings != null) {
+            btnSettings.setOnClickListener(v -> {
+                requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, new SettingsFragment())
+                    .addToBackStack("settings_from_profile")
+                    .commit();
+            });
+        }
     }
     
     private void setupAchievements() {
@@ -61,6 +78,9 @@ public class ProfileFragment extends Fragment {
     
     public void refreshData() {
         if (gameManager == null) return;
+        
+        // Update profile title with username
+        txtProfileTitle.setText(AppThemeManager.getUsername() + "'s Profile");
         
         // Update main stats
         txtLevel.setText("Level " + gameManager.getLevel());
@@ -99,14 +119,18 @@ public class ProfileFragment extends Fragment {
             holder.txtTitle.setText(achievement.title);
             holder.txtDescription.setText(achievement.description);
             
+            // Get Material colors for dynamic theming
+            int colorTertiary = MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorTertiary);
+            int colorOnSurfaceVariant = MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurfaceVariant);
+            
             if (achievement.unlocked) {
-                holder.card.setStrokeColor(holder.itemView.getContext().getResources().getColor(R.color.success_color));
+                holder.card.setStrokeColor(colorTertiary);
                 holder.card.setStrokeWidth(2);
-                holder.txtTitle.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.success_color));
+                holder.txtTitle.setTextColor(colorTertiary);
                 holder.icon.setText("🏆");
             } else {
                 holder.card.setStrokeWidth(0);
-                holder.txtTitle.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_secondary));
+                holder.txtTitle.setTextColor(colorOnSurfaceVariant);
                 holder.icon.setText("🔒");
                 holder.card.setAlpha(0.6f);
             }
@@ -129,5 +153,11 @@ public class ProfileFragment extends Fragment {
                 icon = itemView.findViewById(R.id.txtAchievementIcon);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshData();
     }
 }

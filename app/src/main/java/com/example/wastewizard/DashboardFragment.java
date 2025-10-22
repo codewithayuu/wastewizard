@@ -21,6 +21,7 @@ public class DashboardFragment extends Fragment {
     private TextView txtLevel, txtPoints, txtStreak, txtAccuracy, txtTotalScans;
     private TextView txtTodayScans, txtWeeklyGoal, txtAchievements;
     private TextView txtThisWeek, txtLastWeek, txtMonthly;
+    private TextView txtWelcome;
     private MaterialCardView cardStats, cardToday, cardAchievements, cardQuickActions;
     private RecyclerView recyclerViewQuickActions;
     
@@ -65,6 +66,9 @@ public class DashboardFragment extends Fragment {
         cardAchievements = view.findViewById(R.id.cardAchievements);
         cardQuickActions = view.findViewById(R.id.cardQuickActions);
         
+        // Welcome text
+        txtWelcome = view.findViewById(R.id.txtWelcome);
+        
         // Quick actions recycler view
         recyclerViewQuickActions = view.findViewById(R.id.recyclerViewQuickActions);
     }
@@ -90,9 +94,8 @@ public class DashboardFragment extends Fragment {
         
         switch (action.title) {
             case "Scan Waste":
-                // Switch to scan fragment and open camera
+                // Switch to scan fragment (camera is handled by ScanFragment)
                 mainActivity.loadFragmentFromFragment(new ScanFragment());
-                mainActivity.openCamera();
                 break;
             case "View History":
                 // Switch to history fragment to show scan history
@@ -123,22 +126,33 @@ public class DashboardFragment extends Fragment {
     public void refreshData() {
         if (gameManager == null) return;
         
-        // Update main stats
+        // Update welcome text with username
+        txtWelcome.setText("Welcome, " + AppThemeManager.getUsername() + "!");
+        
+        // Core stats (points/level/streak still from prefs)
         txtLevel.setText("Level " + gameManager.getLevel());
         txtPoints.setText(String.valueOf(gameManager.getTotalPoints()));
         txtStreak.setText(String.valueOf(gameManager.getCurrentStreak()));
-        txtAccuracy.setText(String.format("%.1f%%", gameManager.getAccuracy()));
-        txtTotalScans.setText(String.valueOf(gameManager.getTotalPredictions()));
-        
-        // Update today's stats (mock data for now)
-        txtTodayScans.setText("5"); // Today's scans
-        txtWeeklyGoal.setText("12/20"); // Weekly goal progress
+
+        // Accuracy based on confirmed history
+        double acc = gameManager.getAccuracyFromHistory();
+        txtAccuracy.setText(String.format(java.util.Locale.getDefault(), "%.1f%%", acc));
+
+        // Today / Weekly / Total from history
+        int today = gameManager.getScanCountToday();
+        int weekly = gameManager.getScanCountThisWeek();
+        int total = gameManager.getScanHistoryCount();
+
+        txtTodayScans.setText(String.valueOf(today));
+        txtWeeklyGoal.setText(weekly + "/20"); // set your weekly goal target here
+        txtTotalScans.setText(String.valueOf(total));
+
         txtAchievements.setText(String.valueOf(gameManager.getAchievements().size()));
-        
+
         // Update weekly progress stats
-        txtThisWeek.setText("12"); // This week's scans
-        txtLastWeek.setText("8"); // Last week's scans
-        txtMonthly.setText("45"); // Monthly scans
+        txtThisWeek.setText(String.valueOf(weekly)); // This week's scans
+        txtLastWeek.setText("8"); // Last week's scans (could be computed from history)
+        txtMonthly.setText(String.valueOf(total)); // Monthly scans (using total for now)
         
         // Animate cards
         animateCards();
@@ -220,5 +234,11 @@ public class DashboardFragment extends Fragment {
                 icon = itemView.findViewById(R.id.imgQuickActionIcon);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshData();
     }
 }

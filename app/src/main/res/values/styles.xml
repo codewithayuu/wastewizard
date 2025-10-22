@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shape definitions -->
+    <style name="Shape.Small" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="Shape.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="Shape.Large" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <!-- Cards -->
+    <style name="App.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="strokeColor">?attr/colorOutline</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="shapeAppearance">@style/Shape.Medium</item>
+    </style>
+
+    <!-- Buttons -->
+    <style name="App.Button.Filled" parent="Widget.Material3.Button">
+        <item name="android:minHeight">48dp</item>
+        <item name="shapeAppearance">@style/Shape.Small</item>
+    </style>
+    <style name="App.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="shapeAppearance">@style/Shape.Small</item>
+    </style>
+
+    <!-- FAB -->
+    <style name="App.FAB" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="tint">?attr/colorOnPrimary</item>
+        <item name="shapeAppearance">@style/Shape.Large</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="titleTextColor">?attr/colorOnSurface</item>
+        <item name="subtitleTextColor">?attr/colorOnSurfaceVariant</item>
+        <item name="navigationIconTint">?attr/colorOnSurface</item>
+        <item name="popupTheme">@style/ThemeOverlay.Material3.Light</item>
+    </style>
+
+    <!-- Preference overlay (Material 3) -->
+    <style name="App.PreferenceTheme" parent="ThemeOverlay.Material3.Light" />
+
+    <!-- Typography helpers -->
+    <style name="App.Text.Title" parent="TextAppearance.Material3.TitleLarge"/>
+    <style name="App.Text.Headline" parent="TextAppearance.Material3.HeadlineSmall"/>
+    <style name="App.Text.Body" parent="TextAppearance.Material3.BodyLarge"/>
+    <style name="App.Text.Caption" parent="TextAppearance.Material3.BodySmall"/>
+</resources>
+
+
+

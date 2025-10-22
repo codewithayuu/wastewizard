@@ -30,6 +30,9 @@ public final class ItemScanHistoryBinding implements ViewBinding {
   public final TextView txtConfidence;
 
   @NonNull
+  public final TextView txtConfidenceBadge;
+
+  @NonNull
   public final TextView txtLabel;
 
   @NonNull
@@ -37,11 +40,13 @@ public final class ItemScanHistoryBinding implements ViewBinding {
 
   private ItemScanHistoryBinding(@NonNull MaterialCardView rootView,
       @NonNull MaterialCardView cardScanHistory, @NonNull ImageView imgThumbnail,
-      @NonNull TextView txtConfidence, @NonNull TextView txtLabel, @NonNull TextView txtTime) {
+      @NonNull TextView txtConfidence, @NonNull TextView txtConfidenceBadge,
+      @NonNull TextView txtLabel, @NonNull TextView txtTime) {
     this.rootView = rootView;
     this.cardScanHistory = cardScanHistory;
     this.imgThumbnail = imgThumbnail;
     this.txtConfidence = txtConfidence;
+    this.txtConfidenceBadge = txtConfidenceBadge;
     this.txtLabel = txtLabel;
     this.txtTime = txtTime;
   }
@@ -87,6 +92,12 @@ public final class ItemScanHistoryBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.txtConfidenceBadge;
+      TextView txtConfidenceBadge = ViewBindings.findChildViewById(rootView, id);
+      if (txtConfidenceBadge == null) {
+        break missingId;
+      }
+
       id = R.id.txtLabel;
       TextView txtLabel = ViewBindings.findChildViewById(rootView, id);
       if (txtLabel == null) {
@@ -100,7 +111,7 @@ public final class ItemScanHistoryBinding implements ViewBinding {
       }
 
       return new ItemScanHistoryBinding((MaterialCardView) rootView, cardScanHistory, imgThumbnail,
-          txtConfidence, txtLabel, txtTime);
+          txtConfidence, txtConfidenceBadge, txtLabel, txtTime);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
